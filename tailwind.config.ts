@@ -1,0 +1,97 @@
+import type { Config } from "tailwindcss";
+
+export default {
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        chicago: {
+          blue: "rgb(var(--snail-blue-rgb) / <alpha-value>)",
+          "blue-dark": "rgb(var(--snail-blue-dark-rgb) / <alpha-value>)",
+          "blue-light": "rgb(var(--snail-blue-light-rgb) / <alpha-value>)",
+          red: "rgb(var(--snail-red-rgb) / <alpha-value>)",
+        },
+        snail: {
+          red: "rgb(var(--snail-red-rgb) / <alpha-value>)",
+          "red-dark": "rgb(var(--snail-red-dark-rgb) / <alpha-value>)",
+          "red-light": "rgb(var(--snail-red-light-rgb) / <alpha-value>)",
+          blue: "rgb(var(--snail-blue-rgb) / <alpha-value>)",
+          "blue-dark": "rgb(var(--snail-blue-dark-rgb) / <alpha-value>)",
+          "blue-light": "rgb(var(--snail-blue-light-rgb) / <alpha-value>)",
+          orange: "rgb(var(--snail-orange-rgb) / <alpha-value>)",
+          "orange-dark": "rgb(var(--snail-orange-dark-rgb) / <alpha-value>)",
+          "orange-light": "rgb(var(--snail-orange-light-rgb) / <alpha-value>)",
+          terracotta: "rgb(var(--snail-orange-rgb) / <alpha-value>)",
+          navy: "rgb(var(--snail-navy-rgb) / <alpha-value>)",
+          "navy-dark": "rgb(var(--snail-navy-dark-rgb) / <alpha-value>)",
+          "navy-light": "rgb(var(--snail-navy-light-rgb) / <alpha-value>)",
+          forest: "rgb(var(--snail-forest-rgb) / <alpha-value>)",
+          "forest-dark": "rgb(var(--snail-forest-dark-rgb) / <alpha-value>)",
+          "forest-light": "rgb(var(--snail-forest-light-rgb) / <alpha-value>)",
+          yellow: "rgb(var(--snail-yellow-rgb) / <alpha-value>)",
+          "yellow-dark": "rgb(var(--snail-yellow-dark-rgb) / <alpha-value>)",
+          "yellow-light": "rgb(var(--snail-yellow-light-rgb) / <alpha-value>)",
+          gold: "rgb(var(--snail-gold-rgb) / <alpha-value>)",
+          sage: "rgb(var(--snail-sage-rgb) / <alpha-value>)",
+          cream: "rgb(var(--snail-cream-rgb) / <alpha-value>)",
+          "cream-dark": "rgb(var(--snail-cream-dark-rgb) / <alpha-value>)",
+          "cream-warm": "rgb(var(--snail-cream-warm-rgb) / <alpha-value>)",
+          sand: "rgb(var(--snail-sand-rgb) / <alpha-value>)",
+          charcoal: "rgb(var(--snail-charcoal-rgb) / <alpha-value>)",
+          "warm-gray": "rgb(var(--snail-warm-gray-rgb) / <alpha-value>)",
+          "dark-surface": "rgb(var(--snail-dark-surface-rgb) / <alpha-value>)",
+          "dark-surface-darker": "rgb(var(--snail-dark-surface-darker-rgb) / <alpha-value>)",
+          "dark-card": "rgb(var(--snail-dark-card-rgb) / <alpha-value>)",
+        },
+        background: "hsl(var(--background) / <alpha-value>)",
+        foreground: "hsl(var(--foreground) / <alpha-value>)",
+        card: {
+          DEFAULT: "hsl(var(--card) / <alpha-value>)",
+          foreground: "hsl(var(--card-foreground) / <alpha-value>)",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover) / <alpha-value>)",
+          foreground: "hsl(var(--popover-foreground) / <alpha-value>)",
+        },
+        primary: {
+          DEFAULT: "hsl(var(--primary) / <alpha-value>)",
+          foreground: "hsl(var(--primary-foreground) / <alpha-value>)",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary) / <alpha-value>)",
+          foreground: "hsl(var(--secondary-foreground) / <alpha-value>)",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted) / <alpha-value>)",
+          foreground: "hsl(var(--muted-foreground) / <alpha-value>)",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent) / <alpha-value>)",
+          foreground: "hsl(var(--accent-foreground) / <alpha-value>)",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive) / <alpha-value>)",
+          foreground: "hsl(var(--destructive-foreground) / <alpha-value>)",
+        },
+        border: "hsl(var(--border) / <alpha-value>)",
+        input: "hsl(var(--input) / <alpha-value>)",
+        ring: "hsl(var(--ring) / <alpha-value>)",
+        chart: {
+          "1": "hsl(var(--chart-1))",
+          "2": "hsl(var(--chart-2))",
+          "3": "hsl(var(--chart-3))",
+          "4": "hsl(var(--chart-4))",
+          "5": "hsl(var(--chart-5))",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+    },
+  },
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config;
