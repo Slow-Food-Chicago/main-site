@@ -37,11 +37,11 @@ export default function SnailLogo({
       {showText && (
         <div className="flex flex-col leading-tight">
           <span className="font-serif text-base font-bold tracking-tight text-foreground sm:text-lg">
-            Snail of Approval
-          </span>
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             Slow Food Chicago
           </span>
+          {/* <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            
+          </span> */}
         </div>
       )}
     </div>

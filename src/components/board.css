@@ -1,0 +1,356 @@
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Board Page
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Hero ───────────────────────────────────────────────────────────────── */
+
+.board-hero {
+  padding: 84px 8.35% 72px;
+  background: white;
+  border-bottom: 1px solid #eae6df;
+}
+
+.board-hero-inner {
+  max-width: 660px;
+}
+
+.board-hero h2 {
+  margin: 22px 0 18px;
+  font-size: clamp(40px, 4.5vw, 60px);
+  letter-spacing: -1.8px;
+  line-height: 1.06;
+}
+
+.board-hero h2 em {
+  color: var(--snail-red);
+  font-weight: 400;
+}
+
+.board-hero-lead {
+  max-width: 520px;
+  color: #746e65;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+
+.board-hero-rule {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-top: 24px;
+  border-top: 1px solid #eae6df;
+  color: var(--snail-warm-gray);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.board-hero-rule span {
+  margin-left: 4px;
+}
+
+/* ── Shared section shell ───────────────────────────────────────────────── */
+
+.board-section {
+  padding: 80px 8.35% 88px;
+}
+
+.board-section--cream {
+  background: var(--snail-cream);
+}
+
+.board-section--white {
+  background: white;
+}
+
+.board-section-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.board-section-header {
+  max-width: 560px;
+  margin-bottom: 48px;
+}
+
+.board-section-header h3 {
+  margin: 16px 0 12px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(30px, 3.2vw, 44px);
+  font-weight: 400;
+  letter-spacing: -1px;
+  color: var(--snail-charcoal);
+  line-height: 1.1;
+}
+
+.board-section-header p {
+  margin: 0;
+  color: #746e65;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* ── Executive Board grid ───────────────────────────────────────────────── */
+
+.exec-board-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.exec-board-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 28px 26px;
+  background: white;
+  border: 1px solid rgb(31 29 27 / 7%);
+  border-top: 3px solid var(--snail-red);
+}
+
+.exec-board-role {
+  color: var(--snail-warm-gray);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.exec-board-name {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  letter-spacing: -0.4px;
+  color: var(--snail-charcoal);
+  line-height: 1.2;
+}
+
+/* ── Executive Council grid ─────────────────────────────────────────────── */
+
+.council-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.council-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px 20px;
+  border: 1px solid rgb(31 29 27 / 7%);
+}
+
+.council-card--officer {
+  background: var(--snail-cream);
+  border-top: 2px solid var(--snail-red);
+}
+
+.council-card--chair {
+  background: var(--chair-tint, var(--snail-cream));
+  border-top: 2px solid var(--chair-accent, var(--snail-charcoal));
+}
+
+.council-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  background: var(--snail-red);
+  color: white;
+  border-radius: 2px;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.council-badge--committee {
+  background: var(--chair-accent, var(--snail-charcoal));
+}
+
+.council-role {
+  margin-top: 6px;
+  color: var(--snail-warm-gray);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.council-name {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  letter-spacing: -0.3px;
+  color: var(--snail-charcoal);
+  line-height: 1.25;
+}
+
+/* ── Committee cards ────────────────────────────────────────────────────── */
+
+.committee-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.committee-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 32px 30px 28px;
+  background: white;
+  border: 1px solid rgb(31 29 27 / 6%);
+}
+
+.committee-card-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  color: var(--card-accent);
+  background: var(--card-tint);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.committee-card-name {
+  margin: 4px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.6px;
+  color: var(--snail-charcoal);
+}
+
+.committee-card-desc {
+  margin: 0;
+  color: #746e65;
+  font-size: 13px;
+  line-height: 1.75;
+  flex: 1;
+}
+
+.committee-card-leader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 16px;
+  margin-top: 4px;
+  border-top: 1px solid #eae6df;
+}
+
+.committee-leader-label {
+  color: var(--snail-warm-gray);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.committee-leader-name {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+  letter-spacing: -0.3px;
+  color: var(--snail-charcoal);
+}
+
+.committee-card-link {
+  align-self: flex-start;
+  color: var(--card-accent);
+  font-size: 11px;
+  font-weight: 700;
+  transition: opacity 160ms ease;
+}
+
+.committee-card-link:hover {
+  opacity: 0.7;
+}
+
+/* ── Vacant placeholder ─────────────────────────────────────────────────── */
+
+.board-vacant {
+  color: #a39b91;
+  font-family: "DM Sans", "Avenir Next", Avenir, sans-serif;
+  font-style: italic;
+  font-size: 0.85em;
+}
+
+/* ── Join CTA ───────────────────────────────────────────────────────────── */
+
+.board-cta {
+  padding: 80px 8.35%;
+  background: var(--snail-forest);
+  color: white;
+}
+
+.board-cta-inner {
+  max-width: 520px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.board-cta h3 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 400;
+  letter-spacing: -0.9px;
+  color: white;
+}
+
+.board-cta p {
+  margin: 0;
+  color: rgb(255 255 255 / 77%);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .exec-board-grid,
+  .council-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .board-hero {
+    padding: 64px 24px 54px;
+  }
+
+  .board-section {
+    padding: 64px 24px 68px;
+  }
+
+  .exec-board-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .council-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .committee-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .board-cta {
+    padding: 64px 24px;
+  }
+}
+
+@media (max-width: 440px) {
+  .exec-board-grid,
+  .council-grid {
+    grid-template-columns: 1fr;
+  }
+}
