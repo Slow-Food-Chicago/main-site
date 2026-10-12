@@ -230,19 +230,19 @@ export default function Board() {
                   <div className="committee-card-leader">
                     <span className="committee-leader-label">{committeeMembers[c.key]?.filter((m) => m.role === 'Chair')?.length > 1 ? 'Co-Chairs' : 'Chair'}</span>
                     {
-                        committeeMembers[c.key]?.filter((m) => m.role === 'Chair')?.map((m) => 
+                      committeeMembers[c.key]?.filter((m) => m.role === 'Chair')?.map((m) =>
                         <div><span className="committee-leader-name">
                           <img className="committee-headshot"
-                          src={m.headshot || "https://via.placeholder.com/avatar.png?size=100&shape=round"}
-                          width={100}
-                          height={100}
-                          alt={`Headshot of ${m.name || 'Vacant'}`} />{m.name}
-                          </span>
-                         { m.bio && <p className="committee-leader-bio">{m.bio.substring(0, 160)}{m.bio.length > 160 ? '...' : ''}</p> }
-                          </div>
+                            src={m.headshot || "https://via.placeholder.com/avatar.png?size=100&shape=round"}
+                            width={100}
+                            height={100}
+                            alt={`Headshot of ${m.name || 'Vacant'}`} />{m.name}
+                        </span>
+                          {m.bio && <p className="committee-leader-bio">{m.bio.substring(0, 160)}{m.bio.length > 160 ? '...' : ''}</p>}
+                        </div>
                       ) || <span className="board-vacant">Vacant</span>
-                      }
-                    
+                    }
+
                   </div>
                   <div className="committee-card-leader">
                     <span className="committee-member-label">Members</span>
@@ -253,7 +253,7 @@ export default function Board() {
                           width={100}
                           height={100}
                           alt={`Headshot of ${m.name || 'Vacant'}`} />{m.name}
-                          </span>
+                      </span>
                     )}
                   </div>
                   {c.url && (
