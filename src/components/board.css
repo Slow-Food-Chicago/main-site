@@ -368,3 +368,32 @@
   font-size: 13px;
   line-height: 1.8;
 }
+
+.committee-member-label {
+  display: block;
+  margin-top: 8px;
+  color: var(--snail-warm-gray);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.committee-member-name {
+  display: block;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+  letter-spacing: -0.3px;
+  color: var(--snail-charcoal);
+}
+
+.committee-headshot {
+  border-radius: 10%;
+}
+
+.committee-leader-bio {
+  margin: 4px 0 0;
+  color: #746e65;
+  font-size: 13px;
+  line-height: 1.8;
+}
