@@ -1,13 +1,15 @@
 import './board.css'
 import { Snail, Users, Handshake, Megaphone, Wheat } from 'lucide-react'
 import ChicagoStar from './chicago-star'
+import dom from "../assets/dom.jpeg";
+import jody from "../assets/jody.jpg"
 
 /* ─── Data ──────────────────────────────────────────────────────────────── */
 
 const executiveBoard = [
-  { role: 'President',          name: '' },
-  { role: 'Vice President',     name: '' },
-  { role: 'Secretary',          name: '' },
+  { role: 'President',          name: 'Dom Amato', headshot: dom, bio: "A big plant nerd who loves food and building communities. Lets create a more resilient future!" },
+  { role: 'Vice President',     name: 'Diane Williams', headshot: '', bio: "" },
+  { role: 'Secretary',          name: 'Jody Klinedinst', headshot: jody, bio: "an artisan cheesemaker and the co-owner of J2K Capraio, a family-operated creamery based on a 22-acre goat farm in Walkerton, Indiana." },
   { role: 'Treasurer',          name: '' },
 ]
 
@@ -103,10 +105,18 @@ export default function Board() {
           <div className="exec-board-grid">
             {executiveBoard.map((member) => (
               <div className="exec-board-card" key={member.role}>
+                <img
+                  className="exec-board-headshot"
+                  src={member.headshot || "https://via.placeholder.com/250"}
+                  width={250}
+                  height={250}
+                  alt={`Headshot of ${member.name || 'Vacant'}`}
+                />
                 <span className="exec-board-role">{member.role}</span>
                 <span className="exec-board-name">
                   {member.name || <span className="board-vacant">Vacant</span>}
                 </span>
+                <p className="exec-board-bio">{member.bio}</p>
               </div>
             ))}
           </div>

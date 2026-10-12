@@ -1,5 +1,6 @@
 {
   "name": "sfc-main-site",
+  "homepage": "https://dev.slowfoodchicago.org",
   "private": true,
   "version": "1.0.0",
   "type": "module",

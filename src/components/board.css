@@ -354,3 +354,17 @@
     grid-template-columns: 1fr;
   }
 }
+
+.exec-board-headshot {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 5%;
+}
+
+.exec-board-bio {
+  margin: 0;
+  color: #746e65;
+  font-size: 13px;
+  line-height: 1.8;
+}
