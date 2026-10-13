@@ -4,6 +4,9 @@ import Footer from './components/footer'
 import HomePage from './pages/HomePage'
 import BoardPage from './pages/BoardPage'
 import GetInvolvedPage from './pages/GetInvolvedPage'
+import InitiativesPage from './pages/InitiativesPage'
+import PantrySwapPage from './pages/PantrySwapPage'
+import PreserveGardenPage from './pages/PreserveGardenPage'
 
 export default function App() {
   return (
@@ -14,6 +17,9 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/board" element={<BoardPage />} />
           <Route path="/get-involved" element={<GetInvolvedPage />} />
+          <Route path="/initiatives" element={<InitiativesPage />} />
+          <Route path="/initiatives/pantry-swap" element={<PantrySwapPage />} />
+          <Route path="/initiatives/preserve-garden" element={<PreserveGardenPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
         <Footer />

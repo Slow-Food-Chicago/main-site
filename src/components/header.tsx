@@ -14,8 +14,8 @@ export default function Header() {
       </Link>
       <nav className="main-nav" aria-label="Main navigation">
         {/* <a href="/#about">Our movement</a>
-        <a href="/#principles">Good, clean, fair</a>
-        <a href="/#gather">Gather with us</a> */}
+        <a href="/#principles">Good, clean, fair</a> */}
+        <a href="/initiatives">Our Initiatives</a>
         <a href="https://www.eventbrite.com/o/22780790031" target="_blank" rel="noopener noreferrer">Events</a>
         <Link to="/board">Our Leadership</Link>
       </nav>

@@ -252,14 +252,24 @@
 }
 
 .committee-leader-name {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 15px;
   letter-spacing: -0.3px;
   color: var(--snail-charcoal);
+  text-align: center;
+}
+
+.committee-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .committee-card-link {
-  align-self: flex-start;
   color: var(--card-accent);
   font-size: 11px;
   font-weight: 700;
@@ -311,6 +321,175 @@
   color: rgb(255 255 255 / 77%);
   font-size: 13px;
   line-height: 1.8;
+}
+
+/* ── Headshot hover wrapper ─────────────────────────────────────────────── */
+
+.headshot-wrap {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.headshot-wrap img {
+  display: block;
+}
+
+.headshot-hover-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(31 29 27 / 52%);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 180ms ease;
+  border-radius: 5%;
+}
+
+.headshot-wrap:hover .headshot-hover-hint {
+  opacity: 1;
+}
+
+/* ── Member Modal ───────────────────────────────────────────────────────── */
+
+.member-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgb(31 29 27 / 60%);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: modal-fade-in 180ms ease;
+}
+
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.member-modal {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  background: white;
+  box-shadow: 0 24px 80px rgb(0 0 0 / 28%);
+  animation: modal-slide-up 200ms ease;
+}
+
+@keyframes modal-slide-up {
+  from { transform: translateY(18px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.member-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: white;
+  border: 1px solid rgb(31 29 27 / 12%);
+  border-radius: 50%;
+  color: var(--snail-charcoal);
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.member-modal-close:hover {
+  background: var(--snail-cream);
+}
+
+.member-modal-inner {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+}
+
+.member-modal-img {
+  width: 220px;
+  height: 280px;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  flex-shrink: 0;
+}
+
+.member-modal-body {
+  padding: 32px 32px 32px 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.member-modal-role {
+  color: var(--snail-warm-gray);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.member-modal-name {
+  margin: 10px 0 16px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 400;
+  letter-spacing: -0.6px;
+  line-height: 1.1;
+  color: var(--snail-charcoal);
+}
+
+.member-modal-bio {
+  margin: 0;
+  color: #746e65;
+  font-size: 13px;
+  line-height: 1.85;
+  flex: 1;
+}
+
+.member-modal-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 22px;
+  padding: 10px 16px;
+  align-self: flex-start;
+  background: var(--snail-charcoal);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  transition: background 150ms ease;
+}
+
+.member-modal-social:hover {
+  background: var(--snail-forest-dark);
+}
+
+@media (max-width: 560px) {
+  .member-modal-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .member-modal-img {
+    width: 100%;
+    height: 260px;
+  }
+
+  .member-modal-body {
+    padding: 24px;
+  }
 }
 
 /* ── Responsive ─────────────────────────────────────────────────────────── */
@@ -380,11 +559,15 @@
 }
 
 .committee-member-name {
-  display: block;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 15px;
   letter-spacing: -0.3px;
   color: var(--snail-charcoal);
+  text-align: center;
 }
 
 .committee-headshot {

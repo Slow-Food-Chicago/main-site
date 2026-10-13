@@ -1,5 +1,6 @@
 import './board.css'
-import { Snail, Users, Handshake, Megaphone, Wheat } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { Snail, Users, Handshake, Megaphone, Wheat, X, ArrowUpRight } from 'lucide-react'
 import ChicagoStar from './chicago-star'
 import dom from "../assets/dom.jpeg";
 import jody from "../assets/jody.jpg"
@@ -7,13 +8,14 @@ import diane from "../assets/diane.jpeg"
 import gabi from "../assets/gabi.JPG"
 import christian from "../assets/christian.jpeg"
 
-/* ─── Data ──────────────────────────────────────────────────────────────── */
+/* ─── Types ─────────────────────────────────────────────────────────────── */
 
 type BoardMember = {
   role: string,
   name?: string,
   headshot?: string | null,
   bio?: string,
+  social?: string | null,
 }
 
 type CommitteeMember = {
@@ -21,6 +23,7 @@ type CommitteeMember = {
   name: string,
   headshot?: string | null,
   bio?: string,
+  social?: string | null,
 }
 
 type Committee = {
@@ -33,39 +36,49 @@ type Committee = {
   url?: string | null,
 }
 
+type ModalMember = {
+  name: string,
+  role: string,
+  headshot?: string | null,
+  bio?: string,
+  social?: string | null,
+}
+
+/* ─── Data ──────────────────────────────────────────────────────────────── */
+
 const executiveBoard: BoardMember[] = [
-  { role: 'President', name: 'Dom Amato', headshot: dom, bio: "I'm a big plant nerd who loves food and building communities. Lets create a more resilient future!" },
+  { role: 'President', name: 'Dom Amato', headshot: dom, bio: "I'm a big plant nerd who loves food and building communities. Lets create a more resilient future!", social: null },
   {
-    role: 'Vice President', name: 'Diane Williams', headshot: diane, bio: `
+    role: 'Vice President', name: 'Diane Williams', headshot: diane, social: null, bio: `
     I became interested in the Slow Food movement after reading about its founding by Carlo Petrini, becoming a Slow Food member in the early 2000s, joining the Board in 2023. 
     I was raised on a fourth generation, McHenry County dairy farm. Good food and clean farm crops were part of my upbringing. 
     In my professional life, I was an economic development consultant to the public sector. 
     Routinely engaging with local food businesses in client communities was a major component of my practice. 
     Having retired in 2023, I now volunteer weekly with two area food banks. 
-    For me, seeing the food system from these varied perspectives reinforces my belief in Slow Food’s mission of good, clean, and fair food for all and a commitment to support Slow Food’s important work.
+    For me, seeing the food system from these varied perspectives reinforces my belief in Slow Food's mission of good, clean, and fair food for all and a commitment to support Slow Food's important work.
     ` },
-  { role: 'Secretary', name: 'Jody Klinedinst', headshot: jody, bio: "an artisan cheesemaker and the co-owner of J2K Capraio, a family-operated creamery based on a 22-acre goat farm in Walkerton, Indiana." },
+  { role: 'Secretary', name: 'Jody Klinedinst', headshot: jody, bio: "an artisan cheesemaker and the co-owner of J2K Capraio, a family-operated creamery based on a 22-acre goat farm in Walkerton, Indiana.", social: null },
   { role: 'Treasurer', name: '' },
 ]
 
 const committeeMembers: Record<string, CommitteeMember[]> = {
   'comms': [
-    { role: 'Chair', name: 'Vanshi Jhumkhawala', headshot: null, bio: '' },
-    { role: 'member', name: 'Benji Corpuz', headshot: null, bio: '' },
+    { role: 'Chair', name: 'Vanshi Jhumkhawala', headshot: null, bio: '', social: null },
+    { role: 'member', name: 'Benji Corpuz', headshot: null, bio: '', social: null },
   ],
   'partnerships': [
-    { role: 'Chair', name: 'Christian Hunter', headshot: christian, bio: 'is currently the only Black chef in Chicago with a Michelin star, and one of only two Black chefs in the country with the honor.' },
-    { role: 'member', name: 'Dfrantz Smart', headshot: null, bio: '' },
-    { role: 'member', name: 'Benji Corpuz', headshot: null, bio: '' },
-    { role: 'member', name: 'Gabi Medina', headshot: gabi, bio: 'Me llamo Gabriela, but please call me Gabi. I’m an Ecuadorian-born, US-raised bartender determined to lift the stories of indigenous drink-makers of the Americas. I named my business Chuchaqui Cocktails to encompass where I come from and where I want to go. Chuchaqui is a word in Kichwa, one of the indigenous languages of present-day Ecuador. It means to be hungover. Intentionally goofy. After more than ten years in the hospitality industry, only recently can I claim to understand what my ancestors already knew: slow food means care and intention, a long-term investment in and for the land and the people. That same structure encourages me to focus on education about who we can thank for what’s in our cocktail, with curiosity and respect. ¡Salud!' },
+    { role: 'Chair', name: 'Christian Hunter', headshot: christian, bio: 'is currently the only Black chef in Chicago with a Michelin star, and one of only two Black chefs in the country with the honor.', social: null },
+    { role: 'member', name: 'Dfrantz Smart', headshot: null, bio: '', social: null },
+    { role: 'member', name: 'Benji Corpuz', headshot: null, bio: '', social: null },
+    { role: 'member', name: 'Gabi Medina', headshot: gabi, social: null, bio: "Me llamo Gabriela, but please call me Gabi. I'm an Ecuadorian-born, US-raised bartender determined to lift the stories of indigenous drink-makers of the Americas. I named my business Chuchaqui Cocktails to encompass where I come from and where I want to go. Chuchaqui is a word in Kichwa, one of the indigenous languages of present-day Ecuador. It means to be hungover. Intentionally goofy. After more than ten years in the hospitality industry, only recently can I claim to understand what my ancestors already knew: slow food means care and intention, a long-term investment in and for the land and the people. That same structure encourages me to focus on education about who we can thank for what's in our cocktail, with curiosity and respect. ¡Salud!" },
   ],
   'snail': [],
   'ark': [
-    { role: 'Chair', name: 'Jeanne Calabrese', headshot: null, bio: '' },
-    { role: 'member', name: 'Heidi Hedeker', headshot: null, bio: '' },
-    { role: 'member', name: 'Zachary Page', headshot: null, bio: '' },
-    { role: 'member', name: 'Alana Reynolds', headshot: null, bio: '' },
-    { role: 'member', name: 'Gregory Hall', headshot: null, bio: '' },
+    { role: 'Chair', name: 'Jeanne Calabrese', headshot: null, bio: '', social: null },
+    { role: 'member', name: 'Heidi Hedeker', headshot: null, bio: '', social: null },
+    { role: 'member', name: 'Zachary Page', headshot: null, bio: '', social: null },
+    { role: 'member', name: 'Alana Reynolds', headshot: null, bio: '', social: null },
+    { role: 'member', name: 'Gregory Hall', headshot: null, bio: '', social: null },
   ],
 }
 
@@ -112,11 +125,67 @@ const committees: Committee[] = [
   },
 ]
 
+/* ─── Member Modal ──────────────────────────────────────────────────────── */
+
+function MemberModal({ member, onClose }: { member: ModalMember; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [onClose])
+
+  return (
+    <div className="member-modal-backdrop" onClick={onClose}>
+      <div className="member-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={member.name}>
+        <button className="member-modal-close" onClick={onClose} aria-label="Close">
+          <X size={18} strokeWidth={2} />
+        </button>
+        <div className="member-modal-inner">
+          <img
+            className="member-modal-img"
+            src={member.headshot || 'https://via.placeholder.com/avatar.png?size=400&shape=square'}
+            alt={`Photo of ${member.name}`}
+          />
+          <div className="member-modal-body">
+            <span className="member-modal-role">{member.role}</span>
+            <h3 className="member-modal-name">{member.name}</h3>
+            {member.bio && <p className="member-modal-bio">{member.bio.trim()}</p>}
+            {member.social && (
+              <a
+                href={member.social}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="member-modal-social"
+              >
+                View profile <ArrowUpRight size={14} />
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /* ─── Component ─────────────────────────────────────────────────────────── */
 
 export default function Board() {
+  const [activeModal, setActiveModal] = useState<ModalMember | null>(null)
+
+  const openModal = useCallback((member: ModalMember) => {
+    if (member.name && (member.bio || member.headshot)) setActiveModal(member)
+  }, [])
+
+  const closeModal = useCallback(() => setActiveModal(null), [])
+
   return (
     <div className="board-page">
+
+      {activeModal && <MemberModal member={activeModal} onClose={closeModal} />}
 
       {/* ── Page header ─────────────────────────────────────────────────── */}
       <section className="board-hero">
@@ -192,13 +261,18 @@ export default function Board() {
           <div className="exec-board-grid">
             {executiveBoard.map((member) => (
               <div className="exec-board-card" key={member.role}>
-                <img
-                  className="exec-board-headshot"
-                  src={member.headshot || "https://via.placeholder.com/avatar.png?size=250&shape=square"}
-                  width={250}
-                  height={250}
-                  alt={`Headshot of ${member.name || 'Vacant'}`}
-                />
+                <div className="headshot-wrap" onClick={() => member.name ? openModal(member as ModalMember) : null}>
+                  <img
+                    className="exec-board-headshot"
+                    src={member.headshot || "https://via.placeholder.com/avatar.png?size=250&shape=square"}
+                    width={250}
+                    height={250}
+                    alt={`Headshot of ${member.name || 'Vacant'}`}
+                  />
+                  {(member.bio || member.headshot) && member.name && (
+                    <span className="headshot-hover-hint">View bio</span>
+                  )}
+                </div>
                 <span className="exec-board-role">{member.role}</span>
                 <span className="exec-board-name">
                   {member.name || <span className="board-vacant">Vacant</span>}
@@ -228,8 +302,20 @@ export default function Board() {
               return (
                 <article className="committee-card" key={c.key}
                   style={{ '--card-accent': c.accent, '--card-tint': c.tint } as React.CSSProperties}>
-                  <div className="committee-card-icon">
-                    <Icon size={22} strokeWidth={1.6} />
+                  <div className="committee-card-header">
+                    <div className="committee-card-icon">
+                      <Icon size={22} strokeWidth={1.6} />
+                    </div>
+                    {c.url && (
+                      <a
+                        href={c.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="committee-card-link"
+                      >
+                        Visit project ↗
+                      </a>
+                    )}
                   </div>
                   <h4 className="committee-card-name">{c.name}</h4>
                   <p className="committee-card-desc">{c.description}</p>
@@ -237,12 +323,15 @@ export default function Board() {
                     <span className="committee-leader-label">{committeeMembers[c.key]?.filter((m) => m.role === 'Chair')?.length > 1 ? 'Co-Chairs' : 'Chair'}</span>
                     {
                       committeeMembers[c.key]?.filter((m) => m.role === 'Chair')?.map((m) =>
-                        <div><span className="committee-leader-name">
-                          <img className="committee-headshot"
-                            src={m.headshot || "https://via.placeholder.com/avatar.png?size=100&shape=round"}
-                            width={100}
-                            height={100}
-                            alt={`Headshot of ${m.name || 'Vacant'}`} />{m.name}
+                        <div key={m.name}><span className="committee-leader-name">
+                          <div className="headshot-wrap" onClick={() => openModal(m)}>
+                            <img className="committee-headshot"
+                              src={m.headshot || "https://via.placeholder.com/avatar.png?size=100&shape=round"}
+                              width={100}
+                              height={100}
+                              alt={`Headshot of ${m.name || 'Vacant'}`} />
+                            {(m.bio || m.headshot) && <span className="headshot-hover-hint">View bio</span>}
+                          </div>{m.name}
                         </span>
                           {m.bio && <p className="committee-leader-bio">{m.bio.substring(0, 160)}{m.bio.length > 160 ? '...' : ''}</p>}
                         </div>
@@ -253,25 +342,18 @@ export default function Board() {
                   <div className="committee-card-leader">
                     <span className="committee-member-label">Members</span>
                     {committeeMembers[c.key]?.filter((m) => m.role === 'member')?.map((m) =>
-                      <span className="committee-member-name">
-                        <img className="committee-headshot"
-                          src={m.headshot || "https://via.placeholder.com/avatar.png?size=100&shape=round"}
-                          width={100}
-                          height={100}
-                          alt={`Headshot of ${m.name || 'Vacant'}`} />{m.name}
+                      <span className="committee-member-name" key={m.name}>
+                        <div className="headshot-wrap" onClick={() => openModal(m)}>
+                          <img className="committee-headshot"
+                            src={m.headshot || "https://via.placeholder.com/avatar.png?size=100&shape=round"}
+                            width={100}
+                            height={100}
+                            alt={`Headshot of ${m.name || 'Vacant'}`} />
+                          {(m.bio || m.headshot) && <span className="headshot-hover-hint">View bio</span>}
+                        </div>{m.name}
                       </span>
                     )}
                   </div>
-                  {c.url && (
-                    <a
-                      href={c.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="committee-card-link"
-                    >
-                      Visit project ↗
-                    </a>
-                  )}
                 </article>
               )
             })}
