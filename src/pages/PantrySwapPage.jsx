@@ -25,14 +25,23 @@ const steps = [
   },
 ]
 
-const bringItems = [
-  'Canned goods (vegetables, beans, tomatoes, soups)',
-  'Dry staples (pasta, rice, lentils, grains, flour)',
-  'Homegrown or surplus fresh produce',
-  'Homemade jams, pickles, sauces, and preserves',
-  'Spices, oils, vinegars, and condiments',
-  'Baked goods and snacks',
-  'Seeds and starts for the garden',
+const SwapItems = [
+  {
+    item: "Flour",
+    blurb: "All Flours are not created equal. Try a cookie made with Turkey Red Wheat and you won't ever go back",
+    suppliers: [
+      {
+        name: "Janie's Mill",
+        rating: "A",
+        why: "Janies mill uses organic growing techniques and offers several heirloom wheats in various forms"
+      },
+      {
+        name: "Brian Stevenson Farm",
+        rating: "A",
+        why: "Stone milled grains like purple straw"
+      }
+    ]
+  },
 ]
 
 export default function PantrySwapPage() {
@@ -52,16 +61,13 @@ export default function PantrySwapPage() {
             <span>Initiative</span> Pantry Swap
           </div>
           <h1 className="page-hero-title">
-            Share what you have. <em>Take what you need.</em>
+            Rethink Staples. <em>Support Local.</em>
           </h1>
           <p className="page-hero-desc">
-            A free, community-run food exchange where neighbors trade pantry staples,
-            fresh produce, and homemade goods — no money, no judgment, just good food
-            shared generously.
+            How you spend your money can dramatically affect your local economy. 
+            The next time you need to refill or replace a common ingredient,
+            consider its source. <em>Provenance Matters!</em> 
           </p>
-          <a className="button button-primary" href="mailto:hello@slowfoodchicago.org">
-            Get involved <ArrowUpRight size={16} />
-          </a>
         </div>
         <div className="page-hero-aside" aria-hidden="true">
           <ShoppingBasket size={52} strokeWidth={1.2} style={{ color: 'var(--snail-orange-light)' }} />
@@ -75,7 +81,7 @@ export default function PantrySwapPage() {
             <span>01</span> How it works
           </div>
           <h2 className="pantry-how-title">
-            Simple by design. <em>Generous by nature.</em>
+            Small actions <em>Taken Collectively</em>
           </h2>
           <div className="pantry-steps">
             {steps.map((step) => {
@@ -100,7 +106,7 @@ export default function PantrySwapPage() {
         <div className="pantry-bring-inner">
           <div className="pantry-bring-copy">
             <div className="section-kicker">
-              <span>02</span> What to bring
+              <span>02</span> What to swap
             </div>
             <h2 className="pantry-bring-title">
               Anything good <em>and shareable.</em>
@@ -110,14 +116,19 @@ export default function PantrySwapPage() {
               welcome at Pantry Swap. Here are some ideas to get you started:
             </p>
           </div>
-          <ul className="pantry-bring-list">
-            {bringItems.map((item) => (
-              <li key={item} className="pantry-bring-item">
-                <span className="pantry-bring-dot" aria-hidden="true" />
-                {item}
-              </li>
+            {SwapItems.map((item) => (
+              <div key={item.item}>
+                <span>{item.item}</span>
+                {item.blurb}
+                  {item.suppliers.map((supplier) => {
+                      return (<div key={item.item + supplier.name}>
+                        {supplier.name}
+                        {supplier.rating}
+                        {supplier.why}
+                      </div>)
+                  })}
+              </div>
             ))}
-          </ul>
         </div>
       </section>
 
