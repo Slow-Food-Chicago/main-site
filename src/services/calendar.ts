@@ -1,0 +1,301 @@
+import type { CalendarEvent, EventCategory } from '../types/calendar'
+
+/**
+ * Unescape special characters in ICS strings.
+ */
+function unescapeIcsText(text: string): string {
+  return text
+    .replace(/\\n/g, '\n')
+    .replace(/\\N/g, '\n')
+    .replace(/\\,/g, ',')
+    .replace(/\\;/g, ';')
+    .replace(/\\\\/g, '\\')
+}
+
+/**
+ * Parses an ICS date string (either YYYYMMDD or YYYYMMDDTHHMMSS[Z]).
+ */
+function parseIcsDate(rawDateStr: string): { date: Date; isAllDay: boolean } {
+  // Strip out any TZID parameter prefix (e.g., TZID=America/Chicago:20261024T100000)
+  const cleanStr = rawDateStr.includes(':') ? rawDateStr.split(':').pop() || rawDateStr : rawDateStr
+
+  // Date-only format: YYYYMMDD
+  if (cleanStr.length === 8 && !cleanStr.includes('T')) {
+    const year = parseInt(cleanStr.substring(0, 4), 10)
+    const month = parseInt(cleanStr.substring(4, 6), 10) - 1
+    const day = parseInt(cleanStr.substring(6, 8), 10)
+    return { date: new Date(year, month, day), isAllDay: true }
+  }
+
+  // DateTime format: YYYYMMDDTHHMMSS[Z]
+  const match = cleanStr.match(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})(Z)?$/)
+  if (match) {
+    const [, y, mo, d, h, mi, s, isUtc] = match
+    if (isUtc) {
+      return {
+        date: new Date(Date.UTC(+y, +mo - 1, +d, +h, +mi, +s)),
+        isAllDay: false,
+      }
+    }
+    // Local / Floating time
+    return {
+      date: new Date(+y, +mo - 1, +d, +h, +mi, +s),
+      isAllDay: false,
+    }
+  }
+
+  const fallback = new Date(cleanStr)
+  return {
+    date: isNaN(fallback.getTime()) ? new Date() : fallback,
+    isAllDay: false,
+  }
+}
+
+/**
+ * Determine category from event title and description.
+ */
+function inferCategory(title: string, desc: string): EventCategory {
+  const combined = `${title} ${desc}`.toLowerCase()
+  if (combined.includes('garden') || combined.includes('preserve') || combined.includes('harvest') || combined.includes('compost')) {
+    return 'garden'
+  }
+  if (combined.includes('meeting') || combined.includes('committee') || combined.includes('council') || combined.includes('board')) {
+    return 'meeting'
+  }
+  if (combined.includes('workshop') || combined.includes('class') || combined.includes('seed saving') || combined.includes('bake')) {
+    return 'workshop'
+  }
+  if (combined.includes('swap') || combined.includes('potluck') || combined.includes('tasting') || combined.includes('dinner') || combined.includes('celebration')) {
+    return 'gathering'
+  }
+  return 'other'
+}
+
+/**
+ * Parse an iCalendar (.ics) string into an array of structured CalendarEvent objects.
+ */
+export function parseIcs(icsData: string): CalendarEvent[] {
+  // Unfold multi-line entries (lines starting with whitespace)
+  const unfolded = icsData.replace(/\r\n[ \t]|\r[ \t]|\n[ \t]/g, '')
+  const lines = unfolded.split(/\r\n|\r|\n/)
+
+  const events: CalendarEvent[] = []
+  let inEvent = false
+  let currentEvent: Record<string, string> = {}
+
+  for (const line of lines) {
+    const trimmed = line.trim()
+    if (trimmed === 'BEGIN:VEVENT') {
+      inEvent = true
+      currentEvent = {}
+      continue
+    }
+
+    if (trimmed === 'END:VEVENT') {
+      inEvent = false
+      if (currentEvent['SUMMARY'] && currentEvent['DTSTART']) {
+        const { date: startDate, isAllDay } = parseIcsDate(currentEvent['DTSTART'])
+        let endDate = startDate
+        if (currentEvent['DTEND']) {
+          endDate = parseIcsDate(currentEvent['DTEND']).date
+        } else if (isAllDay) {
+          endDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000)
+        }
+
+        const title = unescapeIcsText(currentEvent['SUMMARY'] || 'Untitled Event')
+        const description = currentEvent['DESCRIPTION'] ? unescapeIcsText(currentEvent['DESCRIPTION']) : undefined
+        const location = currentEvent['LOCATION'] ? unescapeIcsText(currentEvent['LOCATION']) : undefined
+        const url = currentEvent['URL']
+
+        events.push({
+          id: currentEvent['UID'] || `event-${events.length}-${startDate.getTime()}`,
+          title,
+          description,
+          location,
+          startDate,
+          endDate,
+          isAllDay,
+          category: inferCategory(title, description || ''),
+          url,
+        })
+      }
+      currentEvent = {}
+      continue
+    }
+
+    if (inEvent) {
+      const colonIndex = line.indexOf(':')
+      if (colonIndex > 0) {
+        const keyPart = line.substring(0, colonIndex).split(';')[0].toUpperCase().trim()
+        const rawValue = line.substring(colonIndex + 1)
+        currentEvent[keyPart] = rawValue
+      }
+    }
+  }
+
+  // Sort chronologically ascending
+  return events.sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
+}
+
+/**
+ * Fetch calendar events via the Google Calendar v3 REST API.
+ */
+export async function fetchGoogleCalendarApi(
+  apiKey: string,
+  calendarId: string,
+): Promise<CalendarEvent[]> {
+  const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(
+    calendarId,
+  )}/events?key=${encodeURIComponent(apiKey)}&timeMin=${new Date().toISOString()}&singleEvents=true&orderBy=startTime&maxResults=50`
+
+  const res = await fetch(url)
+  if (!res.ok) {
+    throw new Error(`Google Calendar API responded with status ${res.status}`)
+  }
+
+  const data = await res.json()
+  if (!Array.isArray(data.items)) {
+    return []
+  }
+
+  interface GCalItem {
+    id: string
+    summary?: string
+    description?: string
+    location?: string
+    start?: { dateTime?: string; date?: string }
+    end?: { dateTime?: string; date?: string }
+    htmlLink?: string
+  }
+
+  return (data.items as GCalItem[]).map((item) => {
+    const isAllDay = !item.start?.dateTime && Boolean(item.start?.date)
+    const startDate = new Date(item.start?.dateTime || item.start?.date || Date.now())
+    const endDate = new Date(item.end?.dateTime || item.end?.date || startDate.getTime() + 3600000)
+    const title = item.summary || 'Slow Food Chicago Event'
+    const description = item.description
+    const location = item.location
+
+    return {
+      id: item.id,
+      title,
+      description,
+      location,
+      startDate,
+      endDate,
+      isAllDay,
+      category: inferCategory(title, description || ''),
+      url: item.htmlLink,
+    }
+  })
+}
+
+/**
+ * Fetch calendar events from an iCal (.ics) public feed with fallback CORS proxy.
+ */
+export async function fetchIcsFeed(feedUrl: string): Promise<CalendarEvent[]> {
+  // Try direct fetch first
+  try {
+    const directRes = await fetch(feedUrl, { headers: { Accept: 'text/calendar, text/plain, */*' } })
+    if (directRes.ok) {
+      const text = await directRes.text()
+      if (text.includes('BEGIN:VCALENDAR')) {
+        return parseIcs(text)
+      }
+    }
+  } catch {
+    // Direct fetch failed, will try CORS proxy below
+  }
+
+  // Attempt fetch via AllOrigins CORS proxy
+  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`
+  const proxyRes = await fetch(proxyUrl)
+  if (!proxyRes.ok) {
+    throw new Error(`Could not fetch calendar feed (status ${proxyRes.status})`)
+  }
+
+  const icsText = await proxyRes.text()
+  if (!icsText.includes('BEGIN:VCALENDAR')) {
+    throw new Error('Feed response is not a valid iCalendar format')
+  }
+
+  return parseIcs(icsText)
+}
+
+/**
+ * Format a Date object to YYYYMMDDTHHMMSSZ for ICS / Google Calendar URLs.
+ */
+function formatDateToIcsUtc(d: Date): string {
+  return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
+}
+
+/**
+ * Generate a Google Calendar "Add Event" URL.
+ */
+export function createGoogleCalendarUrl(event: CalendarEvent): string {
+  const startStr = formatDateToIcsUtc(event.startDate)
+  const endStr = formatDateToIcsUtc(event.endDate)
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: event.title,
+    dates: `${startStr}/${endStr}`,
+    details: event.description || '',
+    location: event.location || '',
+  })
+  return `https://calendar.google.com/calendar/render?${params.toString()}`
+}
+
+/**
+ * Download a single event as a `.ics` file for importing into Apple Calendar, Outlook, etc.
+ */
+export function downloadEventIcs(event: CalendarEvent): void {
+  const startStr = formatDateToIcsUtc(event.startDate)
+  const endStr = formatDateToIcsUtc(event.endDate)
+  const nowStr = formatDateToIcsUtc(new Date())
+
+  const icsContent = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Slow Food Chicago//Events Calendar//EN',
+    'CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    `UID:${event.id}@slowfoodchicago.org`,
+    `DTSTAMP:${nowStr}`,
+    `DTSTART:${startStr}`,
+    `DTEND:${endStr}`,
+    `SUMMARY:${event.title.replace(/\n/g, ' ')}`,
+    event.description ? `DESCRIPTION:${event.description.replace(/\n/g, '\\n')}` : '',
+    event.location ? `LOCATION:${event.location.replace(/\n/g, ' ')}` : '',
+    'STATUS:CONFIRMED',
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ]
+    .filter(Boolean)
+    .join('\r\n')
+
+  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `${event.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}.ics`
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
+}
+
+/**
+ * Build the URL to subscribe directly to a Google Calendar in Google Calendar.
+ */
+export function getGoogleCalendarSubscribeUrl(calendarId: string): string {
+  return `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(calendarId)}`
+}
+
+/**
+ * Build the Google Calendar embed iframe URL.
+ */
+export function getGoogleCalendarEmbedUrl(calendarId: string): string {
+  return `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(
+    calendarId,
+  )}&ctz=America%2FChicago&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&color=%23DA2028`
+}

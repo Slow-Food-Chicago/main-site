@@ -10,7 +10,6 @@ import {
 import {
   SLACK_INVITE_URL,
   MEMBERSHIP_URL,
-  EVENTBRITE_URL,
   CONTACT_EMAIL,
 } from './constants'
 
@@ -63,7 +62,7 @@ export const getInvolvedWays: InvolveWay[] = [
       "From dinners and tastings to farm visits and panel discussions—our events are where the real conversations happen. Check our calendar for what's coming up and pull up a chair.",
     icon: CalendarDays,
     color: 'orange',
-    cta: { label: 'See upcoming events', href: EVENTBRITE_URL },
+    cta: { label: 'See upcoming events', href: '/events' },
   },
   {
     number: '04',

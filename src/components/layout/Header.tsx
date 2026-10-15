@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import SnailLogo from '../ui/SnailLogo'
-import { EVENTBRITE_URL } from '../../data/constants'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -55,9 +54,7 @@ export default function Header() {
       {/* Desktop navigation */}
       <nav className="main-nav" aria-label="Main navigation">
         <Link to="/initiatives">Our Initiatives</Link>
-        <a href={EVENTBRITE_URL} target="_blank" rel="noopener noreferrer">
-          Events
-        </a>
+        <Link to="/events">Events</Link>
         <Link to="/board">Our Leadership</Link>
       </nav>
 
@@ -98,15 +95,9 @@ export default function Header() {
           <Link to="/initiatives" className="mobile-nav-link" onClick={() => setIsOpen(false)}>
             Our Initiatives
           </Link>
-          <a
-            href={EVENTBRITE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mobile-nav-link"
-            onClick={() => setIsOpen(false)}
-          >
-            Events <ArrowUpRight size={15} className="mobile-nav-ext-icon" />
-          </a>
+          <Link to="/events" className="mobile-nav-link" onClick={() => setIsOpen(false)}>
+            Events
+          </Link>
           <Link to="/board" className="mobile-nav-link" onClick={() => setIsOpen(false)}>
             Our Leadership
           </Link>

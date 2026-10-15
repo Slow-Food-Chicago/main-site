@@ -18,3 +18,12 @@ export const PRIVACY_POLICY_URL = 'https://slowfoodusa.org/privacy-policy' as co
 export const SNAIL_OF_APPROVAL_URL = 'https://snails.slowfoodchicago.org' as const
 
 export const ARK_OF_TASTE_URL = 'https://ark.slowfoodchicago.org' as const
+
+export const DEFAULT_GOOGLE_CALENDAR_ID =
+  (import.meta.env.VITE_GOOGLE_CALENDAR_ID as string) || 'hello@slowfoodchicago.org'
+
+export const GOOGLE_CALENDAR_API_KEY =
+  (import.meta.env.VITE_GOOGLE_CALENDAR_API_KEY as string) || ''
+
+export const GOOGLE_CALENDAR_ICS_URL =
+  (import.meta.env.VITE_GOOGLE_CALENDAR_ICS_URL as string) || ''

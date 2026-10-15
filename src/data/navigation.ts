@@ -1,5 +1,4 @@
 import {
-  EVENTBRITE_URL,
   SLACK_INVITE_URL,
   MEMBERSHIP_URL,
   SNAIL_OF_APPROVAL_URL,
@@ -17,7 +16,7 @@ export interface NavLink {
 
 export const headerNavLinks: NavLink[] = [
   { label: 'Our Initiatives', href: '/initiatives', external: false },
-  { label: 'Events', href: EVENTBRITE_URL, external: true },
+  { label: 'Events', href: '/events', external: false },
   { label: 'Our Leadership', href: '/board', external: false },
   { label: 'Join Slack', href: SLACK_INVITE_URL, external: true },
 ]
@@ -25,7 +24,7 @@ export const headerNavLinks: NavLink[] = [
 export const footerCommunityLinks: NavLink[] = [
   { label: 'Join our Slack ↗', href: SLACK_INVITE_URL, external: true, highlight: true },
   { label: 'Get Involved', href: '/get-involved', external: false },
-  { label: 'Events Calendar ↗', href: EVENTBRITE_URL, external: true },
+  { label: 'Events Calendar', href: '/events', external: false },
   { label: 'Become a Member ↗', href: MEMBERSHIP_URL, external: true },
 ]
 

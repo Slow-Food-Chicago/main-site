@@ -1,5 +1,6 @@
 import type React from 'react'
 import { ArrowRight, ArrowUpRight, Snail } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import PageHero from '../components/ui/PageHero'
 import CtaSection from '../components/ui/CtaSection'
 import SectionKicker from '../components/ui/SectionKicker'
@@ -70,16 +71,21 @@ export default function GetInvolvedPage() {
                 </div>
                 <h3 className="involve-card-title">{w.title}</h3>
                 <p className="involve-card-desc">{w.description}</p>
-                {w.cta && (
-                  <a
-                    className="involve-card-link"
-                    href={w.cta.href}
-                    target={w.cta.href.startsWith('http') ? '_blank' : undefined}
-                    rel={w.cta.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  >
-                    {w.cta.label} <ArrowRight size={14} />
-                  </a>
-                )}
+                {w.cta &&
+                  (w.cta.href.startsWith('/') ? (
+                    <Link className="involve-card-link" to={w.cta.href}>
+                      {w.cta.label} <ArrowRight size={14} />
+                    </Link>
+                  ) : (
+                    <a
+                      className="involve-card-link"
+                      href={w.cta.href}
+                      target={w.cta.href.startsWith('http') ? '_blank' : undefined}
+                      rel={w.cta.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    >
+                      {w.cta.label} <ArrowRight size={14} />
+                    </a>
+                  ))}
               </article>
             )
           })}

@@ -7,6 +7,7 @@ import GetInvolvedPage from './pages/GetInvolvedPage'
 import InitiativesPage from './pages/InitiativesPage'
 import PantrySwapPage from './pages/PantrySwapPage'
 import PreserveGardenPage from './pages/PreserveGardenPage'
+import CalendarPage from './pages/CalendarPage'
 
 export default function App() {
   return (
@@ -20,6 +21,8 @@ export default function App() {
           <Route path="/initiatives" element={<InitiativesPage />} />
           <Route path="/initiatives/pantry-swap" element={<PantrySwapPage />} />
           <Route path="/initiatives/preserve-garden" element={<PreserveGardenPage />} />
+          <Route path="/events" element={<CalendarPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
         <Footer />
