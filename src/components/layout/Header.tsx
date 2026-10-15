@@ -7,11 +7,13 @@ import { EVENTBRITE_URL } from '../../data/constants'
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const location = useLocation()
+  const [prevPathname, setPrevPathname] = useState(location.pathname)
 
   // Close menu on route change
-  useEffect(() => {
+  if (prevPathname !== location.pathname) {
+    setPrevPathname(location.pathname)
     setIsOpen(false)
-  }, [location.pathname])
+  }
 
   // Close menu on Escape key press
   useEffect(() => {

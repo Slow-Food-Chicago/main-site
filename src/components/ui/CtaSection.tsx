@@ -1,3 +1,15 @@
+import type React from 'react'
+
+export interface CtaSectionProps {
+  kickerTag?: string
+  kickerText?: string
+  heading: React.ReactNode
+  description?: React.ReactNode
+  actions?: React.ReactNode
+  className?: string
+  children?: React.ReactNode
+}
+
 export default function CtaSection({
   kickerTag,
   kickerText,
@@ -6,7 +18,7 @@ export default function CtaSection({
   actions,
   className = '',
   children,
-}) {
+}: CtaSectionProps) {
   return (
     <section className={`initiatives-cta-section ${className}`.trim()}>
       <div className="initiatives-cta-inner">

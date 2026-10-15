@@ -1,6 +1,18 @@
+import type { LucideIcon } from 'lucide-react'
 import { Leaf, Sun, Users } from 'lucide-react'
 
-export const gardenHarvest = [
+export interface GardenPartner {
+  name: string
+  description: string
+}
+
+export interface GardenWay {
+  icon: LucideIcon
+  title: string
+  description: string
+}
+
+export const gardenHarvest: string[] = [
   'Beans',
   'Blackberries',
   'Celery',
@@ -19,7 +31,7 @@ export const gardenHarvest = [
   'Swiss Chard',
 ]
 
-export const gardenPartners = [
+export const gardenPartners: GardenPartner[] = [
   {
     name: 'North Lawndale Greening Committee',
     description:
@@ -37,7 +49,7 @@ export const gardenPartners = [
   },
 ]
 
-export const gardenWays = [
+export const gardenWays: GardenWay[] = [
   {
     icon: Sun,
     title: 'Volunteer Days',

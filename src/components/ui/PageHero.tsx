@@ -1,4 +1,19 @@
+import type React from 'react'
+import type { LucideIcon } from 'lucide-react'
 import SectionKicker from './SectionKicker'
+
+export interface PageHeroProps {
+  kickerTag?: string
+  kickerText?: string
+  kicker?: React.ReactNode
+  title: React.ReactNode
+  description?: React.ReactNode
+  asideIcon?: LucideIcon
+  asideColor?: string
+  actions?: React.ReactNode
+  className?: string
+  children?: React.ReactNode
+}
 
 export default function PageHero({
   kickerTag,
@@ -11,7 +26,7 @@ export default function PageHero({
   actions,
   className = '',
   children,
-}) {
+}: PageHeroProps) {
   return (
     <section className={`page-hero ${className}`.trim()}>
       <div className="page-hero-inner">

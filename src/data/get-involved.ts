@@ -1,3 +1,4 @@
+import type { LucideIcon } from 'lucide-react'
 import {
   CalendarDays,
   HandCoins,
@@ -13,7 +14,30 @@ import {
   CONTACT_EMAIL,
 } from './constants'
 
-export const getInvolvedWays = [
+export type InvolveColor = 'red' | 'forest' | 'orange' | 'sage'
+
+export interface InvolveCta {
+  label: string
+  href: string
+}
+
+export interface InvolveWay {
+  number: string
+  title: string
+  description: string
+  icon: LucideIcon
+  color: InvolveColor
+  cta: InvolveCta | null
+}
+
+export interface ColorScheme {
+  bg: string
+  accent: string
+  dark: string
+  border: string
+}
+
+export const getInvolvedWays: InvolveWay[] = [
   {
     number: '01',
     title: 'Become a Member',
@@ -27,7 +51,7 @@ export const getInvolvedWays = [
     number: '02',
     title: 'Join our Slack',
     description:
-      'Connect directly with Chicago\'s food community. Swap recipes, discuss local food policy, coordinate garden days, and chat with fellow members and volunteers in real time.',
+      "Connect directly with Chicago's food community. Swap recipes, discuss local food policy, coordinate garden days, and chat with fellow members and volunteers in real time.",
     icon: MessageSquare,
     color: 'forest',
     cta: { label: 'Join us on Slack', href: SLACK_INVITE_URL },
@@ -36,7 +60,7 @@ export const getInvolvedWays = [
     number: '03',
     title: 'Come to an Event',
     description:
-      'From dinners and tastings to farm visits and panel discussions—our events are where the real conversations happen. Check our calendar for what\'s coming up and pull up a chair.',
+      "From dinners and tastings to farm visits and panel discussions—our events are where the real conversations happen. Check our calendar for what's coming up and pull up a chair.",
     icon: CalendarDays,
     color: 'orange',
     cta: { label: 'See upcoming events', href: EVENTBRITE_URL },
@@ -70,7 +94,7 @@ export const getInvolvedWays = [
   },
 ]
 
-export const getInvolvedColorMap = {
+export const getInvolvedColorMap: Record<InvolveColor, ColorScheme> = {
   red: {
     bg: 'var(--snail-red-light)',
     accent: 'var(--snail-red)',

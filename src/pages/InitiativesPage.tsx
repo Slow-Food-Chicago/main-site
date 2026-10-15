@@ -1,3 +1,4 @@
+import type React from 'react'
 import { ArrowUpRight, ArrowRight, Sprout } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import PageHero from '../components/ui/PageHero'
@@ -28,7 +29,7 @@ export default function InitiativesPage() {
           {initiatives.map((item) => {
             const c = initiativeColorMap[item.color]
             const Icon = item.icon
-            const CardWrapper = ({ children }) =>
+            const CardWrapper = ({ children }: { children: React.ReactNode }) =>
               item.external ? (
                 <a
                   href={item.href}

@@ -1,3 +1,4 @@
+import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen,
   ShoppingBasket,
@@ -9,7 +10,29 @@ import {
   ARK_OF_TASTE_URL,
 } from './constants'
 
-export const initiatives = [
+export type InitiativeColor = 'orange' | 'red' | 'forest' | 'sage'
+
+export interface InitiativeItem {
+  number: string
+  title: string
+  tagline: string
+  description: string
+  color: InitiativeColor
+  icon: LucideIcon
+  status: string
+  href: string
+  external: boolean
+}
+
+export interface InitiativeColorScheme {
+  bg: string
+  accent: string
+  dark: string
+  badge: string
+  badgeText: string
+}
+
+export const initiatives: InitiativeItem[] = [
   {
     number: '01',
     title: 'Pantry Swap',
@@ -25,9 +48,9 @@ export const initiatives = [
   {
     number: '02',
     title: 'Snail of Approval',
-    tagline: 'Recognizing Chicago\'s good food makers.',
+    tagline: "Recognizing Chicago's good food makers.",
     description:
-      'The Snail of Approval is Slow Food\'s hallmark of quality and integrity. We work with local restaurants, producers, and markets to identify those who source responsibly, treat workers fairly, and cook with honesty. Look for the snail—it means something.',
+      "The Snail of Approval is Slow Food's hallmark of quality and integrity. We work with local restaurants, producers, and markets to identify those who source responsibly, treat workers fairly, and cook with honesty. Look for the snail—it means something.",
     color: 'red',
     icon: Snail,
     status: 'Active',
@@ -60,7 +83,7 @@ export const initiatives = [
   },
 ]
 
-export const initiativeColorMap = {
+export const initiativeColorMap: Record<InitiativeColor, InitiativeColorScheme> = {
   orange: {
     bg: 'var(--snail-orange-light)',
     accent: 'var(--snail-orange)',

@@ -1,6 +1,15 @@
+import type { LucideIcon } from 'lucide-react'
 import { Utensils, Sprout, HeartHandshake } from 'lucide-react'
 
-export const principles = [
+export interface Principle {
+  number: string
+  title: string
+  description: string
+  color: 'red' | 'blue' | 'green'
+  icon: LucideIcon
+}
+
+export const principles: Principle[] = [
   {
     number: '01',
     title: 'Good',

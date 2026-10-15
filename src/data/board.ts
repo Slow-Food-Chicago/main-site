@@ -1,3 +1,4 @@
+import type { LucideIcon } from 'lucide-react'
 import { Snail, Handshake, Megaphone, Wheat } from 'lucide-react'
 import dom from '../assets/dom.jpeg'
 import jody from '../assets/jody.jpg'
@@ -6,7 +7,33 @@ import gabi from '../assets/gabi.JPG'
 import christian from '../assets/christian.jpeg'
 import { SNAIL_OF_APPROVAL_URL, ARK_OF_TASTE_URL } from './constants'
 
-export const executiveBoard = [
+export interface BoardMember {
+  role: string
+  name?: string
+  headshot?: string | null
+  bio?: string
+  social?: string | null
+}
+
+export interface CommitteeMember {
+  role: string
+  name: string
+  headshot?: string | null
+  bio?: string
+  social?: string | null
+}
+
+export interface Committee {
+  key: string
+  name: string
+  description: string
+  icon: LucideIcon
+  accent: string
+  tint: string
+  url?: string | null
+}
+
+export const executiveBoard: BoardMember[] = [
   {
     role: 'President',
     name: 'Dom Amato',
@@ -41,7 +68,7 @@ export const executiveBoard = [
   },
 ]
 
-export const committeeMembers = {
+export const committeeMembers: Record<string, CommitteeMember[]> = {
   comms: [
     { role: 'Chair', name: 'Vanshi Jhumkhawala', headshot: null, bio: '', social: null },
     { role: 'member', name: 'Benji Corpuz', headshot: null, bio: '', social: null },
@@ -74,7 +101,7 @@ export const committeeMembers = {
   ],
 }
 
-export const committees = [
+export const committees: Committee[] = [
   {
     key: 'snail',
     name: 'Snail of Approval',

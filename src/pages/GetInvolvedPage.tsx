@@ -1,3 +1,4 @@
+import type React from 'react'
 import { ArrowRight, ArrowUpRight, Snail } from 'lucide-react'
 import PageHero from '../components/ui/PageHero'
 import CtaSection from '../components/ui/CtaSection'
@@ -53,11 +54,13 @@ export default function GetInvolvedPage() {
               <article
                 className="involve-card"
                 key={w.number}
-                style={{
-                  '--involve-accent': c.accent,
-                  '--involve-bg': c.bg,
-                  '--involve-border': c.border,
-                }}
+                style={
+                  {
+                    '--involve-accent': c.accent,
+                    '--involve-bg': c.bg,
+                    '--involve-border': c.border,
+                  } as React.CSSProperties
+                }
               >
                 <div className="involve-card-top">
                   <span className="involve-number">{w.number}</span>

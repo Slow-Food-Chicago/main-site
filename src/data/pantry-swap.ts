@@ -1,4 +1,17 @@
-export const swapItems = [
+export interface Supplier {
+  name: string
+  rating: string
+  why: string
+  url: string
+}
+
+export interface SwapItem {
+  item: string
+  blurb: string
+  suppliers: Supplier[]
+}
+
+export const swapItems: SwapItem[] = [
   {
     item: 'Flour',
     blurb:
