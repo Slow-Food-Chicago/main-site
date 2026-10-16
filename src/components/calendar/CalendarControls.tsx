@@ -1,4 +1,4 @@
-import { Search, RefreshCw, LayoutList, CalendarDays, SlidersHorizontal } from 'lucide-react'
+import { Search, RefreshCw, LayoutList, CalendarDays } from 'lucide-react'
 import type { EventCategory } from '../../types/calendar'
 
 interface CalendarControlsProps {

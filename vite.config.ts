@@ -11,7 +11,7 @@ function calendarFeedDevProxy(): Plugin {
   return {
     name: 'calendar-feed-dev-proxy',
     configureServer(server) {
-      server.middlewares.use('/calendar-feed.php', async (req, res) => {
+      server.middlewares.use('/calendar-feed.php', async (req: { url?: string }, res) => {
         try {
           const target = new URL(req.url ?? '', 'http://localhost').searchParams.get('url') ?? ''
           const u = new URL(target)
@@ -39,7 +39,7 @@ function calendarFeedDevProxy(): Plugin {
           res.end('Invalid calendar feed URL')
         }
       })
-      server.middlewares.use('/eventbrite-feed.php', async (req, res) => {
+      server.middlewares.use('/eventbrite-feed.php', async (req: { url?: string }, res) => {
         res.setHeader('Content-Type', 'application/json; charset=utf-8')
         try {
           const organizer =

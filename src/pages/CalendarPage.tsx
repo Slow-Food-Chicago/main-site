@@ -34,7 +34,7 @@ export default function CalendarPage() {
 
   // Events & Sync State
   const [events, setEvents] = useState<CalendarEvent[]>([])
-  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(true)
   const [syncState, setSyncState] = useState<FeedSyncState>({
     source: 'google-ics',
     status: 'idle'
@@ -49,7 +49,7 @@ export default function CalendarPage() {
   // Primary feed synchronization routine
   const syncCalendarFeed = useCallback(
     async (targetCalId: string, targetIcs: string, targetApi: string) => {
-      setIsRefreshing(true)
+      // (callers set isRefreshing before invoking; it is cleared in `finally` below)
 
       // Google Calendar: REST API v3 if a key is supplied, otherwise the iCal feed
       const loadGoogleEvents = async (): Promise<{
@@ -149,7 +149,13 @@ export default function CalendarPage() {
   // Initial sync on mount
   useEffect(() => {
     syncCalendarFeed(DEFAULT_GOOGLE_CALENDAR_ID, GOOGLE_CALENDAR_ICS_URL, GOOGLE_CALENDAR_API_KEY)
-  }, [DEFAULT_GOOGLE_CALENDAR_ID, GOOGLE_CALENDAR_ICS_URL, GOOGLE_CALENDAR_API_KEY, syncCalendarFeed])
+  }, [syncCalendarFeed])
+
+  // Manual refresh from the controls bar
+  const handleRefresh = () => {
+    setIsRefreshing(true)
+    syncCalendarFeed(DEFAULT_GOOGLE_CALENDAR_ID, GOOGLE_CALENDAR_ICS_URL, GOOGLE_CALENDAR_API_KEY)
+  }
 
   // Filter and sort events
   const filteredEvents = useMemo(() => {
@@ -285,7 +291,7 @@ export default function CalendarPage() {
           onTimeFilterChange={setTimeFilter}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
-          onRefresh={() => syncCalendarFeed(DEFAULT_GOOGLE_CALENDAR_ID, GOOGLE_CALENDAR_ICS_URL, GOOGLE_CALENDAR_API_KEY)}
+          onRefresh={handleRefresh}
           isRefreshing={isRefreshing}
         />
       </div>
