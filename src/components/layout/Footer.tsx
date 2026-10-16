@@ -15,10 +15,36 @@ export default function Footer() {
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [subscribeError, setSubscribeError] = useState('')
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubscribed(true)
+    setSubmitting(true)
+    setSubscribeError('')
+
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}zeffy-contact.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email.trim(),
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
+        }),
+      })
+      const data: { ok?: boolean; error?: string } = await res.json().catch(() => ({}))
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || 'Something went wrong. Please try again.')
+      }
+      setSubscribed(true)
+    } catch (err) {
+      setSubscribeError(
+        err instanceof Error ? err.message : 'Something went wrong. Please try again.',
+      )
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -257,6 +283,7 @@ export default function Footer() {
                 </div>
                 <button
                   type="submit"
+                  disabled={submitting}
                   style={{
                     width: '100%',
                     padding: '8px 16px',
@@ -266,7 +293,8 @@ export default function Footer() {
                     borderRadius: 3,
                     fontSize: 12,
                     fontWeight: 700,
-                    cursor: 'pointer',
+                    cursor: submitting ? 'default' : 'pointer',
+                    opacity: submitting ? 0.7 : 1,
                     transition: 'background 160ms ease',
                   }}
                   onMouseEnter={(e) =>
@@ -276,8 +304,16 @@ export default function Footer() {
                     (e.currentTarget.style.background = 'var(--snail-red)')
                   }
                 >
-                  Subscribe to Updates
+                  {submitting ? 'Subscribing…' : 'Subscribe to Updates'}
                 </button>
+                {subscribeError && (
+                  <div
+                    role="alert"
+                    style={{ fontSize: 12, fontWeight: 500, color: '#b91c1c' }}
+                  >
+                    {subscribeError}
+                  </div>
+                )}
               </form>
             )}
             <div style={{ paddingTop: 6 }}>
