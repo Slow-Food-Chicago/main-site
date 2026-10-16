@@ -191,20 +191,27 @@ export async function fetchGoogleCalendarApi(
 }
 
 /**
- * Fetch calendar events from an iCal (.ics) public feed with fallback CORS proxy.
+ * Fetch calendar events from an iCal (.ics) public feed.
+ *
+ * Google's iCal endpoint sends no CORS headers, so a direct browser fetch is
+ * always blocked. We go through the same-origin `calendar-feed.php` proxy first
+ * (served from /public in production, mirrored by a Vite middleware in dev),
+ * then fall back to a public CORS proxy.
  */
 export async function fetchIcsFeed(feedUrl: string): Promise<CalendarEvent[]> {
-  // Try direct fetch first
+  // Try the same-origin proxy first
   try {
-    const directRes = await fetch(feedUrl, { headers: { Accept: 'text/calendar, text/plain, */*' } })
-    if (directRes.ok) {
-      const text = await directRes.text()
+    const localRes = await fetch(
+      `${import.meta.env.BASE_URL}calendar-feed.php?url=${encodeURIComponent(feedUrl)}`,
+    )
+    if (localRes.ok) {
+      const text = await localRes.text()
       if (text.includes('BEGIN:VCALENDAR')) {
         return parseIcs(text)
       }
     }
   } catch {
-    // Direct fetch failed, will try CORS proxy below
+    // Same-origin proxy unavailable, will try public CORS proxy below
   }
 
   // Attempt fetch via AllOrigins CORS proxy
@@ -220,6 +227,109 @@ export async function fetchIcsFeed(feedUrl: string): Promise<CalendarEvent[]> {
   }
 
   return parseIcs(icsText)
+}
+
+/**
+ * Convert a wall-clock date/time in an IANA timezone to an absolute Date.
+ */
+function zonedTimeToDate(dateStr: string, timeStr: string, timeZone: string): Date {
+  const [y, mo, d] = dateStr.split('-').map(Number)
+  const [h, mi, s] = (timeStr || '00:00:00').split(':').map(Number)
+  const asUtc = Date.UTC(y, mo - 1, d, h || 0, mi || 0, s || 0)
+
+  try {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      hourCycle: 'h23',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    }).formatToParts(new Date(asUtc))
+    const get = (type: string) => Number(parts.find((p) => p.type === type)?.value)
+    const zonedAsUtc = Date.UTC(
+      get('year'),
+      get('month') - 1,
+      get('day'),
+      get('hour'),
+      get('minute'),
+      get('second'),
+    )
+    return new Date(asUtc - (zonedAsUtc - asUtc))
+  } catch {
+    // Unknown timezone; treat as the viewer's local time
+    return new Date(y, mo - 1, d, h || 0, mi || 0, s || 0)
+  }
+}
+
+/**
+ * Fetch upcoming events for an Eventbrite organizer via the same-origin
+ * `eventbrite-feed.php` proxy (Eventbrite pages/API are not CORS-accessible).
+ */
+export async function fetchEventbriteEvents(organizerId: string): Promise<CalendarEvent[]> {
+  const res = await fetch(
+    `${import.meta.env.BASE_URL}eventbrite-feed.php?organizer=${encodeURIComponent(organizerId)}`,
+  )
+  if (!res.ok) {
+    throw new Error(`Eventbrite feed responded with status ${res.status}`)
+  }
+
+  interface EbEvent {
+    id: string
+    name?: string
+    summary?: string
+    url?: string
+    start_date?: string
+    start_time?: string
+    end_date?: string
+    end_time?: string
+    timezone?: string
+    is_online_event?: boolean
+    is_cancelled?: boolean
+    primary_venue?: {
+      name?: string
+      address?: { localized_address_display?: string }
+    }
+  }
+
+  const data: unknown = await res.json()
+  if (!Array.isArray(data)) return []
+
+  return (data as EbEvent[])
+    .filter((ev) => ev.start_date && !ev.is_cancelled)
+    .map((ev) => {
+      const tz = ev.timezone || 'America/Chicago'
+      const startDate = zonedTimeToDate(ev.start_date as string, ev.start_time || '00:00:00', tz)
+      let endDate = ev.end_date
+        ? zonedTimeToDate(ev.end_date, ev.end_time || '00:00:00', tz)
+        : startDate
+      // Eventbrite sometimes reports identical start/end; give it a sensible duration
+      if (endDate.getTime() <= startDate.getTime()) {
+        endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000)
+      }
+
+      const title = ev.name || 'Slow Food Chicago Event'
+      const description = ev.summary || undefined
+      const location = ev.is_online_event
+        ? 'Online event'
+        : [ev.primary_venue?.name, ev.primary_venue?.address?.localized_address_display]
+            .filter(Boolean)
+            .join(', ') || undefined
+
+      return {
+        id: `eventbrite-${ev.id}`,
+        title,
+        description,
+        location,
+        startDate,
+        endDate,
+        isAllDay: false,
+        category: inferCategory(title, description || ''),
+        url: ev.url,
+      }
+    })
 }
 
 /**

@@ -12,13 +12,15 @@ export interface CalendarEvent {
   url?: string
 }
 
-export type FeedSource = 'google-api' | 'google-ics' | 'custom-ics' | 'sample'
+export type FeedSource = 'google-api' | 'google-ics' | 'custom-ics' | 'eventbrite' | 'sample'
 
 export interface FeedSyncState {
   source: FeedSource
   status: 'idle' | 'loading' | 'success' | 'error'
   lastSynced?: Date
   errorMessage?: string
-  calendarId: string
+  calendarId?: string
   icsUrl?: string
+  /** True when events from the Eventbrite organizer were merged into the list */
+  includesEventbrite?: boolean
 }

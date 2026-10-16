@@ -12,7 +12,6 @@ interface CalendarControlsProps {
   onSearchChange: (q: string) => void
   onRefresh: () => void
   isRefreshing: boolean
-  onOpenFeedSettings: () => void
 }
 
 const categories: { key: 'all' | EventCategory; label: string }[] = [
@@ -34,7 +33,6 @@ export default function CalendarControls({
   onSearchChange,
   onRefresh,
   isRefreshing,
-  onOpenFeedSettings,
 }: CalendarControlsProps) {
   return (
     <div className="calendar-controls">
@@ -91,16 +89,6 @@ export default function CalendarControls({
           >
             <RefreshCw size={14} className={isRefreshing ? 'is-spinning' : ''} />
             <span>{isRefreshing ? 'Syncing...' : 'Sync'}</span>
-          </button>
-
-          <button
-            type="button"
-            className="calendar-settings-btn"
-            onClick={onOpenFeedSettings}
-            title="Configure Google Calendar Feed Source"
-          >
-            <SlidersHorizontal size={14} />
-            <span>Feed Settings</span>
           </button>
         </div>
       </div>

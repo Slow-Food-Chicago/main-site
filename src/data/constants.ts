@@ -9,6 +9,8 @@ export const CONTACT_EMAIL = 'hello@slowfoodchicago.org' as const
 
 export const EVENTBRITE_URL = 'https://www.eventbrite.com/o/22780790031' as const
 
+export const EVENTBRITE_ORGANIZER_ID = '22780790031' as const
+
 export const MEMBERSHIP_URL = 'https://www.slowfoodusa.org/membership' as const
 
 export const SLOW_FOOD_USA_URL = 'https://slowfoodusa.org' as const
@@ -19,11 +21,10 @@ export const SNAIL_OF_APPROVAL_URL = 'https://snails.slowfoodchicago.org' as con
 
 export const ARK_OF_TASTE_URL = 'https://ark.slowfoodchicago.org' as const
 
-export const DEFAULT_GOOGLE_CALENDAR_ID =
-  (import.meta.env.VITE_GOOGLE_CALENDAR_ID as string) || 'hello@slowfoodchicago.org'
+export const DEFAULT_GOOGLE_CALENDAR_ID = 'dd47612359dbde8faffd0ec0abb04d1a2bf2cb7266266d1df04cb27ac4dbf0b4@group.calendar.google.com'
 
 export const GOOGLE_CALENDAR_API_KEY =
   (import.meta.env.VITE_GOOGLE_CALENDAR_API_KEY as string) || ''
 
-export const GOOGLE_CALENDAR_ICS_URL =
-  (import.meta.env.VITE_GOOGLE_CALENDAR_ICS_URL as string) || ''
+export const GOOGLE_CALENDAR_ICS_URL = 'https://calendar.google.com/calendar/ical/dd47612359dbde8faffd0ec0abb04d1a2bf2cb7266266d1df04cb27ac4dbf0b4%40group.calendar.google.com/public/basic.ics'
+// 'https://calendar.google.com/calendar/u/0?cid=ZGQ0NzYxMjM1OWRiZGU4ZmFmZmQwZWMwYWJiMDRkMWEyYmYyY2I3MjY2MjY2ZDFkZjA0Y2IyN2FjNGRiZjBiNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t'

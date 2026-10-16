@@ -89,7 +89,7 @@ export const getInvolvedWays: InvolveWay[] = [
       'Donations and sponsorships help us run programs, host events, and stay rooted in Chicago communities. Every contribution goes directly toward building a better food future for our city.',
     icon: HandCoins,
     color: 'forest',
-    cta: { label: 'Make a donation', href: `mailto:${CONTACT_EMAIL}` },
+    cta: { label: 'Make a donation', href: `https://www.zeffy.com/en-US/donation-form/donate-to-slow-food-chicago` },
   },
 ]
 

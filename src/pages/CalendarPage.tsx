@@ -4,7 +4,6 @@ import {
   Calendar as CalendarIcon,
   ArrowUpRight,
   ExternalLink,
-  SlidersHorizontal,
   Search,
 } from 'lucide-react'
 import PageHero from '../components/ui/PageHero'
@@ -12,13 +11,13 @@ import CtaSection from '../components/ui/CtaSection'
 import EventCard from '../components/calendar/EventCard'
 import CalendarEmbed from '../components/calendar/CalendarEmbed'
 import CalendarControls from '../components/calendar/CalendarControls'
-import FeedConfigModal from '../components/calendar/FeedConfigModal'
 import '../components/calendar/calendar.css'
 
 import type { CalendarEvent, EventCategory, FeedSyncState } from '../types/calendar'
 import {
   fetchGoogleCalendarApi,
   fetchIcsFeed,
+  fetchEventbriteEvents,
   getGoogleCalendarSubscribeUrl,
 } from '../services/calendar'
 import {
@@ -26,30 +25,19 @@ import {
   GOOGLE_CALENDAR_API_KEY,
   GOOGLE_CALENDAR_ICS_URL,
   EVENTBRITE_URL,
+  EVENTBRITE_ORGANIZER_ID,
   SLACK_INVITE_URL,
   CONTACT_EMAIL,
 } from '../data/constants'
-import { sampleEvents } from '../data/sample-events'
 
 export default function CalendarPage() {
-  // Feed credentials (stored in localStorage with fallback to constants)
-  const [calendarId, setCalendarId] = useState<string>(() => {
-    return localStorage.getItem('sfc_calendar_id') || DEFAULT_GOOGLE_CALENDAR_ID
-  })
-  const [icsUrl, setIcsUrl] = useState<string>(() => {
-    return localStorage.getItem('sfc_calendar_ics_url') || GOOGLE_CALENDAR_ICS_URL
-  })
-  const [apiKey, setApiKey] = useState<string>(() => {
-    return localStorage.getItem('sfc_calendar_api_key') || GOOGLE_CALENDAR_API_KEY
-  })
 
   // Events & Sync State
-  const [events, setEvents] = useState<CalendarEvent[]>(sampleEvents)
+  const [events, setEvents] = useState<CalendarEvent[]>([])
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [syncState, setSyncState] = useState<FeedSyncState>({
-    source: 'sample',
-    status: 'idle',
-    calendarId,
+    source: 'google-ics',
+    status: 'idle'
   })
 
   // UI state
@@ -57,93 +45,111 @@ export default function CalendarPage() {
   const [selectedCategory, setSelectedCategory] = useState<'all' | EventCategory>('all')
   const [timeFilter, setTimeFilter] = useState<'upcoming' | 'all' | 'past'>('upcoming')
   const [searchQuery, setSearchQuery] = useState('')
-  const [isConfigModalOpen, setIsConfigModalOpen] = useState(false)
 
   // Primary feed synchronization routine
   const syncCalendarFeed = useCallback(
     async (targetCalId: string, targetIcs: string, targetApi: string) => {
       setIsRefreshing(true)
 
-      // 1. If an API key and calendarId are supplied, try Google Calendar REST API v3
-      if (targetApi && targetCalId) {
+      // Google Calendar: REST API v3 if a key is supplied, otherwise the iCal feed
+      const loadGoogleEvents = async (): Promise<{
+        events: CalendarEvent[]
+        source: FeedSyncState['source']
+        icsUrl?: string
+      } | null> => {
+        // 1. If an API key and calendarId are supplied, try Google Calendar REST API v3
+        if (targetApi && targetCalId) {
+          try {
+            const apiEvents = await fetchGoogleCalendarApi(targetApi, targetCalId)
+            if (apiEvents.length > 0) {
+              return { events: apiEvents, source: 'google-api' }
+            }
+          } catch (err) {
+            console.warn('Google Calendar API fetch error, falling back:', err)
+          }
+        }
+
+        // 2. If a custom or default ICS URL is provided, try parsing it
+        const feedToTry =
+          targetIcs ||
+          `https://calendar.google.com/calendar/ical/${encodeURIComponent(
+            targetCalId,
+          )}/public/basic.ics`
+
         try {
-          const apiEvents = await fetchGoogleCalendarApi(targetApi, targetCalId)
-          if (apiEvents.length > 0) {
-            setEvents(apiEvents)
-            setSyncState({
-              source: 'google-api',
-              status: 'success',
-              lastSynced: new Date(),
-              calendarId: targetCalId,
-            })
-            setIsRefreshing(false)
-            return
+          const icsEvents = await fetchIcsFeed(feedToTry)
+          if (icsEvents.length > 0) {
+            return {
+              events: icsEvents,
+              source: targetIcs ? 'custom-ics' : 'google-ics',
+              icsUrl: feedToTry,
+            }
           }
         } catch (err) {
-          console.warn('Google Calendar API fetch error, falling back:', err)
+          console.warn('Google Calendar ICS fetch error:', err)
+        }
+
+        return null
+      }
+
+      // Eventbrite: upcoming events for the organizer (non-fatal if unavailable)
+      const loadEventbriteEvents = async (): Promise<CalendarEvent[]> => {
+        try {
+          return await fetchEventbriteEvents(EVENTBRITE_ORGANIZER_ID)
+        } catch (err) {
+          console.warn('Eventbrite fetch error:', err)
+          return []
         }
       }
 
-      // 2. If a custom or default ICS URL is provided, try parsing it
-      const feedToTry =
-        targetIcs ||
-        `https://calendar.google.com/calendar/ical/${encodeURIComponent(
-          targetCalId,
-        )}/public/basic.ics`
-
       try {
-        const icsEvents = await fetchIcsFeed(feedToTry)
-        if (icsEvents.length > 0) {
-          setEvents(icsEvents)
+        const [google, eventbriteEvents] = await Promise.all([
+          loadGoogleEvents(),
+          loadEventbriteEvents(),
+        ])
+
+        // Merge, skipping Eventbrite events already present in the Google calendar
+        const eventKey = (ev: CalendarEvent) =>
+          `${ev.title.trim().toLowerCase()}|${Math.floor(ev.startDate.getTime() / 60000)}`
+        const googleEvents = google?.events ?? []
+        const seen = new Set(googleEvents.map(eventKey))
+        const merged = [
+          ...googleEvents,
+          ...eventbriteEvents.filter((ev) => !seen.has(eventKey(ev))),
+        ]
+
+        if (merged.length > 0) {
+          setEvents(merged)
           setSyncState({
-            source: targetIcs ? 'custom-ics' : 'google-ics',
+            source: google?.source ?? 'eventbrite',
             status: 'success',
             lastSynced: new Date(),
             calendarId: targetCalId,
-            icsUrl: feedToTry,
+            icsUrl: google?.icsUrl,
+            includesEventbrite: eventbriteEvents.length > 0,
           })
-          setIsRefreshing(false)
-          return
         }
-      } catch (err) {
-        console.warn('Google Calendar ICS fetch error, displaying curated fallback events:', err)
-      }
 
-      // 3. Fallback to curated Slow Food Chicago events
-      setEvents(sampleEvents)
-      setSyncState({
-        source: 'sample',
-        status: 'idle',
-        lastSynced: new Date(),
-        calendarId: targetCalId,
-      })
-      setIsRefreshing(false)
+        // 3. Fallback to curated Slow Food Chicago events
+        // setEvents(sampleEvents)
+        // setSyncState({
+        //   source: 'sample',
+        //   status: 'idle',
+        //   lastSynced: new Date(),
+        //   calendarId: targetCalId,
+        // })
+        // setIsRefreshing(false)
+      } finally {
+        setIsRefreshing(false)
+      }
     },
     [],
   )
 
   // Initial sync on mount
   useEffect(() => {
-    syncCalendarFeed(calendarId, icsUrl, apiKey)
-  }, [calendarId, icsUrl, apiKey, syncCalendarFeed])
-
-  // Save new feed credentials from modal
-  const handleSaveFeedSettings = (settings: {
-    calendarId: string
-    icsUrl: string
-    apiKey: string
-  }) => {
-    const newCalId = settings.calendarId || DEFAULT_GOOGLE_CALENDAR_ID
-    setCalendarId(newCalId)
-    setIcsUrl(settings.icsUrl)
-    setApiKey(settings.apiKey)
-
-    localStorage.setItem('sfc_calendar_id', newCalId)
-    localStorage.setItem('sfc_calendar_ics_url', settings.icsUrl)
-    localStorage.setItem('sfc_calendar_api_key', settings.apiKey)
-
-    syncCalendarFeed(newCalId, settings.icsUrl, settings.apiKey)
-  }
+    syncCalendarFeed(DEFAULT_GOOGLE_CALENDAR_ID, GOOGLE_CALENDAR_ICS_URL, GOOGLE_CALENDAR_API_KEY)
+  }, [DEFAULT_GOOGLE_CALENDAR_ID, GOOGLE_CALENDAR_ICS_URL, GOOGLE_CALENDAR_API_KEY, syncCalendarFeed])
 
   // Filter and sort events
   const filteredEvents = useMemo(() => {
@@ -184,19 +190,10 @@ export default function CalendarPage() {
       })
   }, [events, selectedCategory, timeFilter, searchQuery])
 
-  const subscribeUrl = getGoogleCalendarSubscribeUrl(calendarId)
+  const subscribeUrl = getGoogleCalendarSubscribeUrl(DEFAULT_GOOGLE_CALENDAR_ID)
 
   return (
     <div className="calendar-page">
-      {/* Feed Settings Modal */}
-      <FeedConfigModal
-        isOpen={isConfigModalOpen}
-        onClose={() => setIsConfigModalOpen(false)}
-        currentCalendarId={calendarId}
-        currentIcsUrl={icsUrl}
-        currentApiKey={apiKey}
-        onSave={handleSaveFeedSettings}
-      />
 
       {/* Hero */}
       <PageHero
@@ -246,32 +243,23 @@ export default function CalendarPage() {
               }`}
             />
             {syncState.source === 'google-api' && (
-              <span>Synced live via Google Calendar API ({calendarId})</span>
+              <span>Synced live via Google Calendar API ({DEFAULT_GOOGLE_CALENDAR_ID})</span>
             )}
             {syncState.source === 'google-ics' && (
-              <span>Synced live via Google Calendar iCal Feed ({calendarId})</span>
+              <span>Synced live via Google Calendar iCal Feed ({DEFAULT_GOOGLE_CALENDAR_ID})</span>
             )}
             {syncState.source === 'custom-ics' && (
               <span>Synced live via custom iCal feed</span>
             )}
-            {syncState.source === 'sample' && (
-              <span>
-                Displaying curated Slow Food Chicago schedule (Live feed ready for{' '}
-                <code>{calendarId}</code>)
-              </span>
+            {syncState.source === 'eventbrite' && (
+              <span>Synced live via Eventbrite</span>
+            )}
+            {syncState.source !== 'eventbrite' && syncState.includesEventbrite && (
+              <span>+ Eventbrite</span>
             )}
           </div>
 
           <div className="calendar-sync-quick-actions">
-            <button
-              type="button"
-              className="calendar-quick-link"
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
-              onClick={() => setIsConfigModalOpen(true)}
-            >
-              <SlidersHorizontal size={13} />
-              <span>Configure Feed Source</span>
-            </button>
             <span style={{ color: 'var(--snail-sand)' }}>|</span>
             <a
               href={subscribeUrl}
@@ -297,16 +285,15 @@ export default function CalendarPage() {
           onTimeFilterChange={setTimeFilter}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
-          onRefresh={() => syncCalendarFeed(calendarId, icsUrl, apiKey)}
+          onRefresh={() => syncCalendarFeed(DEFAULT_GOOGLE_CALENDAR_ID, GOOGLE_CALENDAR_ICS_URL, GOOGLE_CALENDAR_API_KEY)}
           isRefreshing={isRefreshing}
-          onOpenFeedSettings={() => setIsConfigModalOpen(true)}
         />
       </div>
 
       {/* Events Presentation */}
       <section className="calendar-events-section">
         {viewMode === 'calendar' ? (
-          <CalendarEmbed calendarId={calendarId} />
+          <CalendarEmbed calendarId={DEFAULT_GOOGLE_CALENDAR_ID} />
         ) : (
           <div className="calendar-events-list">
             {filteredEvents.length > 0 ? (
