@@ -322,6 +322,7 @@
 }
 
 .event-card-date-month {
+  font-family: var(--font-section-header);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 1px;
@@ -331,10 +332,10 @@
 
 .event-card-date-day {
   font-size: 28px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.1;
   color: var(--snail-charcoal);
-  font-family: Georgia, serif;
+  font-family: var(--font-heading);
 }
 
 .event-card-date-weekday {
@@ -360,11 +361,13 @@
 }
 
 .event-card-category {
+  font-family: var(--font-section-header);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   padding: 3px 8px;
   border-radius: 3px;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .event-card-time {
@@ -377,8 +380,9 @@
 }
 
 .event-card-title {
-  font-size: 20px;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 600;
   color: var(--snail-charcoal);
   margin: 0 0 10px;
   line-height: 1.3;
@@ -592,8 +596,9 @@
 }
 
 .calendar-empty-title {
-  font-size: 18px;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 600;
   color: var(--snail-charcoal);
   margin: 0 0 8px;
 }
@@ -645,8 +650,9 @@
 
 .feed-modal-title-group h3 {
   margin: 0;
-  font-size: 17px;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 600;
   color: var(--snail-charcoal);
 }
 

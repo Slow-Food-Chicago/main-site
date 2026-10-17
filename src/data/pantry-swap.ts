@@ -125,14 +125,8 @@ export const swapItems: SwapItem[] = [
         url: 'https://bushelandpecks.com',
       },
       {
-        name: 'Rare Bird Preserves (Oak Park, IL)',
-        rating: 'A',
-        why: 'Artisan fruit preserves handcrafted in traditional French copper kettles using sustainably grown fruit from Midwest family orchards.',
-        url: 'https://www.instagram.com/rarebirdpreserves/',
-      },
-      {
         name: 'Co-op Sauce (Chicago, IL)',
-        rating: 'B',
+        rating: 'A',
         why: 'Small-batch fermented hot sauces and vinegars made in Chicago with local farm ingredients, supporting youth arts non-profits.',
         url: 'https://coopsauce.com',
       },

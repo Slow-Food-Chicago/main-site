@@ -370,19 +370,31 @@ export default function Footer() {
             © 2026 Slow Food Chicago. An independent 501(c)(3) non-profit chapter.
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-            {footerBottomLinks.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: 'inherit', transition: 'color 160ms ease' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--snail-red)')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--snail-warm-gray)')}
-              >
-                {item.label}
-              </a>
-            ))}
+            {footerBottomLinks.map((item) =>
+              item.external ? (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'inherit', transition: 'color 160ms ease' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--snail-red)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--snail-warm-gray)')}
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  style={{ color: 'inherit', transition: 'color 160ms ease' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--snail-red)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--snail-warm-gray)')}
+                >
+                  {item.label}
+                </Link>
+              ),
+            )}
           </div>
         </div>
       </div>

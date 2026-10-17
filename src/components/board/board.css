@@ -78,9 +78,9 @@
 
 .board-section-header h3 {
   margin: 16px 0 12px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(30px, 3.2vw, 44px);
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: -1px;
   color: var(--snail-charcoal);
   line-height: 1.1;
@@ -113,15 +113,17 @@
 
 .exec-board-role {
   color: var(--snail-warm-gray);
+  font-family: var(--font-section-header);
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 1.5px;
   text-transform: uppercase;
 }
 
 .exec-board-name {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 20px;
+  font-weight: 600;
   letter-spacing: -0.4px;
   color: var(--snail-charcoal);
   line-height: 1.2;
@@ -159,8 +161,9 @@
   background: var(--snail-red);
   color: white;
   border-radius: 2px;
+  font-family: var(--font-section-header);
   font-size: 8px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.8px;
   text-transform: uppercase;
   width: fit-content;
@@ -173,15 +176,17 @@
 .council-role {
   margin-top: 6px;
   color: var(--snail-warm-gray);
+  font-family: var(--font-section-header);
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 1.3px;
   text-transform: uppercase;
 }
 
 .council-name {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 17px;
+  font-weight: 600;
   letter-spacing: -0.3px;
   color: var(--snail-charcoal);
   line-height: 1.25;
@@ -218,9 +223,9 @@
 
 .committee-card-name {
   margin: 4px 0 0;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 24px;
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: -0.6px;
   color: var(--snail-charcoal);
 }
@@ -244,8 +249,9 @@
 
 .committee-leader-label {
   color: var(--snail-warm-gray);
+  font-family: var(--font-section-header);
   font-size: 8px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 1.4px;
   text-transform: uppercase;
   flex-shrink: 0;
@@ -256,8 +262,9 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 15px;
+  font-weight: 600;
   letter-spacing: -0.3px;
   color: var(--snail-charcoal);
   text-align: center;
@@ -284,7 +291,7 @@
 
 .board-vacant {
   color: #a39b91;
-  font-family: "DM Sans", "Avenir Next", Avenir, sans-serif;
+  font-family: var(--font-body);
   font-style: italic;
   font-size: 0.85em;
 }
@@ -309,9 +316,9 @@
 
 .board-cta h3 {
   margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(28px, 3vw, 40px);
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: -0.9px;
   color: white;
 }
@@ -435,17 +442,18 @@
 
 .member-modal-role {
   color: var(--snail-warm-gray);
+  font-family: var(--font-section-header);
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 1.6px;
   text-transform: uppercase;
 }
 
 .member-modal-name {
   margin: 10px 0 16px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(22px, 3vw, 30px);
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: -0.6px;
   line-height: 1.1;
   color: var(--snail-charcoal);
@@ -552,8 +560,9 @@
   display: block;
   margin-top: 8px;
   color: var(--snail-warm-gray);
+  font-family: var(--font-section-header);
   font-size: 8px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 1.4px;
   text-transform: uppercase;
 }
@@ -563,8 +572,9 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 15px;
+  font-weight: 600;
   letter-spacing: -0.3px;
   color: var(--snail-charcoal);
   text-align: center;

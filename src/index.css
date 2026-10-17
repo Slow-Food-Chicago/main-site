@@ -1,6 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&family=Montserrat:wght@800;900&family=Noto+Sans:ital,wght@0,300..900;1,300..900&family=Oswald:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Bauer Bodoni';
+  src: local('Bauer Bodoni'), local('BauerBodoni'), local('Bauer Bodoni BT'), local('Bauer Bodoni Std'), local('Bauer-Bodoni');
+  font-weight: 100 900;
+  font-style: normal italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Riya Black';
+  src: local('Riya Black'), local('Riya-Black'), local('RiyaBlack'), local('Riya');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-title: "Bauer Bodoni", "Bodoni Moda", "Libre Bodoni", Didot, "Bodoni MT", Georgia, serif;
+  --font-heading: "Oswald", Impact, "Arial Narrow", sans-serif;
+  --font-section-header: "Riya Black", "Riya", "Montserrat", "Arial Black", Gadget, sans-serif;
+  --font-body: "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-title);
+}
+
 :root {
+  /* Typography Tokens */
+  --font-title: "Bauer Bodoni", "Bodoni Moda", "Libre Bodoni", Didot, "Bodoni MT", Georgia, serif;
+  --font-heading: "Oswald", Impact, "Arial Narrow", sans-serif;
+  --font-section-header: "Riya Black", "Riya", "Montserrat", "Arial Black", Gadget, sans-serif;
+  --font-body: "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
   --background: 40 28% 98%;
   --foreground: 24 16% 14%;
   --card: 0 0% 100%;
@@ -86,7 +118,7 @@
   --snail-dark-card: #1D1B19;
   --snail-dark-card-rgb: 29 27 25;
 
-  font-family: "DM Sans", "Avenir Next", Avenir, sans-serif;
+  font-family: var(--font-body);
   color: var(--snail-charcoal);
   background: var(--snail-cream);
   font-synthesis: none;
@@ -110,12 +142,33 @@ body {
   min-width: 320px;
   margin: 0;
   background: var(--snail-cream);
+  font-family: var(--font-body);
 }
 
 body,
 button,
+input,
+select,
+textarea,
 a {
-  font-family: "DM Sans", "Avenir Next", Avenir, sans-serif;
+  font-family: var(--font-body);
+}
+
+/* Typography Utility Classes */
+.font-title {
+  font-family: var(--font-title);
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-section-header {
+  font-family: var(--font-section-header);
+}
+
+.font-body {
+  font-family: var(--font-body);
 }
 
 a {
@@ -178,7 +231,7 @@ img {
   display: flex;
   flex-direction: column;
   color: var(--snail-charcoal);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-title);
   font-size: 19px;
   font-weight: 700;
   letter-spacing: -0.8px;
@@ -188,9 +241,9 @@ img {
 .brand-name span {
   margin-top: 4px;
   color: var(--snail-warm-gray);
-  font-family: "DM Sans", "Avenir Next", Avenir, sans-serif;
+  font-family: var(--font-section-header);
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 2.5px;
   line-height: 1;
   text-transform: uppercase;
@@ -320,11 +373,13 @@ img {
   justify-content: space-between;
   padding: 15px 8px;
   border-bottom: 1px solid rgb(31 29 27 / 8%);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 18px;
+  font-family: var(--font-heading);
+  font-size: 20px;
   color: var(--snail-charcoal);
   text-decoration: none;
-  font-weight: 400;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   transition: color 150ms ease, padding-left 150ms ease;
 }
 
@@ -377,8 +432,9 @@ body.mobile-nav-open {
   gap: 9px;
   margin: 0;
   color: var(--snail-forest);
-  font-size: 10px;
-  font-weight: 700;
+  font-family: var(--font-section-header);
+  font-size: 11px;
+  font-weight: 800;
   letter-spacing: 1.55px;
   text-transform: uppercase;
 }
@@ -393,22 +449,31 @@ body.mobile-nav-open {
 h1,
 h2,
 h3,
+h4,
+h5,
+h6,
 p {
   margin-top: 0;
 }
 
 h1,
-h2 {
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--snail-charcoal);
-  font-family: Georgia, "Times New Roman", serif;
-  font-weight: 400;
+  font-family: var(--font-heading);
+  font-weight: 600;
 }
 
 .hero h1 {
   margin: 24px 0 20px;
+  font-family: var(--font-title);
   font-size: clamp(50px, 5.4vw, 77px);
-  letter-spacing: -3.2px;
-  line-height: 0.99;
+  letter-spacing: -2px;
+  line-height: 1.02;
+  font-weight: 400;
 }
 
 .hero h1 span {
@@ -482,9 +547,9 @@ h2 {
   background: var(--snail-yellow);
   border: 2px solid var(--snail-cream);
   border-radius: 50%;
-  font-family: Georgia, serif;
+  font-family: var(--font-section-header);
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .note-avatars span:nth-child(2) {
@@ -565,8 +630,8 @@ h2 {
   display: flex;
   gap: 9px;
   color: var(--snail-warm-gray);
-  font-family: Georgia, serif;
-  font-size: 11px;
+  font-family: var(--font-title);
+  font-size: 12px;
   font-style: italic;
 }
 
@@ -583,16 +648,20 @@ h2 {
 .section-kicker {
   gap: 12px;
   color: var(--snail-warm-gray);
-  font-size: 9px;
+  font-family: var(--font-section-header);
+  font-size: 11px;
+  font-weight: 800;
   letter-spacing: 1.6px;
+  text-transform: uppercase;
 }
 
 .section-kicker > span {
   color: var(--snail-red);
-  font-family: Georgia, serif;
-  font-size: 12px;
-  font-style: italic;
-  letter-spacing: 0;
+  font-family: var(--font-section-header);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  font-style: normal;
 }
 
 .intro-content {
@@ -704,9 +773,10 @@ h2 {
 
 .principle-number {
   color: #a39b91;
-  font-family: Georgia, serif;
+  font-family: var(--font-section-header);
   font-size: 11px;
-  font-style: italic;
+  font-weight: 800;
+  font-style: normal;
 }
 
 .principle-icon {
@@ -723,10 +793,10 @@ h2 {
 .principle-card h3 {
   margin: 15px 0 8px;
   color: var(--snail-charcoal);
-  font-family: Georgia, serif;
-  font-size: 29px;
-  font-weight: 400;
-  letter-spacing: -0.8px;
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
 }
 
 .principle-card h3 span {
@@ -903,14 +973,16 @@ h2 {
 
 .join-aside p {
   margin: 20px 0 15px;
-  font-family: Georgia, serif;
+  font-family: var(--font-title);
   font-size: 19px;
-  line-height: 1.27;
+  line-height: 1.35;
+  font-style: italic;
 }
 
 .join-aside > span:last-child {
+  font-family: var(--font-section-header);
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
@@ -954,7 +1026,7 @@ h2 {
 .site-footer > p {
   margin: 0 auto 0 23px;
   color: #8a837a;
-  font-family: Georgia, serif;
+  font-family: var(--font-body);
   font-size: 11px;
   font-style: italic;
 }
@@ -1028,10 +1100,10 @@ a.initiative-card:hover .initiative-title {
 
 .pantry-how-title {
   margin: 18px 0 44px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(32px, 3.8vw, 48px);
-  font-weight: 400;
-  letter-spacing: -1.4px;
+  font-weight: 600;
+  letter-spacing: -1px;
   line-height: 1.1;
   color: var(--snail-charcoal);
 }
@@ -1066,16 +1138,17 @@ a.initiative-card:hover .initiative-title {
   display: block;
   margin-top: 18px;
   color: #a39b91;
-  font-family: Georgia, serif;
+  font-family: var(--font-section-header);
   font-size: 11px;
-  font-style: italic;
+  font-weight: 800;
+  font-style: normal;
 }
 
 .pantry-step-title {
   margin: 8px 0 10px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 20px;
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: -0.3px;
   color: var(--snail-charcoal);
 }
@@ -1105,10 +1178,10 @@ a.initiative-card:hover .initiative-title {
 .pantry-swap-title,
 .pantry-bring-title {
   margin: 18px 0 0;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(30px, 3.5vw, 44px);
-  font-weight: 400;
-  letter-spacing: -1.2px;
+  font-weight: 600;
+  letter-spacing: -0.8px;
   line-height: 1.1;
   color: var(--snail-charcoal);
 }
@@ -1143,10 +1216,10 @@ a.initiative-card:hover .initiative-title {
 
 .pantry-swap-card-title {
   margin: 0 0 14px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(24px, 2.6vw, 32px);
-  font-weight: 400;
-  letter-spacing: -0.8px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
   line-height: 1.2;
   color: var(--snail-charcoal);
 }
@@ -1220,8 +1293,8 @@ a.initiative-card:hover .initiative-title {
   align-items: center;
   gap: 6px;
   margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 16px;
+  font-family: var(--font-heading);
+  font-size: 17px;
   font-weight: 600;
   color: var(--snail-charcoal);
   transition: color 160ms ease;
@@ -1239,8 +1312,9 @@ a.initiative-card:hover .initiative-title {
   align-items: center;
   padding: 3px 10px;
   border-radius: 100px;
+  font-family: var(--font-section-header);
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.8px;
   text-transform: uppercase;
   white-space: nowrap;
@@ -1289,10 +1363,10 @@ a.initiative-card:hover .initiative-title {
 
 .preserve-section-title {
   margin: 18px 0 24px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(32px, 3.8vw, 48px);
-  font-weight: 400;
-  letter-spacing: -1.4px;
+  font-weight: 600;
+  letter-spacing: -1px;
   line-height: 1.1;
   color: var(--snail-charcoal);
 }
@@ -1338,17 +1412,18 @@ a.initiative-card:hover .initiative-title {
 }
 
 .preserve-stat-number {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(32px, 3.6vw, 44px);
-  font-weight: 400;
-  letter-spacing: -1px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
   color: var(--snail-forest);
   line-height: 1;
 }
 
 .preserve-stat-label {
+  font-family: var(--font-section-header);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 1.1px;
   text-transform: uppercase;
   color: var(--snail-warm-gray);
@@ -1456,9 +1531,9 @@ a.initiative-card:hover .initiative-title {
 
 .preserve-way-title {
   margin: 0 0 10px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 20px;
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: -0.3px;
   color: var(--snail-charcoal);
 }
@@ -1499,9 +1574,9 @@ a.initiative-card:hover .initiative-title {
 
 .preserve-partner-name {
   margin: 0 0 12px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 20px;
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: -0.4px;
   color: var(--snail-charcoal);
 }
@@ -1596,16 +1671,17 @@ a.initiative-card:hover .initiative-title {
 
 .page-hero-title {
   margin: 22px 0 16px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-title);
   font-size: clamp(44px, 5vw, 70px);
   font-weight: 400;
-  letter-spacing: -2.5px;
+  letter-spacing: -2px;
   line-height: 1.02;
   color: var(--snail-charcoal);
 }
 
 .page-hero-title em {
   color: var(--snail-red);
+  font-style: italic;
   font-weight: 400;
 }
 
@@ -1678,9 +1754,10 @@ a.initiative-card:hover .initiative-title {
 
 .initiative-number {
   color: #a39b91;
-  font-family: Georgia, serif;
+  font-family: var(--font-section-header);
   font-size: 11px;
-  font-style: italic;
+  font-weight: 800;
+  font-style: normal;
 }
 
 .initiative-badge {
@@ -1688,18 +1765,19 @@ a.initiative-card:hover .initiative-title {
   align-items: center;
   padding: 3px 9px;
   border-radius: 100px;
+  font-family: var(--font-section-header);
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.9px;
   text-transform: uppercase;
 }
 
 .initiative-title {
   margin: 0 0 4px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(24px, 2.6vw, 32px);
-  font-weight: 400;
-  letter-spacing: -0.7px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
   color: var(--snail-charcoal);
 }
 
@@ -1737,10 +1815,10 @@ a.initiative-card:hover .initiative-title {
 .initiatives-cta-heading {
   margin: 22px 0 17px;
   color: white;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(38px, 4.4vw, 58px);
-  font-weight: 400;
-  letter-spacing: -1.8px;
+  font-weight: 600;
+  letter-spacing: -1px;
   line-height: 1.07;
 }
 
@@ -1769,10 +1847,10 @@ a.initiative-card:hover .initiative-title {
 
 .involve-title {
   margin: 18px 0 0;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(36px, 4.2vw, 54px);
-  font-weight: 400;
-  letter-spacing: -1.6px;
+  font-weight: 600;
+  letter-spacing: -1px;
   line-height: 1.08;
   color: var(--snail-charcoal);
 }
@@ -1809,9 +1887,10 @@ a.initiative-card:hover .initiative-title {
 
 .involve-number {
   color: #a39b91;
-  font-family: Georgia, serif;
+  font-family: var(--font-section-header);
   font-size: 11px;
-  font-style: italic;
+  font-weight: 800;
+  font-style: normal;
 }
 
 .involve-icon-wrap {
@@ -1826,9 +1905,9 @@ a.initiative-card:hover .initiative-title {
 
 .involve-card-title {
   margin: 0 0 10px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 22px;
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: -0.4px;
   color: var(--snail-charcoal);
 }
@@ -1879,10 +1958,10 @@ a.initiative-card:hover .initiative-title {
 .contact-strip-heading {
   margin: 0 0 12px;
   color: white;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(32px, 3.8vw, 50px);
-  font-weight: 400;
-  letter-spacing: -1.4px;
+  font-weight: 600;
+  letter-spacing: -1px;
   line-height: 1.09;
 }
 

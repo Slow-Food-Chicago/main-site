@@ -8,6 +8,7 @@ import InitiativesPage from './pages/InitiativesPage'
 import PantrySwapPage from './pages/PantrySwapPage'
 import PreserveGardenPage from './pages/PreserveGardenPage'
 import CalendarPage from './pages/CalendarPage'
+import DesignSystemPage from './pages/DesignSystemPage'
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/initiatives/preserve-garden" element={<PreserveGardenPage />} />
           <Route path="/events" element={<CalendarPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/design-system" element={<DesignSystemPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
         <Footer />
