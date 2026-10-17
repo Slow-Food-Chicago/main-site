@@ -92,15 +92,7 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        title: [
-          '"Bauer Bodoni"',
-          '"Bodoni Moda"',
-          '"Libre Bodoni"',
-          "Didot",
-          '"Bodoni MT"',
-          "Georgia",
-          "serif",
-        ],
+        title: ['"Oswald"', "Impact", '"Arial Narrow"', "sans-serif"],
         heading: ['"Oswald"', "Impact", '"Arial Narrow"', "sans-serif"],
         "section-header": [
           '"Riya Black"',
@@ -119,6 +111,7 @@ export default {
           "Roboto",
           "sans-serif",
         ],
+        accent: ['"Lora"', "Georgia", "serif"],
         sans: [
           '"Noto Sans"',
           "system-ui",
@@ -128,15 +121,7 @@ export default {
           "Roboto",
           "sans-serif",
         ],
-        serif: [
-          '"Bauer Bodoni"',
-          '"Bodoni Moda"',
-          '"Libre Bodoni"',
-          "Didot",
-          '"Bodoni MT"',
-          "Georgia",
-          "serif",
-        ],
+        serif: ['"Lora"', "Georgia", "serif"],
       },
     },
   },

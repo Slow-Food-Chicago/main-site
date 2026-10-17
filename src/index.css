@@ -1,13 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&family=Montserrat:wght@800;900&family=Noto+Sans:ital,wght@0,300..900;1,300..900&family=Oswald:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:wght@800;900&family=Noto+Sans:ital,wght@0,300..900;1,300..900&family=Oswald:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
-
-@font-face {
-  font-family: 'Bauer Bodoni';
-  src: local('Bauer Bodoni'), local('BauerBodoni'), local('Bauer Bodoni BT'), local('Bauer Bodoni Std'), local('Bauer-Bodoni');
-  font-weight: 100 900;
-  font-style: normal italic;
-  font-display: swap;
-}
 
 @font-face {
   font-family: 'Riya Black';
@@ -18,20 +10,22 @@
 }
 
 @theme {
-  --font-title: "Bauer Bodoni", "Bodoni Moda", "Libre Bodoni", Didot, "Bodoni MT", Georgia, serif;
+  --font-title: "Oswald", Impact, "Arial Narrow", sans-serif;
   --font-heading: "Oswald", Impact, "Arial Narrow", sans-serif;
   --font-section-header: "Riya Black", "Riya", "Montserrat", "Arial Black", Gadget, sans-serif;
   --font-body: "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-accent: "Lora", Georgia, serif;
   --font-sans: var(--font-body);
-  --font-serif: var(--font-title);
+  --font-serif: var(--font-accent);
 }
 
 :root {
   /* Typography Tokens */
-  --font-title: "Bauer Bodoni", "Bodoni Moda", "Libre Bodoni", Didot, "Bodoni MT", Georgia, serif;
+  --font-title: "Oswald", Impact, "Arial Narrow", sans-serif;
   --font-heading: "Oswald", Impact, "Arial Narrow", sans-serif;
   --font-section-header: "Riya Black", "Riya", "Montserrat", "Arial Black", Gadget, sans-serif;
   --font-body: "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-accent: "Lora", Georgia, serif;
 
   --background: 40 28% 98%;
   --foreground: 24 16% 14%;
@@ -169,6 +163,10 @@ a {
 
 .font-body {
   font-family: var(--font-body);
+}
+
+.font-accent {
+  font-family: var(--font-accent);
 }
 
 a {
@@ -470,15 +468,17 @@ h6 {
 .hero h1 {
   margin: 24px 0 20px;
   font-family: var(--font-title);
-  font-size: clamp(50px, 5.4vw, 77px);
-  letter-spacing: -2px;
-  line-height: 1.02;
-  font-weight: 400;
+  font-size: clamp(48px, 5.4vw, 75px);
+  letter-spacing: -1px;
+  line-height: 1.05;
+  font-weight: 600;
 }
 
 .hero h1 span {
   color: var(--snail-red);
+  font-family: var(--font-accent);
   font-style: italic;
+  font-weight: 400;
 }
 
 .hero-description {
@@ -630,8 +630,8 @@ h6 {
   display: flex;
   gap: 9px;
   color: var(--snail-warm-gray);
-  font-family: var(--font-title);
-  font-size: 12px;
+  font-family: var(--font-accent);
+  font-size: 13px;
   font-style: italic;
 }
 
@@ -687,6 +687,8 @@ h6 {
 .gather-copy h2 em,
 .join-content h2 em {
   color: var(--snail-red);
+  font-family: var(--font-accent);
+  font-style: italic;
   font-weight: 400;
 }
 
@@ -973,9 +975,9 @@ h6 {
 
 .join-aside p {
   margin: 20px 0 15px;
-  font-family: var(--font-title);
+  font-family: var(--font-accent);
   font-size: 19px;
-  line-height: 1.35;
+  line-height: 1.4;
   font-style: italic;
 }
 
@@ -1672,15 +1674,16 @@ a.initiative-card:hover .initiative-title {
 .page-hero-title {
   margin: 22px 0 16px;
   font-family: var(--font-title);
-  font-size: clamp(44px, 5vw, 70px);
-  font-weight: 400;
-  letter-spacing: -2px;
-  line-height: 1.02;
+  font-size: clamp(40px, 4.8vw, 64px);
+  font-weight: 600;
+  letter-spacing: -1.2px;
+  line-height: 1.05;
   color: var(--snail-charcoal);
 }
 
 .page-hero-title em {
   color: var(--snail-red);
+  font-family: var(--font-accent);
   font-style: italic;
   font-weight: 400;
 }
@@ -1824,6 +1827,9 @@ a.initiative-card:hover .initiative-title {
 
 .initiatives-cta-heading em {
   color: var(--snail-yellow);
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-weight: 400;
 }
 
 .initiatives-cta-desc {
@@ -1967,6 +1973,9 @@ a.initiative-card:hover .initiative-title {
 
 .contact-strip-heading em {
   color: var(--snail-yellow);
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-weight: 400;
 }
 
 .contact-strip-desc {

@@ -25,10 +25,10 @@ export default function DesignSystemPage() {
   const [copiedToken, setCopiedToken] = useState<string | null>(null)
 
   // Interactive Typography Sandbox state
-  const [testFont, setTestFont] = useState<'title' | 'heading' | 'section-header' | 'body'>('title')
-  const [testText, setTestText] = useState('Good, Clean, and Fair for everyone.')
-  const [testSize, setTestSize] = useState(36)
-  const [testWeight, setTestWeight] = useState('400')
+  const [testFont, setTestFont] = useState<'title' | 'heading' | 'section-header' | 'accent' | 'body'>('title')
+  const [testText, setTestText] = useState('A more delicious Chicago starts at the table.')
+  const [testSize, setTestSize] = useState(38)
+  const [testWeight, setTestWeight] = useState('600')
   const [testItalic, setTestItalic] = useState(false)
   const [testUppercase, setTestUppercase] = useState(false)
 
@@ -205,6 +205,7 @@ export default function DesignSystemPage() {
     title: 'var(--font-title)',
     heading: 'var(--font-heading)',
     'section-header': 'var(--font-section-header)',
+    accent: 'var(--font-accent)',
     body: 'var(--font-body)',
   }
 
@@ -224,14 +225,17 @@ export default function DesignSystemPage() {
             style={{
               fontFamily: 'var(--font-title)',
               fontSize: 'clamp(42px, 5.2vw, 68px)',
-              fontWeight: 400,
-              letterSpacing: '-1.8px',
+              fontWeight: 600,
+              letterSpacing: '-1.5px',
               lineHeight: 1.05,
               color: 'var(--snail-charcoal)',
               margin: '20px 0 16px',
             }}
           >
-            Slow Food Chicago <span style={{ color: 'var(--snail-red)', fontStyle: 'italic' }}>Design System</span>
+            Slow Food Chicago{' '}
+            <span style={{ color: 'var(--snail-red)', fontFamily: 'var(--font-accent)', fontStyle: 'italic', fontWeight: 400 }}>
+              Design System
+            </span>
           </h1>
           <p
             style={{
@@ -303,12 +307,12 @@ export default function DesignSystemPage() {
               margin: '16px 0 10px',
             }}
           >
-            Typography Hierarchy & Four Font Roles
+            Typography Hierarchy &amp; Four Font Roles
           </h2>
           <p style={{ color: '#746e65', fontSize: '15px', maxWidth: '780px', marginBottom: '40px' }}>
-            Our visual identity is defined by a strict four-font role allocation: <strong>Bauer Bodoni</strong> for titles,{' '}
-            <strong>Oswald</strong> for headings and subheadings, <strong>Riya Black</strong> for section headers and kickers, and{' '}
-            <strong>Noto Sans</strong> for body copy.
+            Our visual identity is structured around four distinct type roles: <strong>Oswald</strong> for titles, headings, and subheadings;{' '}
+            <strong>Lora</strong> for poetic editorial accents and italic emphasis; <strong>Riya Black</strong> for uppercase section headers and kickers; and{' '}
+            <strong>Noto Sans</strong> for accessible body copy and interface controls.
           </p>
 
           {/* Four Font Specimen Cards */}
@@ -320,7 +324,7 @@ export default function DesignSystemPage() {
               marginBottom: '50px',
             }}
           >
-            {/* 1. Bauer Bodoni */}
+            {/* 1. Oswald (Titles, Headings & Subheadings) */}
             <div
               style={{
                 background: 'white',
@@ -344,7 +348,7 @@ export default function DesignSystemPage() {
                     color: 'var(--snail-red)',
                   }}
                 >
-                  Role: Titles
+                  Role: Titles &amp; Headings
                 </span>
                 <span
                   style={{
@@ -353,24 +357,25 @@ export default function DesignSystemPage() {
                     fontFamily: 'var(--font-body)',
                   }}
                 >
-                  Serif Didone
+                  Condensed Sans
                 </span>
               </div>
               <h3
                 style={{
                   fontFamily: 'var(--font-title)',
-                  fontSize: '32px',
-                  fontWeight: 400,
+                  fontSize: '34px',
+                  fontWeight: 600,
                   margin: 0,
                   color: 'var(--snail-charcoal)',
                   lineHeight: 1.1,
+                  letterSpacing: '-0.5px',
                 }}
               >
-                Bauer Bodoni
+                Oswald
               </h3>
               <p style={{ fontSize: '12.5px', color: '#686158', margin: 0, lineHeight: 1.6 }}>
-                Official Slow Food international logotype typeface. High stroke contrast, vertical stress, and
-                unbracketed hairline serifs. Used for hero titles, page hero headings, and brand marks.
+                Primary display typeface. Narrow, tall, bold Gothic letterforms engineered for maximum punch
+                and structure. Powers main page hero titles, section headlines (H1–H6), card titles, and leadership names.
               </p>
               <div
                 style={{
@@ -380,26 +385,27 @@ export default function DesignSystemPage() {
                   borderRadius: '4px',
                   fontSize: '18px',
                   fontFamily: 'var(--font-title)',
+                  fontWeight: 600,
                   color: 'var(--snail-charcoal)',
                   lineHeight: 1.3,
                 }}
               >
-                <div>Aa Bb Cc Gg 123</div>
-                <div style={{ fontStyle: 'italic', color: 'var(--snail-red)' }}>
-                  "A more delicious Chicago"
+                <div>AA BB CC GG 123456</div>
+                <div style={{ color: 'var(--snail-red)' }}>
+                  A MORE DELICIOUS CHICAGO
                 </div>
               </div>
               <div style={{ fontSize: '11px', color: 'var(--snail-warm-gray)', marginTop: 'auto' }}>
-                <code>var(--font-title)</code>
+                <code>var(--font-title) · var(--font-heading)</code>
               </div>
             </div>
 
-            {/* 2. Oswald */}
+            {/* 2. Lora (Accent Font) */}
             <div
               style={{
                 background: 'white',
                 border: '1px solid rgb(31 29 27 / 7%)',
-                borderTop: '4px solid var(--snail-charcoal)',
+                borderTop: '4px solid var(--snail-orange)',
                 padding: '30px 24px',
                 borderRadius: '6px',
                 display: 'flex',
@@ -415,10 +421,10 @@ export default function DesignSystemPage() {
                     fontWeight: 800,
                     letterSpacing: '1.4px',
                     textTransform: 'uppercase',
-                    color: 'var(--snail-charcoal)',
+                    color: 'var(--snail-orange)',
                   }}
                 >
-                  Role: Headings & Subheadings
+                  Role: Accent &amp; Editorial
                 </span>
                 <span
                   style={{
@@ -427,26 +433,25 @@ export default function DesignSystemPage() {
                     fontFamily: 'var(--font-body)',
                   }}
                 >
-                  Condensed Sans
+                  Contemporary Serif
                 </span>
               </div>
               <h3
                 style={{
-                  fontFamily: 'var(--font-heading)',
+                  fontFamily: 'var(--font-accent)',
                   fontSize: '32px',
-                  fontWeight: 600,
+                  fontWeight: 400,
+                  fontStyle: 'italic',
                   margin: 0,
                   color: 'var(--snail-charcoal)',
                   lineHeight: 1.1,
-                  textTransform: 'uppercase',
-                  letterSpacing: '-0.5px',
                 }}
               >
-                Oswald
+                Lora
               </h3>
               <p style={{ fontSize: '12.5px', color: '#686158', margin: 0, lineHeight: 1.6 }}>
-                Narrow, tall, impactful Gothic sans-serif. Used for all section headings (H1, H2, H3, H4),
-                subheadings, card titles, board member names, and calendar event titles.
+                Poetic, flowing serif with brushed curves and elegant italic swashes. Used as the accent font
+                for pull quotes, chapter stamps, testimonials, and italic highlight words embedded inside Oswald headlines.
               </p>
               <div
                 style={{
@@ -454,24 +459,23 @@ export default function DesignSystemPage() {
                   padding: '14px',
                   background: 'var(--snail-cream)',
                   borderRadius: '4px',
-                  fontSize: '18px',
-                  fontFamily: 'var(--font-heading)',
-                  fontWeight: 600,
+                  fontSize: '17px',
+                  fontFamily: 'var(--font-accent)',
                   color: 'var(--snail-charcoal)',
-                  lineHeight: 1.3,
+                  lineHeight: 1.4,
                 }}
               >
-                <div>AA BB CC GG 123456</div>
-                <div style={{ color: 'var(--snail-forest)', fontWeight: 500 }}>
-                  GOOD, CLEAN &amp; FAIR
+                <div>Aa Bb Cc Gg 12345</div>
+                <div style={{ fontStyle: 'italic', color: 'var(--snail-orange)' }}>
+                  “The table is where community begins.”
                 </div>
               </div>
               <div style={{ fontSize: '11px', color: 'var(--snail-warm-gray)', marginTop: 'auto' }}>
-                <code>var(--font-heading)</code>
+                <code>var(--font-accent)</code>
               </div>
             </div>
 
-            {/* 3. Riya Black */}
+            {/* 3. Riya Black (Section Headers) */}
             <div
               style={{
                 background: 'white',
@@ -548,12 +552,12 @@ export default function DesignSystemPage() {
               </div>
             </div>
 
-            {/* 4. Noto Sans */}
+            {/* 4. Noto Sans (Body Text) */}
             <div
               style={{
                 background: 'white',
                 border: '1px solid rgb(31 29 27 / 7%)',
-                borderTop: '4px solid var(--snail-orange)',
+                borderTop: '4px solid var(--snail-charcoal)',
                 padding: '30px 24px',
                 borderRadius: '6px',
                 display: 'flex',
@@ -569,7 +573,7 @@ export default function DesignSystemPage() {
                     fontWeight: 800,
                     letterSpacing: '1.4px',
                     textTransform: 'uppercase',
-                    color: 'var(--snail-orange)',
+                    color: 'var(--snail-charcoal)',
                   }}
                 >
                   Role: Body Text
@@ -661,23 +665,33 @@ export default function DesignSystemPage() {
                   {[
                     {
                       role: 'Display Title / Hero',
-                      font: 'Bauer Bodoni',
+                      font: 'Oswald',
                       fontVar: 'var(--font-title)',
-                      size: '77px / 50px',
-                      weight: '400 Regular · Italic accents',
-                      sample: 'A more delicious Chicago',
+                      size: '75px / 48px',
+                      weight: '600 SemiBold · Tight tracking',
+                      sample: 'A MORE DELICIOUS CHICAGO',
                       className: 'font-title',
+                      style: { fontSize: '26px', fontWeight: 600, color: 'var(--snail-charcoal)' },
+                    },
+                    {
+                      role: 'Editorial Accent (In Hero)',
+                      font: 'Lora',
+                      fontVar: 'var(--font-accent)',
+                      size: '75px / 48px',
+                      weight: '400 Italic · Poetic highlight',
+                      sample: 'Chicago',
+                      className: 'font-accent',
                       style: { fontSize: '28px', fontStyle: 'italic', color: 'var(--snail-red)' },
                     },
                     {
                       role: 'Page Hero Title',
-                      font: 'Bauer Bodoni',
+                      font: 'Oswald',
                       fontVar: 'var(--font-title)',
-                      size: '70px / 44px',
-                      weight: '400 Regular',
-                      sample: 'Our Initiatives',
+                      size: '64px / 40px',
+                      weight: '600 SemiBold',
+                      sample: 'OUR INITIATIVES',
                       className: 'font-title',
-                      style: { fontSize: '26px' },
+                      style: { fontSize: '24px', fontWeight: 600 },
                     },
                     {
                       role: 'Section Heading (H2)',
@@ -685,9 +699,9 @@ export default function DesignSystemPage() {
                       fontVar: 'var(--font-heading)',
                       size: '48px / 32px',
                       weight: '600 SemiBold',
-                      sample: 'Good, clean and fair.',
+                      sample: 'GOOD, CLEAN AND FAIR.',
                       className: 'font-heading',
-                      style: { fontSize: '24px', fontWeight: 600, textTransform: 'uppercase' },
+                      style: { fontSize: '22px', fontWeight: 600, textTransform: 'uppercase' },
                     },
                     {
                       role: 'Card Heading (H3)',
@@ -728,6 +742,16 @@ export default function DesignSystemPage() {
                       sample: 'COMMUNITY · ACTIVE',
                       className: 'font-section-header',
                       style: { fontSize: '9px', fontWeight: 800, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--snail-red)' },
+                    },
+                    {
+                      role: 'Editorial Quote / Pullquote',
+                      font: 'Lora',
+                      fontVar: 'var(--font-accent)',
+                      size: '19px / 17px',
+                      weight: '400 Italic · High emotional warmth',
+                      sample: '“The table is where community begins.”',
+                      className: 'font-accent',
+                      style: { fontSize: '16px', fontStyle: 'italic', color: 'var(--snail-charcoal)' },
                     },
                     {
                       role: 'Body Copy (Paragraphs)',
@@ -843,7 +867,7 @@ export default function DesignSystemPage() {
               <select
                 value={testFont}
                 onChange={(e) =>
-                  setTestFont(e.target.value as 'title' | 'heading' | 'section-header' | 'body')
+                  setTestFont(e.target.value as 'title' | 'heading' | 'section-header' | 'accent' | 'body')
                 }
                 style={{
                   width: '100%',
@@ -856,8 +880,9 @@ export default function DesignSystemPage() {
                   color: 'var(--snail-charcoal)',
                 }}
               >
-                <option value="title">Titles: Bauer Bodoni (Serif)</option>
+                <option value="title">Titles: Oswald (Condensed Display)</option>
                 <option value="heading">Headings: Oswald (Condensed Sans)</option>
+                <option value="accent">Accent: Lora (Editorial Serif)</option>
                 <option value="section-header">Section Headers: Riya Black (Display)</option>
                 <option value="body">Body Text: Noto Sans (Sans-Serif)</option>
               </select>
@@ -1020,7 +1045,7 @@ export default function DesignSystemPage() {
                 textTransform: testUppercase ? 'uppercase' : 'none',
                 lineHeight: 1.15,
                 color: 'var(--snail-charcoal)',
-                letterSpacing: testFont === 'section-header' ? '1.5px' : '-0.5px',
+                letterSpacing: testFont === 'section-header' ? '1.5px' : testFont === 'title' || testFont === 'heading' ? '-0.5px' : 'normal',
               }}
             >
               {testText || 'Type something to preview'}
@@ -1201,7 +1226,7 @@ export default function DesignSystemPage() {
             Logos, Emblems &amp; Section Headers
           </h2>
           <p style={{ color: '#746e65', fontSize: '15px', maxWidth: '780px', marginBottom: '32px' }}>
-            Official badges and lockups combining Bauer Bodoni logotype with Riya Black header tags.
+            Official badges and lockups combining Oswald title typography with Riya Black header tags.
           </p>
 
           <div
@@ -1250,7 +1275,7 @@ export default function DesignSystemPage() {
                   </span>
                 </div>
                 <div style={{ fontSize: '11px', color: 'var(--snail-warm-gray)', marginTop: '8px' }}>
-                  Header Lockup · Bauer Bodoni Title + Riya Black "Chicago"
+                  Header Lockup · Oswald Title + Riya Black "Chicago"
                 </div>
               </div>
             </div>
@@ -1498,9 +1523,9 @@ export default function DesignSystemPage() {
                 </span>
               </div>
               <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '13px', lineHeight: 1.8, color: '#555' }}>
-                <li>Use <strong>Bauer Bodoni</strong> for editorial statements, hero titles, and the primary brand mark.</li>
-                <li>Use <strong>Oswald</strong> for all structured section headings (H1–H6), subheadings, and card titles.</li>
-                <li>Use <strong>Riya Black</strong> in uppercase with generous tracking (1.2px–1.6px) for section kickers, tags, and badges.</li>
+                <li>Use <strong>Oswald</strong> for bold main titles, hero headings, and structured section headers (H1–H6).</li>
+                <li>Use <strong>Lora</strong> as the accent font for poetic highlights, pull quotes, stamps, and italic contrast.</li>
+                <li>Use <strong>Riya Black</strong> in uppercase with generous tracking (1.2px–1.6px) for section kickers, tags, and step numbers.</li>
                 <li>Use <strong>Noto Sans</strong> for body paragraphs, buttons, forms, and navigation links.</li>
               </ul>
             </div>
@@ -1513,10 +1538,10 @@ export default function DesignSystemPage() {
                 </span>
               </div>
               <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '13px', lineHeight: 1.8, color: '#555' }}>
-                <li>Don't use Bauer Bodoni for small body text below 18px (hairline strokes diminish legibility).</li>
-                <li>Don't use Riya Black for long sentences or multi-line paragraphs.</li>
+                <li>Don't use Lora for dense UI buttons or small data tables.</li>
+                <li>Don't use Riya Black for long multi-line sentences or paragraphs.</li>
                 <li>Don't combine more than two display weights within a single component.</li>
-                <li>Don't alter the core CSS variable names (<code>--font-title</code>, <code>--font-heading</code>, <code>--font-section-header</code>, <code>--font-body</code>).</li>
+                <li>Don't alter the core CSS variable names (<code>--font-title</code>, <code>--font-heading</code>, <code>--font-accent</code>, <code>--font-section-header</code>, <code>--font-body</code>).</li>
               </ul>
             </div>
           </div>
