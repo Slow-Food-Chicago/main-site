@@ -11,7 +11,6 @@ import CtaSection from '../components/ui/CtaSection'
 import EventCard from '../components/calendar/EventCard'
 import CalendarEmbed from '../components/calendar/CalendarEmbed'
 import CalendarControls from '../components/calendar/CalendarControls'
-import '../components/calendar/calendar.css'
 
 import type { CalendarEvent, EventCategory, FeedSyncState } from '../types/calendar'
 import {

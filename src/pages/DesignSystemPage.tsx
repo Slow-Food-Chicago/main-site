@@ -296,7 +296,7 @@ export default function DesignSystemPage() {
       <div style={{ maxWidth: '1160px', margin: '0 auto', padding: '0 8.35%' }}>
         {/* ─── 01: Typography Specification ─── */}
         <section id="typography" style={{ paddingTop: '80px' }}>
-          <SectionKicker number="01" text="Core Typography" />
+          <SectionKicker text="Core Typography" />
           <h2
             style={{
               fontFamily: 'var(--font-heading)',
@@ -1097,7 +1097,7 @@ export default function DesignSystemPage() {
 
         {/* ─── 03: Color Palette ─── */}
         <section id="colors" style={{ paddingTop: '60px', marginBottom: '80px' }}>
-          <SectionKicker number="02" text="Color Architecture" />
+          <SectionKicker text="Color Architecture" />
           <h2
             style={{
               fontFamily: 'var(--font-heading)',
@@ -1212,7 +1212,7 @@ export default function DesignSystemPage() {
 
         {/* ─── 04: Brand Symbols & Badges ─── */}
         <section id="brand" style={{ paddingTop: '60px', marginBottom: '80px' }}>
-          <SectionKicker number="03" text="Brand Identity" />
+          <SectionKicker text="Brand Identity" />
           <h2
             style={{
               fontFamily: 'var(--font-heading)',
@@ -1353,8 +1353,8 @@ export default function DesignSystemPage() {
               >
                 Section Headers (Riya Black)
               </span>
-              <SectionKicker number="01" text="Food connects us" />
-              <SectionKicker number="02" text="Our north star" />
+              <SectionKicker text="Food connects us" />
+              <SectionKicker text="Our north star" />
               <SectionKicker tag="GARDEN" text="preSERVE Initiative" />
               <p className="eyebrow" style={{ margin: 0 }}>
                 <span /> A food community for all
@@ -1365,7 +1365,7 @@ export default function DesignSystemPage() {
 
         {/* ─── 05: UI Component Library ─── */}
         <section id="components" style={{ paddingTop: '60px', marginBottom: '80px' }}>
-          <SectionKicker number="04" text="Interactive Elements" />
+          <SectionKicker text="Interactive Elements" />
           <h2
             style={{
               fontFamily: 'var(--font-heading)',
@@ -1495,7 +1495,7 @@ export default function DesignSystemPage() {
             marginBottom: '40px',
           }}
         >
-          <SectionKicker number="05" text="Implementation Rules" />
+          <SectionKicker text="Implementation Rules" />
           <h2
             style={{
               fontFamily: 'var(--font-heading)',

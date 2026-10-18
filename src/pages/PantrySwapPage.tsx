@@ -36,7 +36,7 @@ export default function PantrySwapPage() {
       <section className="pantry-swap-section">
         <div className="pantry-swap-inner">
           <div className="pantry-swap-header">
-            <SectionKicker number="01" text="What to swap" />
+            <SectionKicker text="What to swap" />
             <h2 className="pantry-swap-title">
               Small Actions <em>Taken Collectively</em>
             </h2>

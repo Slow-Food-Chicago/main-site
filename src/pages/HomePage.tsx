@@ -1,104 +1,135 @@
 import {
-  ArrowDown,
   ArrowRight,
   ArrowUpRight,
-  CalendarDays,
-  MapPin,
   Sprout,
   Snail,
+  UtensilsCrossed,
 } from 'lucide-react'
 import SectionKicker from '../components/ui/SectionKicker'
+import ChicagoStar from '../components/ui/ChicagoStar'
 import { principles } from '../data/principles'
 import { SLACK_INVITE_URL, CONTACT_EMAIL } from '../data/constants'
+import { Link } from 'react-router-dom'
+import { getInvolvedWays, getInvolvedColorMap } from '../data/get-involved'
 
 export default function HomePage() {
   return (
     <main>
       <section className="hero" id="home">
-        <div className="hero-copy">
-          <p className="eyebrow">
-            <span /> A food community for all
-          </p>
-          <h1>
-            A more delicious
-            <br />
-            <span>Chicago</span> starts
-            <br />
-            at the table.
-          </h1>
-          <p className="hero-description">
-            We bring people together around good food—and work toward a food system that is good for
-            people, the planet, and our city.
-          </p>
-          <div className="hero-actions">
-            <a className="button button-primary" href="#get-involved">
-              Join the movement <ArrowRight size={17} />
-            </a>
-            <a className="text-link" href="#about">
-              Get to know us <ArrowDown size={15} />
-            </a>
-          </div>
-        </div>
-        <div className="hero-visual">
-          <img
-            className="hero-image"
-            src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1400&q=85"
-            alt="A colorful, freshly prepared seasonal meal shared around a table"
-          />
-          <div className="image-caption">
-            <span className="caption-icon">
-              <Sprout size={18} />
-            </span>
-            <span>
-              <strong>From our place,</strong>
-              <br />
-              for every place.
-            </span>
-          </div>
-          <span className="image-sun" aria-hidden="true">
-            ✳
-          </span>
-        </div>
-        <div className="hero-stamp" aria-label="Good, clean, fair">
-          <span>good</span>
-          <i>·</i>
-          <span>clean</span>
-          <i>·</i>
-          <span>fair</span>
-        </div>
-      </section>
+        <SectionKicker text="What is Slow Food?" />
 
-      <section className="intro-section" id="about">
-        <SectionKicker number="01" text="Food connects us" />
-        <div className="intro-content">
-          <h2>
-            Big change can start with something as small as <em>a bite.</em>
-          </h2>
-          <div className="intro-aside">
+        <h1>
+          It is the notion that our environment, culture and economy are profoundly affected by{' '}
+          <em>what we choose to eat.</em>
+        </h1>
+
+        <p className="hero-lead">
+          We believe that everyone should have access to high-quality food produced in a sustainable and equitable way.
+        </p>
+
+        <div className="hero-vision-card">
+          <h3>
+            “Slow Food envisions a world in which all people can eat food that is good for them, good for the people who grow it, and good for the planet.”
+          </h3>
+        </div>
+
+        <div className="hero-about-grid" id="about">
+          <div className="hero-about-copy">
+            <h3>About Slow Food Chicago</h3>
             <p>
               Slow Food Chicago is part of a global, grassroots movement imagining a better way to
               eat—and making it happen, right here in our neighborhoods.
             </p>
-            <a className="underlined-link" href="#principles">
-              What we believe <ArrowUpRight size={15} />
-            </a>
+            <p>
+              Slow Food Chicago is a member-supported chapter of Slow Food run by an all-volunteer Board
+              of Directors and network of volunteers who help with operations and events. Slow Food
+              Chicago is one of the largest chapters of Slow Food USA with more than 500 members and
+              5,000 supporters.
+            </p>
+            <div className="hero-about-actions">
+              <a className="button button-primary" href="#get-involved">
+                Join the movement <ArrowRight size={16} />
+              </a>
+              <Link className="button button-forest" to="/initiatives">
+                Our Initiatives <ArrowUpRight size={16} />
+              </Link>
+            </div>
+          </div>
+
+          <div className="hero-visual">
+            <img
+              className="hero-image"
+              src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1400&q=85"
+              alt="A colorful, freshly prepared seasonal meal shared around a table"
+            />
+            <div className="image-caption">
+              <span className="caption-icon">
+                <Sprout size={18} />
+              </span>
+              <span>
+                <strong>From our place,</strong>
+                <br />
+                for every place.
+              </span>
+            </div>
+            <span className="image-sun" aria-hidden="true">
+              ✳
+            </span>
           </div>
         </div>
+
+        <div className="hero-pillars-wrap">
+          <h4 className="hero-pillars-title">Through our events and programs, we:</h4>
+          <div className="hero-pillars-grid">
+            <div className="hero-pillar-card">
+              <div className="hero-pillar-icon-wrap">
+                <Sprout size={20} />
+              </div>
+              <p>Advocate for renewed interest in and support for our local food culture</p>
+            </div>
+            <div className="hero-pillar-card">
+              <div className="hero-pillar-icon-wrap">
+                <Snail size={20} />
+              </div>
+              <p>Promote biodiverse and sustainable producers and purveyors in our community</p>
+            </div>
+            <div className="hero-pillar-card">
+              <div className="hero-pillar-icon-wrap">
+                <UtensilsCrossed size={20} />
+              </div>
+              <p>Bring people together through the common language of food</p>
+            </div>
+          </div>
+        </div>
+
         <div className="intro-rule">
-          <span>Chicago, Illinois</span>
-          <span>Since 2001</span>
+          <div className="intro-rule-item">
+            <ChicagoStar size={16} className="intro-star" />
+            <span>Chicago, Illinois</span>
+          </div>
+          <div className="intro-rule-stars" aria-label="Four Chicago Stars">
+            <ChicagoStar size={17} className="intro-star" />
+            <ChicagoStar size={17} className="intro-star" />
+            <ChicagoStar size={17} className="intro-star" />
+            <ChicagoStar size={17} className="intro-star" />
+          </div>
+          <div className="intro-rule-item">
+            <span>Since 2001</span>
+            <ChicagoStar size={16} className="intro-star" />
+          </div>
         </div>
       </section>
 
       <section className="principles-section" id="principles">
         <div className="principles-heading">
           <div>
-            <SectionKicker number="02" text="Our north star" />
+            <SectionKicker text="Our north star" />
             <h2>
               Good, clean <em>and</em> fair.
             </h2>
           </div>
-          <p>Three simple ideas. A whole world of possibility.</p>
+          <p>We believe that everyone should have access to high-quality food produced in a sustainable and equitable way.
+            This is distilled into three simple ideas.</p>
         </div>
         <div className="principle-grid">
           {principles.map((principle) => {
@@ -123,46 +154,65 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="gather-section" id="gather">
-        <div className="gather-image-wrap">
-          <img
-            src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1100&q=85"
-            alt="Fresh produce at a neighborhood farmers market"
-            loading="lazy"
-          />
-          <span className="photo-label">
-            <MapPin size={14} /> Chicago, IL
-          </span>
-        </div>
-        <div className="gather-copy">
-          <SectionKicker number="03" text="Pull up a chair" />
-          <h2>
-            Better food is better <em>together.</em>
-          </h2>
-          <p>
-            Meet the growers, makers, cooks, and curious eaters who are changing the way Chicago
-            eats. There&apos;s a place for you here.
-          </p>
-          <a className="button button-dark" href="#get-involved">
-            Find your people <ArrowRight size={17} />
-          </a>
-          <div className="gather-detail">
-            <CalendarDays size={18} />
-            <span>
-              <strong>Good things happen in person.</strong>
-              <br />
-              Come to a gathering near you.
-            </span>
-          </div>
-        </div>
-      </section>
+            {/* Ways to get involved */}
+            <section className="involve-section" id='get-involved'>
+              <div className="involve-heading">
+                <SectionKicker text="ways to join us" />
+                <h2 className="involve-title">
+                  Pick how you want to <em>show up.</em>
+                </h2>
+              </div>
+              <div className="involve-grid">
+                {getInvolvedWays.map((w) => {
+                  const c = getInvolvedColorMap[w.color]
+                  const Icon = w.icon
+                  return (
+                    <article
+                      className="involve-card"
+                      key={w.number}
+                      style={
+                        {
+                          '--involve-accent': c.accent,
+                          '--involve-bg': c.bg,
+                          '--involve-border': c.border,
+                        } as React.CSSProperties
+                      }
+                    >
+                      <div className="involve-card-top">
+                        <span className="involve-number">{w.number}</span>
+                        <span className="involve-icon-wrap">
+                          <Icon size={21} strokeWidth={1.7} />
+                        </span>
+                      </div>
+                      <h3 className="involve-card-title">{w.title}</h3>
+                      <p className="involve-card-desc">{w.description}</p>
+                      {w.cta &&
+                        (w.cta.href.startsWith('/') ? (
+                          <Link className="involve-card-link" to={w.cta.href}>
+                            {w.cta.label} <ArrowRight size={14} />
+                          </Link>
+                        ) : (
+                          <a
+                            className="involve-card-link"
+                            href={w.cta.href}
+                            target={w.cta.href.startsWith('http') ? '_blank' : undefined}
+                            rel={w.cta.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                          >
+                            {w.cta.label} <ArrowRight size={14} />
+                          </a>
+                        ))}
+                    </article>
+                  )
+                })}
+              </div>
+            </section>
 
-      <section className="join-section" id="get-involved">
+      <section className="join-section">
         <div className="join-decoration" aria-hidden="true">
           ✳
         </div>
         <div className="join-content">
-          <SectionKicker number="04" text="Make room at the table" />
+          <SectionKicker text="Make room at the table" />
           <h2>
             Good food needs <em>good people.</em>
           </h2>

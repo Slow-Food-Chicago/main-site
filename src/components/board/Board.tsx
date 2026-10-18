@@ -1,4 +1,3 @@
-import './board.css'
 import { useState, useCallback } from 'react'
 import { Users } from 'lucide-react'
 import ChicagoStar from '../ui/ChicagoStar'

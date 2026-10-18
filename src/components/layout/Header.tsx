@@ -1,33 +1,68 @@
-import { useState, useEffect } from 'react'
-import { ArrowUpRight, Menu, X } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import SnailLogo from '../ui/SnailLogo'
+import { initiatives } from '../../data/initiatives'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [mobileInitiativesOpen, setMobileInitiativesOpen] = useState(false)
   const location = useLocation()
   const [prevPathname, setPrevPathname] = useState(location.pathname)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Close menu on route change
+  // Close menus on route change
   if (prevPathname !== location.pathname) {
     setPrevPathname(location.pathname)
     setIsOpen(false)
+    setDropdownOpen(false)
   }
 
-  // Close menu on Escape key press
+  // Handle desktop dropdown hover timing
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    setDropdownOpen(true)
+  }
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setDropdownOpen(false)
+    }, 150)
+  }
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false)
+      }
+    }
+    if (dropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [dropdownOpen])
+
+  // Close menus on Escape key press
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsOpen(false)
+        setDropdownOpen(false)
       }
     }
-    if (isOpen) {
-      window.addEventListener('keydown', handleKeyDown)
-    }
+    window.addEventListener('keydown', handleKeyDown)
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [isOpen])
+  }, [])
 
   // Prevent background scroll when mobile menu is open
   useEffect(() => {
@@ -53,7 +88,64 @@ export default function Header() {
 
       {/* Desktop navigation */}
       <nav className="main-nav" aria-label="Main navigation">
-        <Link to="/initiatives">Our Initiatives</Link>
+        <div
+          className={`nav-dropdown ${dropdownOpen ? 'is-open' : ''}`}
+          ref={dropdownRef}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <button
+            type="button"
+            className="nav-dropdown-trigger"
+            aria-expanded={dropdownOpen}
+            aria-haspopup="true"
+            onClick={() => setDropdownOpen((prev) => !prev)}
+          >
+            <span>Our Initiatives</span>
+            <ChevronDown size={14} className="nav-dropdown-chevron" />
+          </button>
+
+          {dropdownOpen && (
+            <div className="nav-dropdown-menu" role="menu">
+              <Link
+                to="/initiatives"
+                className="nav-dropdown-item"
+                role="menuitem"
+                onClick={() => setDropdownOpen(false)}
+                style={{ fontWeight: 700 }}
+              >
+                All Initiatives
+              </Link>
+              <div className="nav-dropdown-divider" />
+              {initiatives.map((item) =>
+                item.external ? (
+                  <a
+                    key={item.number}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="nav-dropdown-item"
+                    role="menuitem"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <span>{item.title}</span>
+                    <ArrowUpRight size={13} style={{ opacity: 0.6 }} />
+                  </a>
+                ) : (
+                  <Link
+                    key={item.number}
+                    to={item.href}
+                    className="nav-dropdown-item"
+                    role="menuitem"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <span>{item.title}</span>
+                  </Link>
+                )
+              )}
+            </div>
+          )}
+        </div>
         <Link to="/events">Events</Link>
         <Link to="/board">Our Leadership</Link>
       </nav>
@@ -92,9 +184,68 @@ export default function Header() {
           <Link to="/" className="mobile-nav-link" onClick={() => setIsOpen(false)}>
             Home
           </Link>
-          <Link to="/initiatives" className="mobile-nav-link" onClick={() => setIsOpen(false)}>
-            Our Initiatives
-          </Link>
+          <div className="mobile-nav-group">
+            <div className="mobile-nav-group-header">
+              <Link
+                to="/initiatives"
+                className="mobile-nav-link"
+                onClick={() => setIsOpen(false)}
+              >
+                Our Initiatives
+              </Link>
+              <button
+                type="button"
+                className="mobile-nav-toggle"
+                aria-label="Toggle initiatives submenu"
+                aria-expanded={mobileInitiativesOpen}
+                onClick={() => setMobileInitiativesOpen(!mobileInitiativesOpen)}
+              >
+                <ChevronDown
+                  size={20}
+                  style={{
+                    transform: mobileInitiativesOpen ? 'rotate(180deg)' : 'none',
+                    transition: 'transform 180ms ease',
+                  }}
+                />
+              </button>
+            </div>
+            {mobileInitiativesOpen && (
+              <div className="mobile-nav-sublinks">
+                <Link
+                  to="/initiatives"
+                  className="mobile-nav-sublink"
+                  onClick={() => setIsOpen(false)}
+                  style={{ fontWeight: 700 }}
+                >
+                  All Initiatives
+                </Link>
+                {initiatives.map((item) =>
+                  item.external ? (
+                    <a
+                      key={item.number}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mobile-nav-sublink"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <span>{item.title}</span>
+                      <ArrowUpRight size={14} className="mobile-nav-ext-icon" />
+                    </a>
+                  ) : (
+                    <Link
+                      key={item.number}
+                      to={item.href}
+                      className="mobile-nav-sublink"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.title}
+                    </Link>
+                  )
+                )}
+              </div>
+            )}
+          </div>
           <Link to="/events" className="mobile-nav-link" onClick={() => setIsOpen(false)}>
             Events
           </Link>

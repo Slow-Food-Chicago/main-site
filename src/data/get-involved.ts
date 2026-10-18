@@ -4,7 +4,7 @@ import {
   HandCoins,
   Megaphone,
   MessageSquare,
-  UtensilsCrossed,
+  HeartHandshake,
   Users,
 } from 'lucide-react'
 import {
@@ -13,7 +13,7 @@ import {
   CONTACT_EMAIL,
 } from './constants'
 
-export type InvolveColor = 'red' | 'forest' | 'orange' | 'sage'
+export type InvolveColor = 'red' | 'forest' | 'orange' | 'blue'
 
 export interface InvolveCta {
   label: string
@@ -68,9 +68,9 @@ export const getInvolvedWays: InvolveWay[] = [
     number: '04',
     title: 'Volunteer',
     description:
-      'Our programs run on the energy and skills of volunteers. Help at a Pantry Swap, assist with outreach, or lend your expertise to a project. Every hour matters and every hand helps.',
-    icon: UtensilsCrossed,
-    color: 'sage',
+      'Our programs run on the energy and skills of volunteers. Help at the preSERVE garden, assist with outreach, or lend your expertise to a project. Every hour matters and every hand helps.',
+    icon: HeartHandshake,
+    color: 'blue',
     cta: { label: 'Volunteer with us', href: `mailto:${CONTACT_EMAIL}` },
   },
   {
@@ -112,10 +112,10 @@ export const getInvolvedColorMap: Record<InvolveColor, ColorScheme> = {
     dark: 'var(--snail-orange-dark)',
     border: 'rgba(222,121,0,0.2)',
   },
-  sage: {
+  blue: {
     bg: '#EEF3F0',
-    accent: 'var(--snail-sage)',
-    dark: '#5E7A68',
+    accent: 'var(--snail-blue)',
+    dark: 'var(--snail-blue-dark)',
     border: 'rgba(123,158,135,0.25)',
   },
 }

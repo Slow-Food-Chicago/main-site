@@ -345,7 +345,7 @@ export default function Footer() {
                 }}
               >
                 <MessageSquare style={{ width: 14, height: 14, color: 'var(--snail-red)' }} />
-                <span>Join our Slack Community ↗</span>
+                <span>Join our Slack ↗</span>
               </a>
             </div>
           </div>

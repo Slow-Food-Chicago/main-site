@@ -11,7 +11,7 @@ export const EVENTBRITE_URL = 'https://www.eventbrite.com/o/22780790031' as cons
 
 export const EVENTBRITE_ORGANIZER_ID = '22780790031' as const
 
-export const MEMBERSHIP_URL = 'https://www.slowfoodusa.org/membership' as const
+export const MEMBERSHIP_URL = 'https://connect.clickandpledge.com/w/Form/da3477b3-1ac3-4f79-9e1f-81e85cfc7aa9?trk=MD23-websitemenu' as const
 
 export const SLOW_FOOD_USA_URL = 'https://slowfoodusa.org' as const
 

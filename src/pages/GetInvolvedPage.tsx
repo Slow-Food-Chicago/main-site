@@ -42,7 +42,7 @@ export default function GetInvolvedPage() {
       {/* Ways to get involved */}
       <section className="involve-section">
         <div className="involve-heading">
-          <SectionKicker tag="06" text="ways to join us" />
+          <SectionKicker text="ways to join us" />
           <h2 className="involve-title">
             Pick how you want to <em>show up.</em>
           </h2>

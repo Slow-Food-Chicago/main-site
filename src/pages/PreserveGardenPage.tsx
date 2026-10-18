@@ -36,7 +36,7 @@ export default function PreserveGardenPage() {
       <section className="preserve-about-section">
         <div className="preserve-about-inner">
           <div className="preserve-about-copy">
-            <SectionKicker number="01" text="About the garden" />
+            <SectionKicker text="About the garden" />
             <h2 className="preserve-section-title">
               Rooted in <em>North Lawndale</em> since 2010.
             </h2>
@@ -72,7 +72,7 @@ export default function PreserveGardenPage() {
       {/* What we grow */}
       <section className="preserve-harvest-section">
         <div className="preserve-harvest-inner">
-          <SectionKicker number="02" text="What we grow" />
+          <SectionKicker text="What we grow" />
           <h2 className="preserve-section-title preserve-section-title--light">
             A full season's <em>worth of flavor.</em>
           </h2>
@@ -96,7 +96,7 @@ export default function PreserveGardenPage() {
       {/* Get involved */}
       <section className="preserve-involve-section">
         <div className="preserve-involve-inner">
-          <SectionKicker number="03" text="Get involved" />
+          <SectionKicker text="Get involved" />
           <h2 className="preserve-section-title">
             Show up and <em>dig in.</em>
           </h2>
@@ -120,7 +120,7 @@ export default function PreserveGardenPage() {
       {/* Partners */}
       <section className="preserve-partners-section">
         <div className="preserve-partners-inner">
-          <SectionKicker number="04" text="Our partners" />
+          <SectionKicker text="Our partners" />
           <h2 className="preserve-section-title">
             Built on <em>collaboration.</em>
           </h2>

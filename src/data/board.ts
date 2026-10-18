@@ -87,7 +87,7 @@ export const committeeMembers: Record<string, CommitteeMember[]> = {
       role: 'member',
       name: 'Gabi Medina',
       headshot: gabi,
-      social: null,
+      social: 'https://www.instagram.com/chuchaquicocktails/',
       bio: "Me llamo Gabriela, but please call me Gabi. I'm an Ecuadorian-born, US-raised bartender determined to lift the stories of indigenous drink-makers of the Americas. I named my business Chuchaqui Cocktails to encompass where I come from and where I want to go. Chuchaqui is a word in Kichwa, one of the indigenous languages of present-day Ecuador. It means to be hungover. Intentionally goofy. After more than ten years in the hospitality industry, only recently can I claim to understand what my ancestors already knew: slow food means care and intention, a long-term investment in and for the land and the people. That same structure encourages me to focus on education about who we can thank for what's in our cocktail, with curiosity and respect. ¡Salud!",
     },
   ],
@@ -95,9 +95,8 @@ export const committeeMembers: Record<string, CommitteeMember[]> = {
   ark: [
     { role: 'Chair', name: 'Jeanne Calabrese', headshot: null, bio: '', social: null },
     { role: 'member', name: 'Heidi Hedeker', headshot: null, bio: '', social: null },
-    { role: 'member', name: 'Zachary Page', headshot: null, bio: '', social: null },
-    { role: 'member', name: 'Alana Reynolds', headshot: null, bio: '', social: null },
     { role: 'member', name: 'Gregory Hall', headshot: null, bio: '', social: null },
+    { role: 'member', name: 'Sarah Batka', headshot: null, bio: '', social: null}
   ],
 }
 

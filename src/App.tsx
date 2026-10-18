@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import ScrollToTop from './components/ui/ScrollToTop'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import HomePage from './pages/HomePage'
@@ -13,6 +14,7 @@ import DesignSystemPage from './pages/DesignSystemPage'
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="site-shell">
         <Header />
         <Routes>
