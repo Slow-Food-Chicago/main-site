@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
-import { X, ArrowUpRight } from 'lucide-react'
+import { X } from 'lucide-react'
+import { SocialLinks } from './SocialLink'
 
 export type ModalMember = {
   name: string
@@ -49,16 +50,7 @@ export default function MemberModal({ member, onClose }: MemberModalProps) {
             <span className="member-modal-role">{member.role}</span>
             <h3 className="member-modal-name">{member.name}</h3>
             {member.bio && <p className="member-modal-bio">{member.bio.trim()}</p>}
-            {member.social && (
-              <a
-                href={member.social}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="member-modal-social"
-              >
-                View profile <ArrowUpRight size={14} />
-              </a>
-            )}
+            {member.social && <SocialLinks urls={member.social} />}
           </div>
         </div>
       </div>

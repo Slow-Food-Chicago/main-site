@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
-import { Snail, Handshake, Megaphone, Wheat } from 'lucide-react'
+import { Snail, Handshake, Megaphone, Wheat, CalendarDays } from 'lucide-react'
 import dom from '../assets/dom.jpeg'
 import jody from '../assets/jody.jpg'
 import diane from '../assets/diane.jpeg'
@@ -98,6 +98,9 @@ export const committeeMembers: Record<string, CommitteeMember[]> = {
     { role: 'member', name: 'Gregory Hall', headshot: null, bio: '', social: null },
     { role: 'member', name: 'Sarah Batka', headshot: null, bio: '', social: null}
   ],
+  events: [
+    { role: 'Chair', name: 'Greg Hall', headshot: null, bio: '', social: null },
+  ]
 }
 
 export const committees: Committee[] = [
@@ -137,8 +140,18 @@ export const committees: Committee[] = [
     description:
       'Catalogs and champions endangered Midwestern food biodiversity — from heirloom seeds to heritage breeds — as part of the global Slow Food Ark of Taste.',
     icon: Wheat,
+    accent: 'var(--snail-yellow)',
+    tint: 'var(--snail-yellow-light)',
+    url: ARK_OF_TASTE_URL,
+  },
+  {
+    key: 'events',
+    name: 'Events',
+    description:
+      'Organizes gatherings, tastings, workshops, and farm visits that connect Chicagoans with good, clean, and fair food and each other.',
+    icon: CalendarDays,
     accent: 'var(--snail-orange)',
     tint: 'var(--snail-orange-light)',
-    url: ARK_OF_TASTE_URL,
+    url: '/events',
   },
 ]

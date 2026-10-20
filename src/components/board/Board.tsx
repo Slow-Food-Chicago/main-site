@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import { Users } from 'lucide-react'
 import ChicagoStar from '../ui/ChicagoStar'
 import MemberModal, { type ModalMember } from './MemberModal'
@@ -171,16 +172,21 @@ export default function Board() {
                     <div className="committee-card-icon">
                       <Icon size={22} strokeWidth={1.6} />
                     </div>
-                    {c.url && (
-                      <a
-                        href={c.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="committee-card-link"
-                      >
-                        Visit project ↗
-                      </a>
-                    )}
+                    {c.url &&
+                      (c.url.startsWith('/') ? (
+                        <Link to={c.url} className="committee-card-link">
+                          View events →
+                        </Link>
+                      ) : (
+                        <a
+                          href={c.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="committee-card-link"
+                        >
+                          Visit project ↗
+                        </a>
+                      ))}
                   </div>
                   <h4 className="committee-card-name">{c.name}</h4>
                   <p className="committee-card-desc">{c.description}</p>
@@ -221,29 +227,31 @@ export default function Board() {
                       <span className="board-vacant">Vacant</span>
                     )}
                   </div>
-                  <div className="committee-card-leader">
-                    <span className="committee-member-label">Members</span>
-                    {members.map((m) => (
-                      <span className="committee-member-name" key={m.name}>
-                        <div className="headshot-wrap" onClick={() => openModal(m)}>
-                          <img
-                            className="committee-headshot"
-                            src={
-                              m.headshot ||
-                              'https://via.placeholder.com/avatar.png?size=100&shape=round'
-                            }
-                            width={100}
-                            height={100}
-                            alt={`Headshot of ${m.name || 'Vacant'}`}
-                          />
-                          {(m.bio || m.headshot) && (
-                            <span className="headshot-hover-hint">View bio</span>
-                          )}
-                        </div>
-                        {m.name}
-                      </span>
-                    ))}
-                  </div>
+                  {members.length > 0 && (
+                    <div className="committee-card-leader">
+                      <span className="committee-member-label">Members</span>
+                      {members.map((m) => (
+                        <span className="committee-member-name" key={m.name}>
+                          <div className="headshot-wrap" onClick={() => openModal(m)}>
+                            <img
+                              className="committee-headshot"
+                              src={
+                                m.headshot ||
+                                'https://via.placeholder.com/avatar.png?size=100&shape=round'
+                              }
+                              width={100}
+                              height={100}
+                              alt={`Headshot of ${m.name || 'Vacant'}`}
+                            />
+                            {(m.bio || m.headshot) && (
+                              <span className="headshot-hover-hint">View bio</span>
+                            )}
+                          </div>
+                          {m.name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </article>
               )
             })}
