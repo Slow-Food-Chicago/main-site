@@ -71,7 +71,7 @@ export const executiveBoard: BoardMember[] = [
 export const committeeMembers: Record<string, CommitteeMember[]> = {
   comms: [
     { role: 'Chair', name: 'Vanshi Jhumkhawala', headshot: null, bio: '', social: null },
-    { role: 'member', name: 'Benji Corpuz', headshot: null, bio: '', social: null },
+    { role: 'Chair', name: 'Benji Corpuz', headshot: null, bio: 'Benji is a city planner with the City of Chicago’s Department of Planning and Development who believes great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity. He has a lifelong appreciation for food as a source of family and community, and is a fierce advocate for shopping and dining locally. He hopes to contribute his passion for strong neighborhoods, local food systems, and fostering connections to the organization. Benji is particularly interested in the intersection of nutrition, public health, and food access, and how individual, collective, and municipal efforts can make nutritious food more accessible to everyone. Outside of work, you can find him behind a camera, tending to his backyard garden, biking around town, or enjoying a meal with friends and good company.', social: null },
   ],
   partnerships: [
     {
@@ -82,7 +82,7 @@ export const committeeMembers: Record<string, CommitteeMember[]> = {
       social: null,
     },
     { role: 'member', name: 'Dfrantz Smart', headshot: null, bio: '', social: null },
-    { role: 'member', name: 'Benji Corpuz', headshot: null, bio: '', social: null },
+    { role: 'member', name: 'Benji Corpuz', headshot: null, bio: 'Benji is a city planner with the City of Chicago’s Department of Planning and Development who believes great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity. He has a lifelong appreciation for food as a source of family and community, and is a fierce advocate for shopping and dining locally. He hopes to contribute his passion for strong neighborhoods, local food systems, and fostering connections to the organization. Benji is particularly interested in the intersection of nutrition, public health, and food access, and how individual, collective, and municipal efforts can make nutritious food more accessible to everyone. Outside of work, you can find him behind a camera, tending to his backyard garden, biking around town, or enjoying a meal with friends and good company.', social: null },
     {
       role: 'member',
       name: 'Gabi Medina',
