@@ -18,6 +18,8 @@ import {
   fetchIcsFeed,
   fetchEventbriteEvents,
   getGoogleCalendarSubscribeUrl,
+  getTwoMonthWindow,
+  stripHtml,
 } from '../services/calendar'
 import {
   DEFAULT_GOOGLE_CALENDAR_ID,
@@ -158,7 +160,7 @@ export default function CalendarPage() {
 
   // Filter and sort events
   const filteredEvents = useMemo(() => {
-    const now = new Date()
+    const { start: now, end: twoMonthsOut } = getTwoMonthWindow()
 
     return events
       .filter((ev) => {
@@ -167,8 +169,8 @@ export default function CalendarPage() {
           return false
         }
 
-        // Time filter
-        if (timeFilter === 'upcoming' && ev.endDate < now) {
+        // Time filter (upcoming events within the next two months)
+        if (timeFilter === 'upcoming' && (ev.endDate < now || ev.startDate > twoMonthsOut)) {
           return false
         }
         if (timeFilter === 'past' && ev.endDate >= now) {
@@ -179,7 +181,7 @@ export default function CalendarPage() {
         if (searchQuery.trim()) {
           const q = searchQuery.toLowerCase()
           const inTitle = ev.title.toLowerCase().includes(q)
-          const inDesc = (ev.description || '').toLowerCase().includes(q)
+          const inDesc = stripHtml(ev.description || '').toLowerCase().includes(q)
           const inLoc = (ev.location || '').toLowerCase().includes(q)
           if (!inTitle && !inDesc && !inLoc) return false
         }
@@ -209,7 +211,7 @@ export default function CalendarPage() {
             Pull up a chair. <em>Come to an event.</em>
           </>
         }
-        description="From garden workdays and community pantry swaps to hands-on fermentation workshops and panel discussions—our events are where real relationships and a better food system are built."
+        description="From garden workdays and farm tours to hands-on fermentation workshops and panel discussions—our events are where real relationships and a better food system are built."
         asideIcon={CalendarDays}
         asideColor="var(--snail-red)"
         actions={

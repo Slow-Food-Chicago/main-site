@@ -50,7 +50,7 @@ export default function PantrySwapPage() {
                   <p className="pantry-swap-card-blurb">{item.blurb}</p>
                 </div>
                 <div className="pantry-swap-card-right">
-                  <h4 className="pantry-suppliers-heading">Suppliers &amp; Ratings</h4>
+                  <h4 className="pantry-suppliers-heading">Suppliers</h4>
                   <div className="pantry-suppliers-list">
                     {item.suppliers.map((supplier) => (
                       <a
@@ -66,11 +66,6 @@ export default function PantrySwapPage() {
                             {supplier.name}
                             <ArrowUpRight size={14} className="pantry-supplier-arrow" />
                           </h5>
-                          <span
-                            className={`pantry-supplier-rating rating-${supplier.rating.toLowerCase()}`}
-                          >
-                            Rating: {supplier.rating}
-                          </span>
                         </div>
                         <p className="pantry-supplier-why">{supplier.why}</p>
                       </a>

@@ -1,6 +1,6 @@
 export interface Supplier {
   name: string
-  rating: string
+  rating?: string
   why: string
   url: string
 }
@@ -111,13 +111,31 @@ export const swapItems: SwapItem[] = [
         why: 'Community-embedded apiary placing hives in urban farms and school gardens across Chicago, serviced entirely by bicycle.',
         url: 'https://bikeabee.com',
       },
+      {
+        name: 'Sweetcomb Chicago (Chicago, IL)',
+        rating: 'A',
+        why: 'Urban beekeeping operation tending rooftop and garden hives across Chicago neighborhoods to harvest hyper-local, unheated neighborhood raw honeys.',
+        url: 'https://www.sweetcombchicago.com',
+      },
     ],
   },
   {
-    item: 'Preserves & Ferments',
+    item: 'Preserves, Pickles & Ferments',
     blurb:
       'Small-batch preservation honors the seasonal rhythm of the Midwest harvest, locking in the brightness of regional orchard fruits and fermented crops without artificial thickeners.',
     suppliers: [
+      {
+        name: 'Pickled Prince (Chicago, IL)',
+        rating: 'A',
+        why: 'Chef-founded Chicago pickle and fermentation company crafting crisp small-batch pickles, artisan giardiniera, krauts, and seasonal jams from local Illinois farm produce.',
+        url: 'https://www.pickledprince.com',
+      },
+      {
+        name: 'Berries & Flour (Champaign, IL)',
+        rating: 'A',
+        why: 'Woman-owned operation at Preserve Farmstead crafting low-sugar, small-batch preserves, jams, and shrubs from locally grown and wild-foraged Midwest fruits like pawpaw, elderberry, and wild plum.',
+        url: 'https://www.berriesandflour.com',
+      },
       {
         name: "Bushel & Peck's (Beloit, WI)",
         rating: 'A',
@@ -152,10 +170,16 @@ export const swapItems: SwapItem[] = [
     ],
   },
   {
-    item: 'Rolled Oats & Whole Grains',
+    item: 'Rolled Oats, Rice & Whole Grains',
     blurb:
-      'Hull-less heirloom oats, farro, and spelt deliver hearty nuttiness and soluble fiber while serving as crucial rotational crops that break pest cycles and enrich soil biology between grain plantings.',
+      'Regional rice, hull-less heirloom oats, farro, and spelt deliver hearty nuttiness and soluble fiber while serving as crucial rotational crops that break pest cycles and enrich soil biology across the Midwest.',
     suppliers: [
+      {
+        name: 'Cahokia Rice (McClure, IL)',
+        rating: 'A',
+        why: 'Non-GMO, high-protein brown and white rice sustainably grown without synthetic insecticides in the fertile Mississippi River bottomlands of southern Illinois.',
+        url: 'https://www.cahokiarice.com',
+      },
       {
         name: "Janie's Mill (Ashkum, IL)",
         rating: 'A',
@@ -239,10 +263,110 @@ export const swapItems: SwapItem[] = [
         url: 'https://www.j2kcapraio.com',
       },
       {
+        name: 'Prairie Fruits Farm & Creamery (Champaign, IL)',
+        rating: 'A',
+        why: "Illinois's first farmstead creamery, raising pasture-foraged dairy goats and crafting award-winning seasonal cheeses on a diverse regenerative farm.",
+        url: 'https://www.prairiefruits.com',
+      },
+      {
         name: 'Nordic Creamery (Westby, WI)',
         rating: 'A',
         why: 'Fourth-generation Wisconsin family creamery crafting small-batch cultured butter and raw milk cheeses from cows grazing natural clover and prairie grasses.',
         url: 'https://nordiccreamery.com',
+      },
+    ],
+  },
+  {
+    item: 'Artisan Bread & Bakery',
+    blurb:
+      'Long-fermented sourdoughs and hearth loaves baked with stone-milled regional flours unlock natural digestibility, deep crust caramelization, and complex grain flavor without commercial dough conditioners.',
+    suppliers: [
+      {
+        name: 'Publican Quality Bread (Chicago, IL)',
+        rating: 'A',
+        why: 'Snail of Approval bakery championing regional organic stone-milled heirloom grains and long, natural sourdough fermentation for deeply flavorful loaves.',
+        url: 'https://www.publicanqualitybread.com',
+      },
+      {
+        name: 'Hewn (Evanston, IL)',
+        rating: 'A',
+        why: 'Woman-owned artisan bakery hand-mixing and stone-hearth baking naturally leavened loaves from 100% organic heirloom grains grown by Midwest farmers.',
+        url: 'https://www.hewnbread.com',
+      },
+      {
+        name: 'Central Illinois Bakehouse (Champaign, IL)',
+        rating: 'A',
+        why: 'Family-owned artisan bakehouse using traditional long-fermentation starters and hand-crafted methods to bake regional sourdoughs, rye, and hearth breads.',
+        url: 'https://www.cibakehouse.com',
+      },
+    ],
+  },
+  {
+    item: 'Artisan Pasta',
+    blurb:
+      'Bronze-extruded and hand-rolled pastas made from organic semolina, stone-milled heritage wheats, and pasture-raised eggs offer a porous texture and golden richness that industrial high-heat dried pasta cannot replicate.',
+    suppliers: [
+      {
+        name: 'Tortello (Chicago, IL)',
+        rating: 'A',
+        why: 'Wicker Park pastificio crafting fresh pasta daily by hand using regional stone-milled flours, local farm eggs, and traditional bronze dies.',
+        url: 'https://www.tortellopasta.com',
+      },
+      {
+        name: 'Pasta by Val (Chicago Area, IL)',
+        rating: 'A',
+        why: 'Small-batch, woman-owned pasta maker hand-rolling fresh and slow-dried pantry pastas made with organic semolina and vibrant natural vegetable and herb infusions.',
+        url: 'https://www.pastabyval.com',
+      },
+      {
+        name: 'Daisies (Chicago, IL)',
+        rating: 'A',
+        why: 'Snail of Approval Logan Square kitchen and market celebrating Midwest-driven handmade pastas crafted with regional stone-milled grains and seasonal farm produce.',
+        url: 'https://www.daisieschicago.com',
+      },
+    ],
+  },
+  {
+    item: 'Crackers & Crisps',
+    blurb:
+      'Small-batch crackers baked with organic regional grains, seeds, and real Wisconsin butter offer deeply toasted flavor without the refined starches, palm oil, or preservatives found in commercial snack aisles.',
+    suppliers: [
+      {
+        name: "Potter's Crackers (Madison, WI)",
+        rating: 'A',
+        why: 'Certified organic artisan crackers and crisps handcrafted in small batches using whole Midwestern grains, seeds, and local Wisconsin dairy.',
+        url: 'https://www.potterscrackers.com',
+      },
+      {
+        name: 'Hewn (Evanston, IL)',
+        rating: 'A',
+        why: 'Bakes crisp, small-batch sourdough crackers using freshly milled organic Midwest heritage grains and sea salt.',
+        url: 'https://www.hewnbread.com',
+      },
+    ],
+  },
+  {
+    item: 'Cured Meats & Charcuterie',
+    blurb:
+      'Traditional slow-cured charcuterie honors whole-animal stewardship and pasture-based livestock farming, developing rich, savory complexity through time, sea salt, and natural fermentation.',
+    suppliers: [
+      {
+        name: 'Underground Meats (Madison, WI)',
+        rating: 'A',
+        why: 'Artisan salumeria crafting small-batch dry-cured salami and charcuterie from humanely raised, pasture-based heritage hogs sourced from small Midwest family farms.',
+        url: 'https://undergroundmeats.com',
+      },
+      {
+        name: 'Tempesta Market (Chicago, IL)',
+        rating: 'A',
+        why: "Multi-generational Chicago family salumeria crafting small-batch artisan salumi, 'nduja, and cured meats from humanely raised heritage-breed livestock.",
+        url: 'https://www.tempestamarket.com',
+      },
+      {
+        name: 'Publican Quality Meats (Chicago, IL)',
+        rating: 'A',
+        why: 'Whole-animal butcher shop and charcuterie house partnering directly with sustainable Midwest family farms for house-cured salumi, bacon, and sausages.',
+        url: 'https://www.publicanqualitymeats.com',
       },
     ],
   },

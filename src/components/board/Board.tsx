@@ -196,41 +196,44 @@ export default function Board() {
                     </span>
                     {chairs.length > 0 ? (
                       chairs.map((m) => (
-                        <div key={m.name}>
-                          <span className="committee-leader-name">
-                            <div className="headshot-wrap" onClick={() => openModal(m)}>
-                              <img
-                                className="committee-headshot"
-                                src={
-                                  m.headshot ||
-                                  'https://via.placeholder.com/avatar.png?size=100&shape=round'
-                                }
-                                width={100}
-                                height={100}
-                                alt={`Headshot of ${m.name || 'Vacant'}`}
-                              />
-                              {(m.bio || m.headshot) && (
-                                <span className="headshot-hover-hint">View bio</span>
-                              )}
-                            </div>
-                            {m.name}
-                          </span>
-                          {m.bio && (
-                            <p className="committee-leader-bio">
-                              {m.bio.substring(0, 160)}
-                              {m.bio.length > 160 ? '...' : ''}
-                            </p>
-                          )}
-                        </div>
+                        <span className="committee-leader-name" key={m.name}>
+                          <div className="headshot-wrap" onClick={() => openModal(m)}>
+                            <img
+                              className="committee-headshot"
+                              src={
+                                m.headshot ||
+                                'https://via.placeholder.com/avatar.png?size=100&shape=round'
+                              }
+                              width={100}
+                              height={100}
+                              alt={`Headshot of ${m.name || 'Vacant'}`}
+                            />
+                            {(m.bio || m.headshot) && (
+                              <span className="headshot-hover-hint">View bio</span>
+                            )}
+                          </div>
+                          {m.name}
+                        </span>
                       ))
                     ) : (
-                      <span className="board-vacant">Vacant</span>
+                      <span className="committee-leader-name">
+                        <div className="headshot-wrap">
+                          <img
+                            className="committee-headshot"
+                            src="https://via.placeholder.com/avatar.png?size=100&shape=round"
+                            width={100}
+                            height={100}
+                            alt="Headshot of Vacant"
+                          />
+                        </div>
+                        <span className="board-vacant">Vacant</span>
+                      </span>
                     )}
                   </div>
-                  {members.length > 0 && (
-                    <div className="committee-card-leader">
-                      <span className="committee-member-label">Members</span>
-                      {members.map((m) => (
+                  <div className="committee-card-leader">
+                    <span className="committee-member-label">Members</span>
+                    {members.length > 0 ? (
+                      members.map((m) => (
                         <span className="committee-member-name" key={m.name}>
                           <div className="headshot-wrap" onClick={() => openModal(m)}>
                             <img
@@ -249,9 +252,22 @@ export default function Board() {
                           </div>
                           {m.name}
                         </span>
-                      ))}
-                    </div>
-                  )}
+                      ))
+                    ) : (
+                      <span className="committee-member-name">
+                        <div className="headshot-wrap">
+                          <img
+                            className="committee-headshot"
+                            src="https://via.placeholder.com/avatar.png?size=100&shape=round"
+                            width={100}
+                            height={100}
+                            alt="Headshot of Awaiting Members"
+                          />
+                        </div>
+                        <span className="board-vacant">Awaiting Members</span>
+                      </span>
+                    )}
+                  </div>
                 </article>
               )
             })}

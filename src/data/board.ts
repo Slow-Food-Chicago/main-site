@@ -1,10 +1,11 @@
 import type { LucideIcon } from 'lucide-react'
 import { Snail, Handshake, Megaphone, Wheat, CalendarDays } from 'lucide-react'
 import dom from '../assets/dom.jpeg'
-import jody from '../assets/jody.jpg'
+import jody from '../assets/jody.jpeg'
 import diane from '../assets/diane.jpeg'
 import gabi from '../assets/gabi.JPG'
 import christian from '../assets/christian.jpeg'
+import benji from '../assets/benji.jpeg'
 import { SNAIL_OF_APPROVAL_URL, ARK_OF_TASTE_URL } from './constants'
 
 export interface BoardMember {
@@ -71,18 +72,19 @@ export const executiveBoard: BoardMember[] = [
 export const committeeMembers: Record<string, CommitteeMember[]> = {
   comms: [
     { role: 'Chair', name: 'Vanshi Jhumkhawala', headshot: null, bio: '', social: null },
-    { role: 'Chair', name: 'Benji Corpuz', headshot: null, bio: 'Benji is a city planner with the City of Chicago’s Department of Planning and Development who believes great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity. He has a lifelong appreciation for food as a source of family and community, and is a fierce advocate for shopping and dining locally. He hopes to contribute his passion for strong neighborhoods, local food systems, and fostering connections to the organization. Benji is particularly interested in the intersection of nutrition, public health, and food access, and how individual, collective, and municipal efforts can make nutritious food more accessible to everyone. Outside of work, you can find him behind a camera, tending to his backyard garden, biking around town, or enjoying a meal with friends and good company.', social: null },
+    { role: 'Chair', name: 'Benji Corpuz', headshot: benji, bio: 'Benji is a city planner with the City of Chicago’s Department of Planning and Development who believes great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity. He has a lifelong appreciation for food as a source of family and community, and is a fierce advocate for shopping and dining locally. He hopes to contribute his passion for strong neighborhoods, local food systems, and fostering connections to the organization. Benji is particularly interested in the intersection of nutrition, public health, and food access, and how individual, collective, and municipal efforts can make nutritious food more accessible to everyone. Outside of work, you can find him behind a camera, tending to his backyard garden, biking around town, or enjoying a meal with friends and good company.', social: null },
   ],
   partnerships: [
     {
       role: 'Chair',
       name: 'Christian Hunter',
       headshot: christian,
-      bio: 'is currently the only Black chef in Chicago with a Michelin star, and one of only two Black chefs in the country with the honor.',
+      bio: `is currently the only Black chef in Chicago with a Michelin star, and one of only two Black chefs in the country with the honor. 
+      Hunter's culinary journey began in Lexington, Kentucky, where he was immersed in a family of passionate home cooks. His formative years in this environment fostered a profound appreciation for 'traditional Southern food.' Subsequently, his exposure to Lexington's diverse culinary scene broadened his horizons, shaping his innovative approach`,
       social: null,
     },
     { role: 'member', name: 'Dfrantz Smart', headshot: null, bio: '', social: null },
-    { role: 'member', name: 'Benji Corpuz', headshot: null, bio: 'Benji is a city planner with the City of Chicago’s Department of Planning and Development who believes great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity. He has a lifelong appreciation for food as a source of family and community, and is a fierce advocate for shopping and dining locally. He hopes to contribute his passion for strong neighborhoods, local food systems, and fostering connections to the organization. Benji is particularly interested in the intersection of nutrition, public health, and food access, and how individual, collective, and municipal efforts can make nutritious food more accessible to everyone. Outside of work, you can find him behind a camera, tending to his backyard garden, biking around town, or enjoying a meal with friends and good company.', social: null },
+    { role: 'Chair', name: 'Benji Corpuz', headshot: benji, bio: 'Benji is a city planner with the City of Chicago’s Department of Planning and Development who believes great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity. He has a lifelong appreciation for food as a source of family and community, and is a fierce advocate for shopping and dining locally. He hopes to contribute his passion for strong neighborhoods, local food systems, and fostering connections to the organization. Benji is particularly interested in the intersection of nutrition, public health, and food access, and how individual, collective, and municipal efforts can make nutritious food more accessible to everyone. Outside of work, you can find him behind a camera, tending to his backyard garden, biking around town, or enjoying a meal with friends and good company.', social: null },
     {
       role: 'member',
       name: 'Gabi Medina',
@@ -99,7 +101,7 @@ export const committeeMembers: Record<string, CommitteeMember[]> = {
     { role: 'member', name: 'Sarah Batka', headshot: null, bio: '', social: null}
   ],
   events: [
-    { role: 'Chair', name: 'Greg Hall', headshot: null, bio: '', social: null },
+    { role: 'Chair', name: 'Gregory Hall', headshot: null, bio: '', social: null },
   ]
 }
 

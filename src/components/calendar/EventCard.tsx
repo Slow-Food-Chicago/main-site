@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import { Calendar, Clock, MapPin, ArrowUpRight, Download, ChevronDown, ChevronUp } from 'lucide-react'
 import type { CalendarEvent, EventCategory } from '../../types/calendar'
-import { createGoogleCalendarUrl, downloadEventIcs } from '../../services/calendar'
+import {
+  createGoogleCalendarUrl,
+  downloadEventIcs,
+  sanitizeEventHtml,
+  stripHtml,
+} from '../../services/calendar'
 
 interface EventCardProps {
   event: CalendarEvent
@@ -104,10 +109,11 @@ export default function EventCard({ event }: EventCardProps) {
 
         {event.description && (
           <div className="event-card-desc-wrap">
-            <p className={`event-card-desc ${isExpanded ? 'is-expanded' : 'is-collapsed'}`}>
-              {event.description}
-            </p>
-            {event.description.length > 150 && (
+            <div
+              className={`event-card-desc ${isExpanded ? 'is-expanded' : 'is-collapsed'}`}
+              dangerouslySetInnerHTML={{ __html: sanitizeEventHtml(event.description) }}
+            />
+            {stripHtml(event.description).length > 150 && (
               <button
                 type="button"
                 className="event-expand-btn"

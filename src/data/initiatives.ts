@@ -36,9 +36,9 @@ export const initiatives: InitiativeItem[] = [
   {
     number: '01',
     title: 'Pantry Swap',
-    tagline: 'Share what you have. Take what you need.',
+    tagline: 'Swap the big brand staples to something local',
     description:
-      'Pantry Swap is a community-led food exchange that reduces waste and builds neighborhood connection. Members bring shelf-stable goods, pantry staples, and homegrown produce to trade—no money, no judgment, just good food shared generously.',
+      'Pantry Swap is a movement to support local food systems and reduce reliance on large corporate food producers. Know your food sources and make conscious choices.',
     color: 'orange',
     icon: ShoppingBasket,
     status: 'Active',

@@ -551,10 +551,14 @@ body.mobile-nav-open {
 
 .hero {
   position: relative;
-  padding: 84px 8.35% 36px;
+  padding: 88px 8.35% 40px;
   background: white;
   display: flex;
   flex-direction: column;
+}
+
+.hero-inner {
+  max-width: 920px;
 }
 
 
@@ -601,7 +605,7 @@ h6 {
 }
 
 .hero h1 {
-  margin: 20px 0 16px;
+  margin: 20px 0 28px;
   font-family: var(--font-title);
   font-size: clamp(38px, 4.4vw, 64px);
   letter-spacing: -1.2px;
@@ -617,21 +621,13 @@ h6 {
   font-weight: 400;
 }
 
-.hero-lead {
-  font-size: clamp(17px, 1.5vw, 21px);
-  line-height: 1.65;
-  color: #615a52;
-  margin: 0 0 36px;
-  max-width: 960px;
-}
-
 .hero-vision-card {
   background: var(--snail-cream);
   border: 1px solid var(--snail-sand);
   border-left: 4px solid var(--snail-orange);
   border-radius: 4px;
   padding: 24px 28px;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
 }
 
 .hero-vision-card h3 {
@@ -644,39 +640,56 @@ h6 {
   color: var(--snail-charcoal);
 }
 
-.hero-about-grid {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 52px;
-  align-items: center;
-  margin-bottom: 52px;
-}
-
-.hero-about-copy h3 {
-  margin: 0 0 16px;
-  font-family: var(--font-heading);
-  font-size: clamp(24px, 2.4vw, 32px);
-  letter-spacing: -0.5px;
-  color: var(--snail-charcoal);
-}
-
-.hero-about-copy p {
-  color: #615a52;
-  font-size: 15px;
-  line-height: 1.8;
-  margin-bottom: 16px;
-}
-
-.hero-about-actions {
+.hero-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 14px;
-  margin-top: 24px;
+  margin-bottom: 52px;
+}
+
+.home-about-section {
+  padding: 84px 8.35% 88px;
+  background: var(--snail-cream-dark);
+  border-top: 1px solid rgb(31 29 27 / 7%);
+  border-bottom: 1px solid rgb(31 29 27 / 7%);
+}
+
+.home-about-header {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 52px;
+  align-items: start;
+  margin-bottom: 48px;
+}
+
+.home-about-heading h2 {
+  margin: 18px 0 0;
+  font-size: clamp(36px, 4vw, 54px);
+  letter-spacing: -1.4px;
+  line-height: 1.08;
+}
+
+.home-about-heading h2 em {
+  color: var(--snail-red);
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.home-about-copy p {
+  color: #5a534b;
+  font-size: 15px;
+  line-height: 1.8;
+  margin: 0 0 16px;
+}
+
+.home-about-copy p:last-child {
+  margin-bottom: 0;
 }
 
 .hero-pillars-wrap {
-  margin-bottom: 48px;
+  margin-bottom: 0;
 }
 
 .hero-pillars-title {
@@ -1953,22 +1966,18 @@ a.initiative-card:hover .initiative-title {
     padding-left: 6%;
   }
 
-  .hero-about-grid {
+  .home-about-section {
+    padding: 68px 6% 72px;
+  }
+
+  .home-about-header {
     grid-template-columns: 1fr;
-    gap: 36px;
+    gap: 24px;
   }
 
   .hero-pillars-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 14px;
-  }
-
-  .hero-visual {
-    min-height: 380px;
-    height: 48vw;
-    width: 100%;
-    max-width: 580px;
-    margin: 0 auto;
   }
 
   .principles-section {
@@ -2065,37 +2074,13 @@ a.initiative-card:hover .initiative-title {
     margin-top: 14px;
   }
 
-  .hero-about-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
+  .home-about-section {
+    padding: 56px 24px 64px;
   }
 
   .hero-pillars-grid {
     grid-template-columns: 1fr;
     gap: 12px;
-  }
-
-  .hero-visual {
-    width: 100%;
-    min-height: 0;
-    height: 320px;
-    align-self: center;
-  }
-
-  .hero-image {
-    border-radius: 47% 47% 3px 3px;
-  }
-
-  .image-caption {
-    right: -10px;
-    bottom: 16px;
-    padding: 10px 13px 10px 10px;
-  }
-
-  .image-sun {
-    top: 20px;
-    left: -14px;
-    font-size: 36px;
   }
 
   .intro-rule {
@@ -2764,6 +2749,7 @@ a.initiative-card:hover .initiative-title {
 .exec-board-headshot {
   width: 250px;
   height: 250px;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 5%;
 }
@@ -2800,6 +2786,10 @@ a.initiative-card:hover .initiative-title {
 }
 
 .committee-headshot {
+  width: 100px;
+  height: 100px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
   border-radius: 10%;
 }
 
@@ -3227,6 +3217,32 @@ a.initiative-card:hover .initiative-title {
   line-height: 1.6;
   color: #55504a;
   margin: 0 0 6px;
+}
+
+.event-card-desc a {
+  color: var(--snail-red);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.event-card-desc a:hover {
+  color: var(--snail-red-dark);
+}
+
+.event-card-desc p {
+  margin: 0 0 8px;
+}
+
+.event-card-desc p:last-child {
+  margin-bottom: 0;
+}
+
+.event-card-desc ul,
+.event-card-desc ol {
+  margin: 4px 0 8px;
+  padding-left: 20px;
 }
 
 .event-card-desc.is-collapsed {

@@ -4,8 +4,8 @@
  *
  * Eventbrite's public API no longer lists events by organizer and its pages send
  * no CORS headers. The organizer profile page embeds its events as JSON
- * (__NEXT_DATA__), so we fetch the page server-side and return just the
- * `upcomingEvents` array as JSON.
+ * (__NEXT_DATA__), so we fetch the page server-side and return the
+ * `upcomingEvents` occurring within the next two months as JSON.
  *
  * Usage: eventbrite-feed.php?organizer=22780790031
  * Only numeric organizer ids are accepted, so this cannot be used as an open proxy.
@@ -58,7 +58,24 @@ if (
 ) {
     $data = json_decode($m[1], true);
     if (isset($data['props']['pageProps']['upcomingEvents']) && is_array($data['props']['pageProps']['upcomingEvents'])) {
-        $events = $data['props']['pageProps']['upcomingEvents'];
+        $tz = new DateTimeZone('America/Chicago');
+        $todayStr = (new DateTimeImmutable('today', $tz))->format('Y-m-d');
+        $twoMonthsStr = (new DateTimeImmutable('today', $tz))->modify('+2 months')->format('Y-m-d');
+
+        $events = array_values(array_filter(
+            $data['props']['pageProps']['upcomingEvents'],
+            function ($ev) use ($todayStr, $twoMonthsStr) {
+                if (!is_array($ev) || !empty($ev['is_cancelled'])) {
+                    return false;
+                }
+                $startDate = isset($ev['start_date']) ? (string) $ev['start_date'] : '';
+                $endDate = isset($ev['end_date']) && $ev['end_date'] !== '' ? (string) $ev['end_date'] : $startDate;
+                if ($startDate === '') {
+                    return false;
+                }
+                return $endDate >= $todayStr && $startDate <= $twoMonthsStr;
+            }
+        ));
     }
 }
 

@@ -13,14 +13,187 @@ function unescapeIcsText(text: string): string {
 }
 
 /**
- * Parses an ICS date string (either YYYYMMDD or YYYYMMDDTHHMMSS[Z]).
+ * Strip HTML tags and return plain text.
  */
-function parseIcsDate(rawDateStr: string): { date: Date; isAllDay: boolean } {
-  // Strip out any TZID parameter prefix (e.g., TZID=America/Chicago:20261024T100000)
-  const cleanStr = rawDateStr.includes(':') ? rawDateStr.split(':').pop() || rawDateStr : rawDateStr
+export function stripHtml(raw: string): string {
+  if (!raw) return ''
+  if (typeof DOMParser !== 'undefined') {
+    const doc = new DOMParser().parseFromString(raw, 'text/html')
+    return (doc.body.textContent || '').trim()
+  }
+  return raw.replace(/<[^>]*>/g, '').trim()
+}
+
+function escapeHtmlText(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
+function escapeHtmlAttr(str: string): string {
+  return escapeHtmlText(str).replace(/"/g, '&quot;')
+}
+
+const ALLOWED_TAGS = new Set([
+  'b',
+  'strong',
+  'i',
+  'em',
+  'u',
+  'p',
+  'div',
+  'ul',
+  'ol',
+  'li',
+  'span',
+  'blockquote',
+  'sub',
+  'sup',
+])
+
+const DROP_CONTENT_TAGS = new Set([
+  'script',
+  'style',
+  'iframe',
+  'object',
+  'embed',
+  'svg',
+  'math',
+  'form',
+  'input',
+  'button',
+])
+
+/**
+ * Sanitize event description HTML (e.g., from Google Calendar ICS / API)
+ * so anchor tags (`<a href="...">`) and basic formatting render safely.
+ */
+export function sanitizeEventHtml(raw: string): string {
+  if (!raw) return ''
+
+  // Decode entity-encoded HTML tags if the source double-encoded them
+  let input = raw
+  if (!/<[a-z!/]/i.test(input) && /&lt;[a-z!/]/i.test(input)) {
+    input = input
+      .replace(/&lt;/gi, '<')
+      .replace(/&gt;/gi, '>')
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;/gi, "'")
+      .replace(/&amp;/gi, '&')
+  }
+
+  if (typeof DOMParser === 'undefined') {
+    return escapeHtmlText(input).replace(/\n/g, '<br />')
+  }
+
+  const doc = new DOMParser().parseFromString(input, 'text/html')
+
+  const serializeNode = (node: Node): string => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      return escapeHtmlText(node.textContent || '').replace(/\n/g, '<br />')
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      return ''
+    }
+
+    const el = node as Element
+    const tag = el.tagName.toLowerCase()
+
+    if (DROP_CONTENT_TAGS.has(tag)) {
+      return ''
+    }
+
+    if (tag === 'br') {
+      return '<br />'
+    }
+
+    const childrenHtml = Array.from(el.childNodes).map(serializeNode).join('')
+
+    if (tag === 'a') {
+      const href = (el.getAttribute('href') || '').trim()
+      if (/^(https?:\/\/|mailto:|tel:|\/)/i.test(href)) {
+        const label = childrenHtml || escapeHtmlText(href)
+        return `<a href="${escapeHtmlAttr(href)}" target="_blank" rel="noopener noreferrer">${label}</a>`
+      }
+      return childrenHtml
+    }
+
+    if (ALLOWED_TAGS.has(tag)) {
+      return `<${tag}>${childrenHtml}</${tag}>`
+    }
+
+    return childrenHtml
+  }
+
+  return Array.from(doc.body.childNodes).map(serializeNode).join('')
+}
+
+/**
+ * Return the two-month date window [now, now + 2 months].
+ */
+export function getTwoMonthWindow(referenceDate: Date = new Date()): {
+  start: Date
+  end: Date
+} {
+  const start = new Date(referenceDate)
+  const end = new Date(referenceDate)
+  end.setMonth(end.getMonth() + 2)
+  return { start, end }
+}
+
+/**
+ * Convert a wall-clock date/time in an IANA timezone to an absolute Date.
+ */
+function zonedTimeToDate(dateStr: string, timeStr: string, timeZone: string): Date {
+  const [y, mo, d] = dateStr.split('-').map(Number)
+  const [h, mi, s] = (timeStr || '00:00:00').split(':').map(Number)
+  const asUtc = Date.UTC(y, mo - 1, d, h || 0, mi || 0, s || 0)
+
+  try {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      hourCycle: 'h23',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    }).formatToParts(new Date(asUtc))
+    const get = (type: string) => Number(parts.find((p) => p.type === type)?.value)
+    const zonedAsUtc = Date.UTC(
+      get('year'),
+      get('month') - 1,
+      get('day'),
+      get('hour'),
+      get('minute'),
+      get('second'),
+    )
+    return new Date(asUtc - (zonedAsUtc - asUtc))
+  } catch {
+    // Unknown timezone; treat as the viewer's local time
+    return new Date(y, mo - 1, d, h || 0, mi || 0, s || 0)
+  }
+}
+
+/**
+ * Parses an ICS date string (either YYYYMMDD or YYYYMMDDTHHMMSS[Z]),
+ * optionally with a TZID parameter prefix (e.g., DTSTART;TZID=America/Chicago:20261024T100000).
+ */
+function parseIcsDate(
+  rawDateStr: string,
+  defaultTz = 'America/Chicago',
+): { date: Date; isAllDay: boolean } {
+  const colonIdx = rawDateStr.indexOf(':')
+  const meta = colonIdx >= 0 ? rawDateStr.substring(0, colonIdx) : ''
+  const cleanStr = (colonIdx >= 0 ? rawDateStr.substring(colonIdx + 1) : rawDateStr).trim()
+
+  const tzMatch = meta.match(/TZID=([^;:]+)/i)
+  const tz = tzMatch ? tzMatch[1] : defaultTz
 
   // Date-only format: YYYYMMDD
-  if (cleanStr.length === 8 && !cleanStr.includes('T')) {
+  if ((cleanStr.length === 8 && !cleanStr.includes('T')) || /VALUE=DATE/i.test(meta)) {
     const year = parseInt(cleanStr.substring(0, 4), 10)
     const month = parseInt(cleanStr.substring(4, 6), 10) - 1
     const day = parseInt(cleanStr.substring(6, 8), 10)
@@ -37,7 +210,12 @@ function parseIcsDate(rawDateStr: string): { date: Date; isAllDay: boolean } {
         isAllDay: false,
       }
     }
-    // Local / Floating time
+    if (tzMatch) {
+      return {
+        date: zonedTimeToDate(`${y}-${mo}-${d}`, `${h}:${mi}:${s}`, tz),
+        isAllDay: false,
+      }
+    }
     return {
       date: new Date(+y, +mo - 1, +d, +h, +mi, +s),
       isAllDay: false,
@@ -55,80 +233,319 @@ function parseIcsDate(rawDateStr: string): { date: Date; isAllDay: boolean } {
  * Determine category from event title and description.
  */
 function inferCategory(title: string, desc: string): EventCategory {
-  const combined = `${title} ${desc}`.toLowerCase()
-  if (combined.includes('garden') || combined.includes('preserve') || combined.includes('harvest') || combined.includes('compost')) {
+  const combined = `${title} ${stripHtml(desc)}`.toLowerCase()
+  if (
+    combined.includes('garden') ||
+    combined.includes('preserve') ||
+    combined.includes('harvest') ||
+    combined.includes('compost')
+  ) {
     return 'garden'
   }
-  if (combined.includes('meeting') || combined.includes('committee') || combined.includes('council') || combined.includes('board')) {
+  if (
+    combined.includes('meeting') ||
+    combined.includes('committee') ||
+    combined.includes('council') ||
+    combined.includes('board')
+  ) {
     return 'meeting'
   }
-  if (combined.includes('workshop') || combined.includes('class') || combined.includes('seed saving') || combined.includes('bake')) {
+  if (
+    combined.includes('workshop') ||
+    combined.includes('class') ||
+    combined.includes('seed saving') ||
+    combined.includes('bake')
+  ) {
     return 'workshop'
   }
-  if (combined.includes('swap') || combined.includes('potluck') || combined.includes('tasting') || combined.includes('dinner') || combined.includes('celebration')) {
+  if (
+    combined.includes('swap') ||
+    combined.includes('potluck') ||
+    combined.includes('tasting') ||
+    combined.includes('dinner') ||
+    combined.includes('celebration')
+  ) {
     return 'gathering'
   }
   return 'other'
 }
 
+const DAY_MAP: Record<string, number> = {
+  SU: 0,
+  MO: 1,
+  TU: 2,
+  WE: 3,
+  TH: 4,
+  FR: 5,
+  SA: 6,
+}
+
 /**
- * Parse an iCalendar (.ics) string into an array of structured CalendarEvent objects.
+ * Expand a recurring event's RRULE into start Dates up to windowEnd.
+ */
+function expandRruleDates(
+  startDate: Date,
+  rruleStr: string,
+  windowEnd: Date,
+  defaultTz: string,
+): Date[] {
+  const parts: Record<string, string> = {}
+  for (const seg of rruleStr.split(';')) {
+    const [k, v] = seg.split('=')
+    if (k && v) {
+      parts[k.trim().toUpperCase()] = v.trim().toUpperCase()
+    }
+  }
+
+  const freq = parts['FREQ'] || ''
+  const interval = parts['INTERVAL'] ? Math.max(1, parseInt(parts['INTERVAL'], 10)) : 1
+  const maxCount = parts['COUNT'] ? parseInt(parts['COUNT'], 10) : 1000
+  const untilDate = parts['UNTIL'] ? parseIcsDate(`UNTIL:${parts['UNTIL']}`, defaultTz).date : null
+
+  const occurrences: Date[] = []
+  let count = 0
+
+  if (freq === 'DAILY') {
+    const cursor = new Date(startDate)
+    for (let step = 0; step < 1000 && count < maxCount; step++) {
+      if (untilDate && cursor > untilDate) break
+      if (cursor > windowEnd) break
+      occurrences.push(new Date(cursor))
+      count++
+      cursor.setDate(cursor.getDate() + interval)
+    }
+  } else if (freq === 'WEEKLY') {
+    const byDays: number[] = []
+    if (parts['BYDAY']) {
+      for (const code of parts['BYDAY'].split(',')) {
+        const twoChar = code.trim().slice(-2)
+        if (DAY_MAP[twoChar] !== undefined) {
+          byDays.push(DAY_MAP[twoChar])
+        }
+      }
+    }
+    if (byDays.length === 0) {
+      byDays.push(startDate.getDay())
+    }
+    byDays.sort((a, b) => a - b)
+
+    const weekBase = new Date(startDate)
+    weekBase.setDate(weekBase.getDate() - weekBase.getDay())
+
+    outerWeekly: for (let week = 0; week < 500 && count < maxCount; week++) {
+      const currentWeekStart = new Date(weekBase)
+      currentWeekStart.setDate(weekBase.getDate() + week * interval * 7)
+      if (currentWeekStart > windowEnd) break
+
+      for (const dow of byDays) {
+        const candidate = new Date(currentWeekStart)
+        candidate.setDate(currentWeekStart.getDate() + dow)
+        if (candidate < startDate) continue
+        if (untilDate && candidate > untilDate) break outerWeekly
+        count++
+        if (count > maxCount) break outerWeekly
+        if (candidate > windowEnd) break outerWeekly
+        occurrences.push(candidate)
+      }
+    }
+  } else if (freq === 'MONTHLY') {
+    const byDay = parts['BYDAY'] || ''
+    const byMonthDay = parts['BYMONTHDAY'] ? parseInt(parts['BYMONTHDAY'], 10) : null
+
+    for (let mStep = 0; mStep < 240 && count < maxCount; mStep++) {
+      const targetMonthDate = new Date(
+        startDate.getFullYear(),
+        startDate.getMonth() + mStep * interval,
+        1,
+        startDate.getHours(),
+        startDate.getMinutes(),
+        startDate.getSeconds(),
+      )
+      if (targetMonthDate > windowEnd) break
+
+      const year = targetMonthDate.getFullYear()
+      const month = targetMonthDate.getMonth()
+      const daysInMonth = new Date(year, month + 1, 0).getDate()
+
+      let candidate: Date | null = null
+      const byDayMatch = byDay.match(/^(-?\d+)([A-Z]{2})$/)
+      if (byDayMatch && DAY_MAP[byDayMatch[2]] !== undefined) {
+        const nth = parseInt(byDayMatch[1], 10)
+        const targetDow = DAY_MAP[byDayMatch[2]]
+        const matching: Date[] = []
+        for (let d = 1; d <= daysInMonth; d++) {
+          const test = new Date(
+            year,
+            month,
+            d,
+            startDate.getHours(),
+            startDate.getMinutes(),
+            startDate.getSeconds(),
+          )
+          if (test.getDay() === targetDow) {
+            matching.push(test)
+          }
+        }
+        if (nth > 0 && matching[nth - 1]) {
+          candidate = matching[nth - 1]
+        } else if (nth < 0 && matching[matching.length + nth]) {
+          candidate = matching[matching.length + nth]
+        }
+      } else {
+        const dayNum = byMonthDay ?? startDate.getDate()
+        if (dayNum <= daysInMonth) {
+          candidate = new Date(
+            year,
+            month,
+            dayNum,
+            startDate.getHours(),
+            startDate.getMinutes(),
+            startDate.getSeconds(),
+          )
+        }
+      }
+
+      if (!candidate || candidate < startDate) continue
+      if (untilDate && candidate > untilDate) break
+      count++
+      if (count > maxCount) break
+      if (candidate > windowEnd) break
+      occurrences.push(candidate)
+    }
+  } else if (freq === 'YEARLY') {
+    const cursor = new Date(startDate)
+    for (let yStep = 0; yStep < 50 && count < maxCount; yStep++) {
+      if (untilDate && cursor > untilDate) break
+      if (cursor > windowEnd) break
+      occurrences.push(new Date(cursor))
+      count++
+      cursor.setFullYear(cursor.getFullYear() + interval)
+    }
+  }
+
+  return occurrences
+}
+
+/**
+ * Parse an iCalendar (.ics) string into an array of structured CalendarEvent objects
+ * within the next two months.
  */
 export function parseIcs(icsData: string): CalendarEvent[] {
   // Unfold multi-line entries (lines starting with whitespace)
   const unfolded = icsData.replace(/\r\n[ \t]|\r[ \t]|\n[ \t]/g, '')
   const lines = unfolded.split(/\r\n|\r|\n/)
 
+  let calTz = 'America/Chicago'
+  for (const line of lines) {
+    if (line.toUpperCase().startsWith('X-WR-TIMEZONE:')) {
+      const tzVal = line.substring('X-WR-TIMEZONE:'.length).trim()
+      if (tzVal) calTz = tzVal
+      break
+    }
+  }
+
+  const { start: windowStart, end: windowEnd } = getTwoMonthWindow()
+
   const events: CalendarEvent[] = []
   let inEvent = false
   let currentEvent: Record<string, string> = {}
+  let currentExdates: number[] = []
 
   for (const line of lines) {
     const trimmed = line.trim()
     if (trimmed === 'BEGIN:VEVENT') {
       inEvent = true
       currentEvent = {}
+      currentExdates = []
       continue
     }
 
     if (trimmed === 'END:VEVENT') {
       inEvent = false
-      if (currentEvent['SUMMARY'] && currentEvent['DTSTART']) {
-        const { date: startDate, isAllDay } = parseIcsDate(currentEvent['DTSTART'])
+      if (
+        currentEvent['STATUS']?.toUpperCase() !== 'CANCELLED' &&
+        currentEvent['SUMMARY'] &&
+        currentEvent['DTSTART_RAW']
+      ) {
+        const { date: startDate, isAllDay } = parseIcsDate(currentEvent['DTSTART_RAW'], calTz)
         let endDate = startDate
-        if (currentEvent['DTEND']) {
-          endDate = parseIcsDate(currentEvent['DTEND']).date
+        if (currentEvent['DTEND_RAW']) {
+          endDate = parseIcsDate(currentEvent['DTEND_RAW'], calTz).date
         } else if (isAllDay) {
           endDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000)
+        } else {
+          endDate = new Date(startDate.getTime() + 60 * 60 * 1000)
         }
 
+        const durationMs = Math.max(0, endDate.getTime() - startDate.getTime())
         const title = unescapeIcsText(currentEvent['SUMMARY'] || 'Untitled Event')
-        const description = currentEvent['DESCRIPTION'] ? unescapeIcsText(currentEvent['DESCRIPTION']) : undefined
-        const location = currentEvent['LOCATION'] ? unescapeIcsText(currentEvent['LOCATION']) : undefined
+        const description = currentEvent['DESCRIPTION']
+          ? unescapeIcsText(currentEvent['DESCRIPTION'])
+          : undefined
+        const location = currentEvent['LOCATION']
+          ? unescapeIcsText(currentEvent['LOCATION'])
+          : undefined
         const url = currentEvent['URL']
+        const baseUid = currentEvent['UID'] || `event-${events.length}`
+        const category = inferCategory(title, description || '')
 
-        events.push({
-          id: currentEvent['UID'] || `event-${events.length}-${startDate.getTime()}`,
-          title,
-          description,
-          location,
-          startDate,
-          endDate,
-          isAllDay,
-          category: inferCategory(title, description || ''),
-          url,
-        })
+        if (currentEvent['RRULE']) {
+          const exSet = new Set(currentExdates)
+          const occStarts = expandRruleDates(startDate, currentEvent['RRULE'], windowEnd, calTz)
+          for (const occStart of occStarts) {
+            if (exSet.has(Math.floor(occStart.getTime() / 1000))) continue
+            const occEnd = new Date(occStart.getTime() + durationMs)
+            if (occEnd >= windowStart && occStart <= windowEnd) {
+              events.push({
+                id: `${baseUid}-${occStart.getTime()}`,
+                title,
+                description,
+                location,
+                startDate: occStart,
+                endDate: occEnd,
+                isAllDay,
+                category,
+                url,
+              })
+            }
+          }
+        } else if (endDate >= windowStart && startDate <= windowEnd) {
+          events.push({
+            id: `${baseUid}-${startDate.getTime()}`,
+            title,
+            description,
+            location,
+            startDate,
+            endDate,
+            isAllDay,
+            category,
+            url,
+          })
+        }
       }
       currentEvent = {}
+      currentExdates = []
       continue
     }
 
     if (inEvent) {
       const colonIndex = line.indexOf(':')
       if (colonIndex > 0) {
-        const keyPart = line.substring(0, colonIndex).split(';')[0].toUpperCase().trim()
+        const fullKey = line.substring(0, colonIndex).trim()
+        const keyPart = fullKey.split(';')[0].toUpperCase().trim()
         const rawValue = line.substring(colonIndex + 1)
-        currentEvent[keyPart] = rawValue
+        if (keyPart === 'DTSTART') {
+          currentEvent['DTSTART_RAW'] = line
+        } else if (keyPart === 'DTEND') {
+          currentEvent['DTEND_RAW'] = line
+        } else if (keyPart === 'EXDATE') {
+          for (const v of rawValue.split(',')) {
+            const parsed = parseIcsDate(`${fullKey}:${v.trim()}`, calTz)
+            currentExdates.push(Math.floor(parsed.date.getTime() / 1000))
+          }
+        } else {
+          currentEvent[keyPart] = rawValue
+        }
       }
     }
   }
@@ -138,15 +555,18 @@ export function parseIcs(icsData: string): CalendarEvent[] {
 }
 
 /**
- * Fetch calendar events via the Google Calendar v3 REST API.
+ * Fetch calendar events for the next two months via the Google Calendar v3 REST API.
  */
 export async function fetchGoogleCalendarApi(
   apiKey: string,
   calendarId: string,
 ): Promise<CalendarEvent[]> {
+  const { start: windowStart, end: windowEnd } = getTwoMonthWindow()
   const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(
     calendarId,
-  )}/events?key=${encodeURIComponent(apiKey)}&timeMin=${new Date().toISOString()}&singleEvents=true&orderBy=startTime&maxResults=50`
+  )}/events?key=${encodeURIComponent(
+    apiKey,
+  )}&timeMin=${windowStart.toISOString()}&timeMax=${windowEnd.toISOString()}&singleEvents=true&orderBy=startTime&maxResults=250`
 
   const res = await fetch(url)
   if (!res.ok) {
@@ -230,41 +650,6 @@ export async function fetchIcsFeed(feedUrl: string): Promise<CalendarEvent[]> {
 }
 
 /**
- * Convert a wall-clock date/time in an IANA timezone to an absolute Date.
- */
-function zonedTimeToDate(dateStr: string, timeStr: string, timeZone: string): Date {
-  const [y, mo, d] = dateStr.split('-').map(Number)
-  const [h, mi, s] = (timeStr || '00:00:00').split(':').map(Number)
-  const asUtc = Date.UTC(y, mo - 1, d, h || 0, mi || 0, s || 0)
-
-  try {
-    const parts = new Intl.DateTimeFormat('en-US', {
-      timeZone,
-      hourCycle: 'h23',
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-    }).formatToParts(new Date(asUtc))
-    const get = (type: string) => Number(parts.find((p) => p.type === type)?.value)
-    const zonedAsUtc = Date.UTC(
-      get('year'),
-      get('month') - 1,
-      get('day'),
-      get('hour'),
-      get('minute'),
-      get('second'),
-    )
-    return new Date(asUtc - (zonedAsUtc - asUtc))
-  } catch {
-    // Unknown timezone; treat as the viewer's local time
-    return new Date(y, mo - 1, d, h || 0, mi || 0, s || 0)
-  }
-}
-
-/**
  * Fetch upcoming events for an Eventbrite organizer via the same-origin
  * `eventbrite-feed.php` proxy (Eventbrite pages/API are not CORS-accessible).
  */
@@ -296,6 +681,8 @@ export async function fetchEventbriteEvents(organizerId: string): Promise<Calend
 
   const data: unknown = await res.json()
   if (!Array.isArray(data)) return []
+
+  const { start: windowStart, end: windowEnd } = getTwoMonthWindow()
 
   return (data as EbEvent[])
     .filter((ev) => ev.start_date && !ev.is_cancelled)
@@ -330,6 +717,7 @@ export async function fetchEventbriteEvents(organizerId: string): Promise<Calend
         url: ev.url,
       }
     })
+    .filter((ev) => ev.endDate >= windowStart && ev.startDate <= windowEnd)
 }
 
 /**
@@ -374,7 +762,7 @@ export function downloadEventIcs(event: CalendarEvent): void {
     `DTSTART:${startStr}`,
     `DTEND:${endStr}`,
     `SUMMARY:${event.title.replace(/\n/g, ' ')}`,
-    event.description ? `DESCRIPTION:${event.description.replace(/\n/g, '\\n')}` : '',
+    event.description ? `DESCRIPTION:${stripHtml(event.description).replace(/\n/g, '\\n')}` : '',
     event.location ? `LOCATION:${event.location.replace(/\n/g, ' ')}` : '',
     'STATUS:CONFIRMED',
     'END:VEVENT',
