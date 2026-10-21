@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
-import SnailLogo from '../ui/SnailLogo'
+import horizontalLogo from '../../assets/colored-horizontal-logo.png'
 import { initiatives } from '../../data/initiatives'
 
 export default function Header() {
@@ -79,11 +79,11 @@ export default function Header() {
   return (
     <header className="site-header">
       <Link className="brand" to="/" aria-label="Slow Food Chicago home">
-        <SnailLogo size={36} />
-        <span className="brand-name">
-          Slow Food
-          <span>Chicago</span>
-        </span>
+        <img
+          src={horizontalLogo}
+          alt="Slow Food Chicago"
+          className="brand-logo"
+        />
       </Link>
 
       {/* Desktop navigation */}

@@ -31,10 +31,10 @@ export default function HomePage() {
               eat—and making it happen, right here in our neighborhoods.
             </p>
             <p>
-              We are a member-supported chapter run by an all-volunteer Executive Council made up of 
-              an Executive Board and Chairs from various committees. We also rely on a network of volunteers 
-              who help with operations and events. With more than 500 members
-              and 5,000 supporters, Slow Food Chicago is one of the largest chapters in the US.
+              We are a member-supported chapter run by an all-volunteer <Link to='/board' style={{color: "var(--snail-red)"}}>Executive Council</Link>. 
+              We also rely on a network of volunteers who help with operations and events. 
+              With more than 500 members and 5,000 supporters, Slow Food Chicago is one of 
+              the largest chapters in the US.
             </p>
           </div>
           <div className="intro-rule">

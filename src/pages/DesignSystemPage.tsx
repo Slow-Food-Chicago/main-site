@@ -117,6 +117,22 @@ export default function DesignSystemPage() {
       textLight: false,
     },
     {
+      name: 'Snail Lime',
+      cssVar: '--snail-lime',
+      hex: '#72B41D',
+      rgb: '114, 180, 29',
+      role: 'Vibrant fresh green, produce & growth accent',
+      textLight: false,
+    },
+    {
+      name: 'Lime Light',
+      cssVar: '--snail-lime-light',
+      hex: '#F1F8E8',
+      rgb: '241, 248, 232',
+      role: 'Soft lime tinted card backgrounds',
+      textLight: false,
+    },
+    {
       name: 'Snail Orange',
       cssVar: '--snail-orange',
       hex: '#DE7900',

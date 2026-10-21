@@ -17,6 +17,13 @@
   --font-accent: "Lora", Georgia, serif;
   --font-sans: var(--font-body);
   --font-serif: var(--font-accent);
+
+  --color-snail-lime: #72B41D;
+  --color-snail-lime-dark: #5C9317;
+  --color-snail-lime-light: #F1F8E8;
+  --color-snail-green: #72B41D;
+  --color-snail-green-dark: #5C9317;
+  --color-snail-green-light: #F1F8E8;
 }
 
 :root {
@@ -77,6 +84,18 @@
   --snail-forest-dark-rgb: 24 93 61;
   --snail-forest-light: #E8F4EE;
   --snail-forest-light-rgb: 232 244 238;
+  --snail-lime: #72B41D;
+  --snail-lime-rgb: 114 180 29;
+  --snail-lime-dark: #5C9317;
+  --snail-lime-dark-rgb: 92 147 23;
+  --snail-lime-light: #F1F8E8;
+  --snail-lime-light-rgb: 241 248 232;
+  --snail-green: #72B41D;
+  --snail-green-rgb: 114 180 29;
+  --snail-green-dark: #5C9317;
+  --snail-green-dark-rgb: 92 147 23;
+  --snail-green-light: #F1F8E8;
+  --snail-green-light-rgb: 241 248 232;
   --snail-yellow: #F5BE0B;
   --snail-yellow-rgb: 245 190 11;
   --snail-yellow-dark: #D9A608;
@@ -217,6 +236,12 @@ img {
   flex-shrink: 0;
 }
 
+.brand-logo {
+  width: auto;
+  max-width: 200px;
+  display: block;
+  object-fit: contain;
+}
 
 .brand-name {
   display: flex;
@@ -2020,6 +2045,11 @@ a.initiative-card:hover .initiative-title {
     padding: 0 22px;
   }
 
+  .brand-logo {
+    height: 40px;
+    max-width: 150px;
+  }
+
   .main-nav {
     display: none;
   }
@@ -2614,21 +2644,32 @@ a.initiative-card:hover .initiative-title {
 .member-modal-inner {
   display: grid;
   grid-template-columns: 220px 1fr;
+  align-items: center;
+}
+
+.member-modal-image-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  height: 100%;
 }
 
 .member-modal-img {
   width: 220px;
   height: 280px;
   object-fit: cover;
-  object-position: top;
+  object-position: center;
   display: block;
   flex-shrink: 0;
+  align-self: center;
 }
 
 .member-modal-body {
   padding: 32px 32px 32px 28px;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .member-modal-role {
@@ -2655,7 +2696,75 @@ a.initiative-card:hover .initiative-title {
   color: #746e65;
   font-size: 13px;
   line-height: 1.85;
-  flex: 1;
+  max-height: 260px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(31 29 27 / 25%) transparent;
+}
+
+.member-modal-bio:focus-visible {
+  outline: 1px solid var(--snail-red);
+  outline-offset: 2px;
+}
+
+.member-modal-bio::-webkit-scrollbar {
+  width: 5px;
+}
+
+.member-modal-bio::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.member-modal-bio::-webkit-scrollbar-thumb {
+  background: rgb(31 29 27 / 20%);
+  border-radius: 4px;
+}
+
+.member-modal-bio::-webkit-scrollbar-thumb:hover {
+  background: var(--snail-red);
+}
+
+.member-modal-bio-paragraph {
+  margin: 0 0 12px 0;
+}
+
+.member-modal-bio-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.member-modal-bio-heading {
+  margin: 14px 0 6px 0;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--snail-charcoal);
+}
+
+.member-modal-bio-heading:first-child {
+  margin-top: 0;
+}
+
+.member-modal-bio-list {
+  margin: 0 0 12px 0;
+  padding-left: 18px;
+  list-style-type: disc;
+}
+
+.member-modal-bio-list li {
+  margin-bottom: 4px;
+}
+
+.member-modal-bio-link {
+  color: var(--snail-red);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 150ms ease;
+}
+
+.member-modal-bio-link:hover {
+  color: var(--snail-forest-dark);
 }
 
 .member-modal-social-links {
@@ -2694,6 +2803,11 @@ a.initiative-card:hover .initiative-title {
     grid-template-columns: 1fr;
   }
 
+  .member-modal-image-wrap {
+    width: 100%;
+    height: auto;
+  }
+
   .member-modal-img {
     width: 100%;
     height: 260px;
@@ -2701,6 +2815,10 @@ a.initiative-card:hover .initiative-title {
 
   .member-modal-body {
     padding: 24px;
+  }
+
+  .member-modal-bio {
+    max-height: 220px;
   }
 }
 

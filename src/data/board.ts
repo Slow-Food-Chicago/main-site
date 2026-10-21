@@ -47,14 +47,15 @@ export const executiveBoard: BoardMember[] = [
     name: 'Diane Williams',
     headshot: diane,
     social: null,
-    bio: `
-    I became interested in the Slow Food movement after reading about its founding by Carlo Petrini, becoming a Slow Food member in the early 2000s, joining the Board in 2023. 
-    I was raised on a fourth generation, McHenry County dairy farm. Good food and clean farm crops were part of my upbringing. 
-    In my professional life, I was an economic development consultant to the public sector. 
-    Routinely engaging with local food businesses in client communities was a major component of my practice. 
-    Having retired in 2023, I now volunteer weekly with two area food banks. 
-    For me, seeing the food system from these varied perspectives reinforces my belief in Slow Food's mission of good, clean, and fair food for all and a commitment to support Slow Food's important work.
-    `,
+    bio: `I became interested in the Slow Food movement after reading about its founding by Carlo Petrini, becoming a Slow Food member in the early 2000s, joining the Board in 2023.
+
+I was raised on a fourth generation, McHenry County dairy farm. Good food and clean farm crops were part of my upbringing.
+
+In my professional life, I was an economic development consultant to the public sector. Routinely engaging with local food businesses in client communities was a major component of my practice.
+
+Having retired in 2023, I now volunteer weekly with two area food banks.
+
+For me, seeing the food system from these varied perspectives reinforces my belief in Slow Food's mission of good, clean, and fair food for all and a commitment to support Slow Food's important work.`,
   },
   {
     role: 'Secretary',
@@ -72,25 +73,45 @@ export const executiveBoard: BoardMember[] = [
 export const committeeMembers: Record<string, CommitteeMember[]> = {
   comms: [
     { role: 'Chair', name: 'Vanshi Jhumkhawala', headshot: null, bio: '', social: null },
-    { role: 'Chair', name: 'Benji Corpuz', headshot: benji, bio: 'Benji is a city planner with the City of Chicago’s Department of Planning and Development who believes great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity. He has a lifelong appreciation for food as a source of family and community, and is a fierce advocate for shopping and dining locally. He hopes to contribute his passion for strong neighborhoods, local food systems, and fostering connections to the organization. Benji is particularly interested in the intersection of nutrition, public health, and food access, and how individual, collective, and municipal efforts can make nutritious food more accessible to everyone. Outside of work, you can find him behind a camera, tending to his backyard garden, biking around town, or enjoying a meal with friends and good company.', social: null },
+    { role: 'Chair', name: 'Benji Corpuz', headshot: benji, bio: `Benji is a city planner with the City of Chicago’s Department of Planning and Development who believes great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity. 
+      
+      He has a lifelong appreciation for food as a source of family and community, and is a fierce advocate for shopping and dining locally. He hopes to contribute his passion for strong neighborhoods, local food systems, and fostering connections to the organization. 
+      
+      Benji is particularly interested in the intersection of nutrition, public health, and food access, and how individual, collective, and municipal efforts can make nutritious food more accessible to everyone. 
+      
+      Outside of work, you can find him behind a camera, tending to his backyard garden, biking around town, or enjoying a meal with friends and good company.`, 
+      social: null },
   ],
   partnerships: [
     {
       role: 'Chair',
       name: 'Christian Hunter',
       headshot: christian,
-      bio: `is currently the only Black chef in Chicago with a Michelin star, and one of only two Black chefs in the country with the honor. 
-      Hunter's culinary journey began in Lexington, Kentucky, where he was immersed in a family of passionate home cooks. His formative years in this environment fostered a profound appreciation for 'traditional Southern food.' Subsequently, his exposure to Lexington's diverse culinary scene broadened his horizons, shaping his innovative approach`,
+      bio: `Christian Hunter is currently the only Black chef in Chicago with a Michelin star, and one of only two Black chefs in the country with the honor.
+
+Hunter's culinary journey began in Lexington, Kentucky, where he was immersed in a family of passionate home cooks. His formative years in this environment fostered a profound appreciation for 'traditional Southern food.'
+
+Subsequently, his exposure to Lexington's diverse culinary scene broadened his horizons, shaping his innovative approach.`,
       social: null,
     },
     { role: 'member', name: 'Dfrantz Smart', headshot: null, bio: '', social: null },
-    { role: 'Chair', name: 'Benji Corpuz', headshot: benji, bio: 'Benji is a city planner with the City of Chicago’s Department of Planning and Development who believes great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity. He has a lifelong appreciation for food as a source of family and community, and is a fierce advocate for shopping and dining locally. He hopes to contribute his passion for strong neighborhoods, local food systems, and fostering connections to the organization. Benji is particularly interested in the intersection of nutrition, public health, and food access, and how individual, collective, and municipal efforts can make nutritious food more accessible to everyone. Outside of work, you can find him behind a camera, tending to his backyard garden, biking around town, or enjoying a meal with friends and good company.', social: null },
+    { role: 'Chair', name: 'Benji Corpuz', headshot: benji, bio: `Benji is a city planner with the City of Chicago’s Department of Planning and Development who believes great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity. 
+      
+      He has a lifelong appreciation for food as a source of family and community, and is a fierce advocate for shopping and dining locally. He hopes to contribute his passion for strong neighborhoods, local food systems, and fostering connections to the organization. 
+      
+      Benji is particularly interested in the intersection of nutrition, public health, and food access, and how individual, collective, and municipal efforts can make nutritious food more accessible to everyone. 
+      
+      Outside of work, you can find him behind a camera, tending to his backyard garden, biking around town, or enjoying a meal with friends and good company.`, social: null },
     {
       role: 'member',
       name: 'Gabi Medina',
       headshot: gabi,
       social: 'https://www.instagram.com/chuchaquicocktails/',
-      bio: "Me llamo Gabriela, but please call me Gabi. I'm an Ecuadorian-born, US-raised bartender determined to lift the stories of indigenous drink-makers of the Americas. I named my business Chuchaqui Cocktails to encompass where I come from and where I want to go. Chuchaqui is a word in Kichwa, one of the indigenous languages of present-day Ecuador. It means to be hungover. Intentionally goofy. After more than ten years in the hospitality industry, only recently can I claim to understand what my ancestors already knew: slow food means care and intention, a long-term investment in and for the land and the people. That same structure encourages me to focus on education about who we can thank for what's in our cocktail, with curiosity and respect. ¡Salud!",
+      bio: `Me llamo Gabriela, but please call me Gabi. I'm an Ecuadorian-born, US-raised bartender determined to lift the stories of indigenous drink-makers of the Americas. 
+      
+      I named my business Chuchaqui Cocktails to encompass where I come from and where I want to go. Chuchaqui is a word in Kichwa, one of the indigenous languages of present-day Ecuador. It means to be hungover. Intentionally goofy. 
+      
+      After more than ten years in the hospitality industry, only recently can I claim to understand what my ancestors already knew: slow food means care and intention, a long-term investment in and for the land and the people. That same structure encourages me to focus on education about who we can thank for what's in our cocktail, with curiosity and respect. ¡Salud!`,
     },
   ],
   snail: [],

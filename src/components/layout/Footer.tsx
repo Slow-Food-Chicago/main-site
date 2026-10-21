@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Heart, CheckCircle2, Mail, MessageSquare } from 'lucide-react'
 import ChicagoStar from '../ui/ChicagoStar'
-import SnailLogo from '../ui/SnailLogo'
+import horizontalLogo from '../../assets/colored-horizontal-logo.png'
 import { SLACK_INVITE_URL } from '../../data/constants'
 import {
   footerCommunityLinks,
@@ -56,9 +56,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand & About */}
           <div className="lg:col-span-2 space-y-4">
-            <Link to="/" className="inline-flex items-center gap-3">
-              <SnailLogo size={42} showText={true} />
-            </Link>
+            <img
+              src={horizontalLogo}
+              alt="Slow Food Chicago"
+              className="brand-logo"
+            />  
             <p
               className="text-sm leading-relaxed max-w-md"
               style={{ color: 'var(--snail-warm-gray)', fontSize: '13px', lineHeight: '1.8' }}

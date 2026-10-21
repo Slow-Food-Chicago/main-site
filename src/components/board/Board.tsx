@@ -6,6 +6,12 @@ import MemberModal, { type ModalMember } from './MemberModal'
 import { executiveBoard, committeeMembers, committees } from '../../data/board'
 import { SLACK_INVITE_URL, CONTACT_EMAIL } from '../../data/constants'
 
+const getBioPreview = (bio?: string) => {
+  if (!bio) return ''
+  const clean = bio.replace(/[*_#`[\]]/g, '').replace(/\s+/g, ' ').trim()
+  return clean.length > 147 ? `${clean.substring(0, 147)}...` : clean
+}
+
 export default function Board() {
   const [activeModal, setActiveModal] = useState<ModalMember | null>(null)
 
@@ -130,8 +136,7 @@ export default function Board() {
                   {member.name || <span className="board-vacant">Vacant</span>}
                 </span>
                 <p className="exec-board-bio">
-                  {member.bio?.substring(0, 147)}
-                  {member.bio && member.bio.length > 147 && '...'}
+                  {getBioPreview(member.bio)}
                 </p>
               </div>
             ))}
