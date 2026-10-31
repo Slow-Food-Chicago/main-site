@@ -897,9 +897,10 @@ h6 {
 .principles-heading h2,
 .join-content h2 {
   margin: 0;
-  font-size: clamp(37px, 4.2vw, 58px);
+  font-size: clamp(36px, 4.2vw, 54px);
   letter-spacing: -1.7px;
   line-height: 1.08;
+  min-width: 440px;
 }
 
 .principles-heading h2 em,
@@ -1388,7 +1389,7 @@ a.initiative-card:hover .initiative-title {
 /* Section 01: About the garden */
 .preserve-about-section {
   padding: 80px 8.35% 88px;
-  background: white;
+  background: var(--snail-cream);
 }
 
 .preserve-about-inner {
@@ -1505,28 +1506,443 @@ a.initiative-card:hover .initiative-title {
 
 .preserve-harvest-item {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 16px;
+  min-height: 84px;
   background: rgb(255 255 255 / 9%);
   border: 1px solid rgb(255 255 255 / 15%);
-  border-radius: 8px;
+  border-radius: 10px;
   color: white;
+  font-family: inherit;
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.2px;
-  transition: background 160ms, transform 160ms;
+  text-align: left;
+  cursor: pointer;
+  transition: background 160ms, transform 160ms, border-color 160ms, box-shadow 160ms;
 }
 
-.preserve-harvest-item:hover {
+.preserve-harvest-item:hover,
+.preserve-harvest-item:focus-visible,
+.preserve-harvest-item--active {
   background: rgb(255 255 255 / 18%);
+  border-color: var(--snail-yellow);
   transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+.preserve-harvest-item:focus-visible {
+  outline: 2px solid var(--snail-yellow);
+  outline-offset: 2px;
+}
+
+.preserve-harvest-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
 }
 
 .preserve-harvest-dot {
   color: var(--snail-yellow);
-  font-size: 14px;
+  font-size: 13px;
   flex-shrink: 0;
+}
+
+.preserve-harvest-name {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+}
+
+.preserve-harvest-count {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgb(255 255 255 / 65%);
+  letter-spacing: 0.2px;
+  transition: color 160ms;
+}
+
+.preserve-harvest-item:hover .preserve-harvest-count,
+.preserve-harvest-item--active .preserve-harvest-count {
+  color: var(--snail-yellow);
+}
+
+.preserve-harvest-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.preserve-harvest-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.25px;
+  transition: background 160ms, border-color 160ms;
+}
+
+.preserve-harvest-badge--season {
+  text-transform: capitalize;
+}
+
+.preserve-harvest-badge--spring {
+  background: rgb(114 180 29 / 24%);
+  color: #B2E87D;
+  border: 1px solid rgb(114 180 29 / 40%);
+}
+
+.preserve-harvest-badge--summer {
+  background: rgb(222 121 0 / 24%);
+  color: #FFC078;
+  border: 1px solid rgb(222 121 0 / 40%);
+}
+
+.preserve-harvest-badge--fall {
+  background: rgb(241 184 45 / 24%);
+  color: #FCE192;
+  border: 1px solid rgb(241 184 45 / 45%);
+}
+
+.preserve-harvest-badge--winter {
+  background: rgb(65 182 230 / 24%);
+  color: #A3E2FD;
+  border: 1px solid rgb(65 182 230 / 40%);
+}
+
+.preserve-harvest-badge--ark {
+  background: rgb(255 215 0 / 20%);
+  color: #FFE066;
+  border: 1px solid rgb(255 215 0 / 45%);
+  font-weight: 600;
+}
+
+.preserve-harvest-badge--ark svg {
+  color: #FFD233;
+}
+
+/* ── Crop Modal ────────────────────────────────────────────────────────── */
+.crop-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  background: rgb(15 23 20 / 70%);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: modal-fade-in 180ms ease;
+}
+
+.crop-modal {
+  background: #FFFFFF;
+  color: var(--snail-charcoal);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  text-align: left;
+}
+
+.crop-modal--dialog {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  max-height: calc(100vh - 48px);
+  animation: modal-slide-up 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.crop-modal--hover {
+  position: fixed;
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  max-height: min(480px, calc(100vh - 80px));
+  z-index: 1000;
+  animation: crop-popover-in 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes crop-popover-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.crop-modal-arrow {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #FFFFFF;
+  transform: translateX(-50%) rotate(45deg);
+  pointer-events: none;
+}
+
+.crop-modal--placement-top .crop-modal-arrow {
+  bottom: -6px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.crop-modal--placement-bottom .crop-modal-arrow {
+  top: -6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.crop-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #F3F1EC;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  color: var(--snail-charcoal);
+  transition: background 150ms ease, transform 150ms ease;
+  z-index: 2;
+}
+
+.crop-modal-close:hover {
+  background: #E5E1D8;
+  transform: scale(1.05);
+}
+
+.crop-modal-close-hover {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--snail-warm-gray);
+  transition: background 150ms ease, color 150ms ease;
+  margin-left: auto;
+}
+
+.crop-modal-close-hover:hover {
+  background: #F3F1EC;
+  color: var(--snail-charcoal);
+}
+
+.crop-modal-header {
+  padding: 20px 22px 14px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #EFECE6;
+}
+
+.crop-modal-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.crop-modal-season-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.crop-modal-season-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.crop-modal-season-tag--spring,
+.crop-modal-season-tag--sage {
+  background: #EBF5ED;
+  color: #1E7B4C;
+}
+
+.crop-modal-season-tag--summer,
+.crop-modal-season-tag--red {
+  background: #FDF1EA;
+  color: #C04E18;
+}
+
+.crop-modal-season-tag--fall,
+.crop-modal-season-tag--yellow {
+  background: #FEF7E6;
+  color: #9E6400;
+}
+
+.crop-modal-season-tag--winter,
+.crop-modal-season-tag--blue {
+  background: var(--snail-blue-light);
+  color: var(--snail-blue-dark);
+}
+
+.crop-modal-ark-tag--header {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 9999px;
+}
+
+.crop-modal-count-badge {
+  background: #F3F1EC;
+  color: var(--snail-warm-gray);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 9999px;
+}
+
+.crop-modal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.crop-modal-title {
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--snail-forest-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0 3px;
+  letter-spacing: -0.2px;
+}
+
+.crop-modal-title-icon {
+  color: var(--snail-forest);
+  flex-shrink: 0;
+}
+
+.crop-modal-subtitle {
+  font-size: 12px;
+  color: var(--snail-warm-gray);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.crop-modal-body {
+  padding: 16px 22px;
+  overflow-y: auto;
+  max-height: 320px;
+}
+
+.crop-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.crop-modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.crop-modal-body::-webkit-scrollbar-thumb {
+  background: #DDD8CE;
+  border-radius: 9999px;
+}
+
+.crop-modal-varieties {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.crop-modal-variety-card {
+  background: #FAF8F5;
+  border: 1px solid #ECE7DE;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.crop-modal-variety-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.crop-modal-variety-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--snail-charcoal);
+  margin: 0;
+}
+
+.crop-modal-ark-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #FFF4D9;
+  color: #9A6200;
+  border: 1px solid #F5D78E;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.crop-modal-ark-tag svg {
+  color: #D48806;
+}
+
+.crop-modal-variety-desc {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #4A4641;
+  margin: 0;
+}
+
+.crop-modal-footer {
+  padding: 10px 22px;
+  background: #F8F6F2;
+  border-top: 1px solid #EFECE6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #8A847C;
+}
+
+.crop-modal-footer-hint {
+  font-weight: 500;
+  color: var(--snail-forest);
+}
+
+.crop-modal-footer-text {
+  letter-spacing: 0.2px;
 }
 
 /* Section 03: Get Involved */
@@ -2065,6 +2481,25 @@ a.initiative-card:hover .initiative-title {
   .mobile-nav-drawer {
     display: block;
   }
+
+  .intro-rule {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 11px;
+    padding-top: 18px;
+    text-align: center;
+  }
+
+  .intro-rule-item {
+    justify-content: center;
+  }
+
+  .intro-star--flank,
+  .intro-rule-item .intro-star {
+    display: none;
+  }
 }
 
 @media (max-width: 650px) {
@@ -2114,15 +2549,26 @@ a.initiative-card:hover .initiative-title {
   }
 
   .intro-rule {
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    gap: 14px 20px;
+    gap: 10px;
     font-size: 11px;
     padding-top: 18px;
     text-align: center;
   }
 
+  .intro-rule-item {
+    justify-content: center;
+  }
+
+  .intro-star--flank,
+  .intro-rule-item .intro-star {
+    display: none;
+  }
+
   .principles-heading h2 {
-    font-size: clamp(39px, 10.5vw, 52px);
+    font-size: clamp(36px, 4.2vw, 54px);
     letter-spacing: -1.5px;
   }
 

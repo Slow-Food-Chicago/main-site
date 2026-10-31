@@ -146,13 +146,12 @@ export default function Header() {
             </div>
           )}
         </div>
-        <Link to="/events">Events</Link>
         <Link to="/board">Our Leadership</Link>
       </nav>
 
       {/* Desktop CTA */}
-      <Link className="header-cta" to="/get-involved">
-        Get involved <ArrowUpRight size={16} />
+      <Link className="header-cta" to="/events">
+        Events <ArrowUpRight size={16} />
       </Link>
 
       {/* Mobile hamburger button */}
@@ -253,15 +252,6 @@ export default function Header() {
             Our Leadership
           </Link>
         </nav>
-        <div className="mobile-nav-cta-wrap">
-          <Link
-            className="button button-primary mobile-nav-cta"
-            to="/get-involved"
-            onClick={() => setIsOpen(false)}
-          >
-            Get involved <ArrowUpRight size={16} />
-          </Link>
-        </div>
       </div>
     </header>
   )

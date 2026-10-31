@@ -1,9 +1,9 @@
 import {
   ArrowRight,
   ArrowUpRight,
-  Sprout,
   Snail,
   UtensilsCrossed,
+  Megaphone
 } from 'lucide-react'
 import SectionKicker from '../components/ui/SectionKicker'
 import ChicagoStar from '../components/ui/ChicagoStar'
@@ -38,21 +38,21 @@ export default function HomePage() {
             </p>
           </div>
           <div className="intro-rule">
-          <div className="intro-rule-item">
-            <ChicagoStar size={16} className="intro-star" />
-            <span>Chicago, Illinois</span>
+            <div className="intro-rule-item">
+              <ChicagoStar size={16} className="intro-star intro-star--flank" />
+              <span>Chicago, Illinois</span>
+            </div>
+            <div className="intro-rule-stars" aria-label="Four Chicago Stars">
+              <ChicagoStar size={17} className="intro-star" />
+              <ChicagoStar size={17} className="intro-star" />
+              <ChicagoStar size={17} className="intro-star" />
+              <ChicagoStar size={17} className="intro-star" />
+            </div>
+            <div className="intro-rule-item">
+              <span>Since 2001</span>
+              <ChicagoStar size={16} className="intro-star intro-star--flank" />
+            </div>
           </div>
-          <div className="intro-rule-stars" aria-label="Four Chicago Stars">
-            <ChicagoStar size={17} className="intro-star" />
-            <ChicagoStar size={17} className="intro-star" />
-            <ChicagoStar size={17} className="intro-star" />
-            <ChicagoStar size={17} className="intro-star" />
-          </div>
-          <div className="intro-rule-item">
-            <span>Since 2001</span>
-            <ChicagoStar size={16} className="intro-star" />
-          </div>
-        </div>
         </div>
 
         <div className="hero-pillars-wrap">
@@ -60,7 +60,7 @@ export default function HomePage() {
           <div className="hero-pillars-grid">
             <div className="hero-pillar-card">
               <div className="hero-pillar-icon-wrap">
-                <Sprout size={20} />
+                <Megaphone size={20} />
               </div>
               <p>Advocate for renewed interest in and support for our local food culture</p>
             </div>

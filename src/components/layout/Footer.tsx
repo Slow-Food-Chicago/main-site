@@ -74,14 +74,17 @@ export default function Footer() {
               Chicago's neighborhoods and part of a global Slow Food movement.
             </p>
             <div
-              className="flex items-center gap-1.5 pt-1"
-              style={{ color: 'var(--snail-warm-gray)', fontSize: '11px' }}
+              className="footer-volunteer-credit flex flex-col sm:flex-row sm:items-center sm:flex-wrap gap-1 sm:gap-1.5 pt-1"
+              style={{ color: 'var(--snail-warm-gray)', fontSize: '11px', lineHeight: '1.5' }}
             >
-              <span>Made with</span>
-              <Heart
-                className="h-3.5 w-3.5"
-                style={{ fill: 'var(--snail-red)', color: 'var(--snail-red)' }}
-              />
+              <div className="flex items-center gap-1.5 shrink-0">
+                <span>Made with</span>
+                <Heart
+                  className="h-3.5 w-3.5 shrink-0"
+                  style={{ fill: 'var(--snail-red)', color: 'var(--snail-red)' }}
+                  aria-hidden="true"
+                />
+              </div>
               <span>by the Slow Food Chicago Volunteer Chapter</span>
             </div>
             <div className="flex items-center gap-2 pt-1">

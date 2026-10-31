@@ -4,7 +4,6 @@ import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import HomePage from './pages/HomePage'
 import BoardPage from './pages/BoardPage'
-import GetInvolvedPage from './pages/GetInvolvedPage'
 import InitiativesPage from './pages/InitiativesPage'
 import PantrySwapPage from './pages/PantrySwapPage'
 import PreserveGardenPage from './pages/PreserveGardenPage'
@@ -20,7 +19,6 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/board" element={<BoardPage />} />
-          <Route path="/get-involved" element={<GetInvolvedPage />} />
           <Route path="/initiatives" element={<InitiativesPage />} />
           <Route path="/initiatives/pantry-swap" element={<PantrySwapPage />} />
           <Route path="/initiatives/preserve-garden" element={<PreserveGardenPage />} />

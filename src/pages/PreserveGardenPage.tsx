@@ -1,12 +1,102 @@
-import { ArrowUpRight, Sprout } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { ArrowUpRight, Sprout, Sun, Leaf, Snowflake, Sparkles } from 'lucide-react'
 import BackLink from '../components/ui/BackLink'
 import PageHero from '../components/ui/PageHero'
 import CtaSection from '../components/ui/CtaSection'
 import SectionKicker from '../components/ui/SectionKicker'
-import { gardenHarvest, gardenPartners, gardenWays } from '../data/preserve-garden'
-import { SLACK_INVITE_URL, CONTACT_EMAIL } from '../data/constants'
+import { gardenHarvest, gardenPartners, type Crop } from '../data/preserve-garden'
+import { CONTACT_EMAIL } from '../data/constants'
+import { Link } from 'react-router-dom'
+import CropModal from '../components/garden/CropModal'
+
+const SEASON_CONFIG = {
+  spring: { label: 'Spring', icon: Sprout },
+  summer: { label: 'Summer', icon: Sun },
+  fall: { label: 'Fall', icon: Leaf },
+  winter: { label: 'Winter', icon: Snowflake },
+} as const
 
 export default function PreserveGardenPage() {
+  const [activeCrop, setActiveCrop] = useState<Crop | null>(null)
+  const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null)
+  const [isPinned, setIsPinned] = useState(false)
+  const closeTimeoutRef = useRef<number | null>(null)
+
+  const clearCloseTimeout = () => {
+    if (closeTimeoutRef.current !== null) {
+      window.clearTimeout(closeTimeoutRef.current)
+      closeTimeoutRef.current = null
+    }
+  }
+
+  const handleCropMouseEnter = (crop: Crop, element: HTMLElement) => {
+    clearCloseTimeout()
+    if (!isPinned) {
+      setActiveCrop(crop)
+      setTriggerRect(element.getBoundingClientRect())
+    }
+  }
+
+  const handleCropMouseLeave = () => {
+    if (!isPinned) {
+      clearCloseTimeout()
+      closeTimeoutRef.current = window.setTimeout(() => {
+        setActiveCrop(null)
+        setTriggerRect(null)
+      }, 160)
+    }
+  }
+
+  const handleModalMouseEnter = () => {
+    clearCloseTimeout()
+  }
+
+  const handleModalMouseLeave = () => {
+    if (!isPinned) {
+      clearCloseTimeout()
+      closeTimeoutRef.current = window.setTimeout(() => {
+        setActiveCrop(null)
+        setTriggerRect(null)
+      }, 160)
+    }
+  }
+
+  const handleCropClick = (crop: Crop, element: HTMLElement) => {
+    clearCloseTimeout()
+    if (activeCrop?.category === crop.category && isPinned) {
+      setIsPinned(false)
+      setActiveCrop(null)
+      setTriggerRect(null)
+    } else {
+      setActiveCrop(crop)
+      setTriggerRect(element.getBoundingClientRect())
+      setIsPinned(true)
+    }
+  }
+
+  const handleCloseModal = () => {
+    clearCloseTimeout()
+    setActiveCrop(null)
+    setTriggerRect(null)
+    setIsPinned(false)
+  }
+
+  // Dismiss hover popover when scrolling to prevent detached positioning
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!isPinned && activeCrop) {
+        clearCloseTimeout()
+        setActiveCrop(null)
+        setTriggerRect(null)
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      clearCloseTimeout()
+    }
+  }, [isPinned, activeCrop])
+
   return (
     <main>
       {/* Back nav */}
@@ -25,11 +115,6 @@ export default function PreserveGardenPage() {
         description="Since 2010, the preSERVE Garden has been growing heirloom vegetables, heritage fruits, and deep roots in Chicago's North Lawndale neighborhood — one harvest at a time."
         asideIcon={Sprout}
         asideColor="var(--snail-forest)"
-        actions={
-          <a className="button button-forest" href={`mailto:${CONTACT_EMAIL}`}>
-            Get involved <ArrowUpRight size={16} />
-          </a>
-        }
       />
 
       {/* About */}
@@ -78,44 +163,79 @@ export default function PreserveGardenPage() {
           </h2>
           <p className="preserve-harvest-desc">
             Each growing season the garden yields a diverse mix of vegetables, fruits, and herbs —
-            many of them heirloom or heritage varieties.
+            many of them heirloom or heritage varieties. Hover over any crop below to view the
+            varieties planted and their stories.
           </p>
           <ul className="preserve-harvest-grid">
-            {gardenHarvest.map((crop) => (
-              <li key={crop} className="preserve-harvest-item">
-                <span className="preserve-harvest-dot" aria-hidden="true">
-                  ✳
-                </span>
-                {crop}
-              </li>
-            ))}
+            {gardenHarvest.map((crop) => {
+              const isActive = activeCrop?.category === crop.category
+              const seasonInfo = SEASON_CONFIG[crop.season]
+              const SeasonIcon = seasonInfo.icon
+              const hasArkOfTaste = crop.varieties.some((v) => v.arkOfTaste)
+
+              return (
+                <li key={crop.category}>
+                  <button
+                    type="button"
+                    className={`preserve-harvest-item ${isActive ? 'preserve-harvest-item--active' : ''}`}
+                    onMouseEnter={(e) => handleCropMouseEnter(crop, e.currentTarget)}
+                    onMouseLeave={handleCropMouseLeave}
+                    onClick={(e) => handleCropClick(crop, e.currentTarget)}
+                    onFocus={(e) => handleCropMouseEnter(crop, e.currentTarget)}
+                    onBlur={handleCropMouseLeave}
+                    aria-haspopup="dialog"
+                    aria-expanded={isActive}
+                    aria-label={`View varieties for ${crop.category}`}
+                  >
+                    <div className="preserve-harvest-header">
+                      <span className="preserve-harvest-dot" aria-hidden="true">
+                        ✳
+                      </span>
+                      <span className="preserve-harvest-name">{crop.category}</span>
+                      <span className="preserve-harvest-count">
+                        {crop.varieties.length}{' '}
+                        {crop.varieties.length === 1 ? 'variety' : 'varieties'}
+                      </span>
+                    </div>
+
+                    <div className="preserve-harvest-badges">
+                      <span
+                        className={`preserve-harvest-badge preserve-harvest-badge--season preserve-harvest-badge--${crop.season}`}
+                        title={`${seasonInfo.label} Harvest`}
+                      >
+                        <SeasonIcon size={11} aria-hidden="true" />
+                        <span>{seasonInfo.label}</span>
+                      </span>
+
+                      {hasArkOfTaste && (
+                        <span
+                          className="preserve-harvest-badge preserve-harvest-badge--ark"
+                          title="Slow Food Ark of Taste Variety"
+                        >
+                          <Sparkles size={11} aria-hidden="true" />
+                          <span>Ark of Taste</span>
+                        </span>
+                      )}
+                    </div>
+                  </button>
+                </li>
+              )
+            })}
           </ul>
         </div>
       </section>
 
-      {/* Get involved */}
-      <section className="preserve-involve-section">
-        <div className="preserve-involve-inner">
-          <SectionKicker text="Get involved" />
-          <h2 className="preserve-section-title">
-            Show up and <em>dig in.</em>
-          </h2>
-          <div className="preserve-ways-grid">
-            {gardenWays.map((w) => {
-              const Icon = w.icon
-              return (
-                <div className="preserve-way-card" key={w.title}>
-                  <div className="preserve-way-icon">
-                    <Icon size={21} strokeWidth={1.7} />
-                  </div>
-                  <h3 className="preserve-way-title">{w.title}</h3>
-                  <p className="preserve-way-desc">{w.description}</p>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
+      {/* Active Crop Modal (Hover Popover or Pinned Dialog) */}
+      {activeCrop && (
+        <CropModal
+          crop={activeCrop}
+          triggerRect={triggerRect}
+          isPinned={isPinned}
+          onClose={handleCloseModal}
+          onMouseEnter={handleModalMouseEnter}
+          onMouseLeave={handleModalMouseLeave}
+        />
+      )}
 
       {/* Partners */}
       <section className="preserve-partners-section">
@@ -144,19 +264,14 @@ export default function PreserveGardenPage() {
             Ready to <em>get growing?</em>
           </>
         }
-        description="Volunteer days are open to all skill levels. Reach out to find out when the next workday is, or to learn how your organization can partner with us."
+        description="Volunteer days are open to all skill levels. Check our calendar to find out when the next workday is, or to learn how your organization can partner with us."
         actions={
           <>
-            <a
-              className="button button-white"
-              href={SLACK_INVITE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Join our Slack <ArrowUpRight size={16} />
-            </a>
+            <Link to="/events" className="button button-white">
+              Check for upcoming workdays <ArrowUpRight size={16} />
+            </Link>
             <a className="button button-white" href={`mailto:${CONTACT_EMAIL}`}>
-              Say hello <ArrowUpRight size={16} />
+              For Groups <ArrowUpRight size={16} />
             </a>
           </>
         }

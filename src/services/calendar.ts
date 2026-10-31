@@ -468,7 +468,7 @@ export function parseIcs(icsData: string): CalendarEvent[] {
         currentEvent['DTSTART_RAW']
       ) {
         const { date: startDate, isAllDay } = parseIcsDate(currentEvent['DTSTART_RAW'], calTz)
-        let endDate = startDate
+        let endDate: Date
         if (currentEvent['DTEND_RAW']) {
           endDate = parseIcsDate(currentEvent['DTEND_RAW'], calTz).date
         } else if (isAllDay) {
