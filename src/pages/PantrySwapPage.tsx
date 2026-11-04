@@ -4,7 +4,7 @@ import PageHero from '../components/ui/PageHero'
 import CtaSection from '../components/ui/CtaSection'
 import SectionKicker from '../components/ui/SectionKicker'
 import { swapItems } from '../data/pantry-swap'
-import { SLACK_INVITE_URL, CONTACT_EMAIL } from '../data/constants'
+import { SHOW_SLACK, SLACK_INVITE_URL, CONTACT_EMAIL } from '../data/constants'
 
 export default function PantrySwapPage() {
   return (
@@ -88,14 +88,16 @@ export default function PantrySwapPage() {
         description="We're always looking for new suppliers and partners to join our pantry swap initiative. If you know a business that could contribute, let us know!"
         actions={
           <>
-            <a
-              className="button button-white"
-              href={SLACK_INVITE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Join our Slack <ArrowUpRight size={16} />
-            </a>
+            {SHOW_SLACK && (
+              <a
+                className="button button-white"
+                href={SLACK_INVITE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Join our Slack <ArrowUpRight size={16} />
+              </a>
+            )}
             <a className="button button-white" href={`mailto:${CONTACT_EMAIL}`}>
               Let us know <ArrowUpRight size={16} />
             </a>

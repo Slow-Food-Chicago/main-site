@@ -1,4 +1,5 @@
 import type { CalendarEvent } from '../types/calendar'
+import { SHOW_SLACK, SLACK_INVITE_URL } from './constants'
 
 export const sampleEvents: CalendarEvent[] = [
   {
@@ -35,7 +36,7 @@ export const sampleEvents: CalendarEvent[] = [
     endDate: new Date('2026-11-12T20:00:00-05:00'),
     isAllDay: false,
     category: 'meeting',
-    url: 'https://join.slack.com/t/slow-food-chicago/shared_invite/zt-4d91f5vic-d2GFPgGyzGAclfLP8bLRww',
+    url: SHOW_SLACK ? SLACK_INVITE_URL : undefined,
   },
   {
     id: 'sfc-snail-tasting-nov-2026',

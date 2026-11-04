@@ -4,7 +4,7 @@ import { Users } from 'lucide-react'
 import ChicagoStar from '../ui/ChicagoStar'
 import MemberModal, { type ModalMember } from './MemberModal'
 import { executiveBoard, committeeMembers, committees } from '../../data/board'
-import { SLACK_INVITE_URL, CONTACT_EMAIL } from '../../data/constants'
+import { SHOW_SLACK, SLACK_INVITE_URL, CONTACT_EMAIL } from '../../data/constants'
 
 const getBioPreview = (bio?: string) => {
   if (!bio) return ''
@@ -297,14 +297,16 @@ export default function Board() {
               justifyContent: 'center',
             }}
           >
-            <a
-              href={SLACK_INVITE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="button button-white"
-            >
-              Join our Slack ↗
-            </a>
+            {SHOW_SLACK && (
+              <a
+                href={SLACK_INVITE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="button button-white"
+              >
+                Join our Slack ↗
+              </a>
+            )}
             <a href={`mailto:${CONTACT_EMAIL}`} className="button button-white">
               Say hello ↗
             </a>

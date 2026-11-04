@@ -27,6 +27,7 @@ import {
   GOOGLE_CALENDAR_ICS_URL,
   EVENTBRITE_URL,
   EVENTBRITE_ORGANIZER_ID,
+  SHOW_SLACK,
   SLACK_INVITE_URL,
   CONTACT_EMAIL,
 } from '../data/constants'
@@ -342,17 +343,23 @@ export default function CalendarPage() {
             Hosting a gathering or <em>want to partner?</em>
           </>
         }
-        description="Slow Food Chicago is always eager to co-host workshops, farm tours, seed swaps, and communal dinners. Reach out by email or connect with us on Slack to discuss collaborating."
+        description={
+          SHOW_SLACK
+            ? 'Slow Food Chicago is always eager to co-host workshops, farm tours, seed swaps, and communal dinners. Reach out by email or connect with us on Slack to discuss collaborating.'
+            : 'Slow Food Chicago is always eager to co-host workshops, farm tours, seed swaps, and communal dinners. Reach out by email to discuss collaborating.'
+        }
         actions={
           <>
-            <a
-              className="button button-white"
-              href={SLACK_INVITE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Join our Slack <ArrowUpRight size={16} />
-            </a>
+            {SHOW_SLACK && (
+              <a
+                className="button button-white"
+                href={SLACK_INVITE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Join our Slack <ArrowUpRight size={16} />
+              </a>
+            )}
             <a className="button button-white" href={`mailto:${CONTACT_EMAIL}`}>
               Say hello <ArrowUpRight size={16} />
             </a>

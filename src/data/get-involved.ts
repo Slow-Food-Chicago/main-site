@@ -8,6 +8,7 @@ import {
   Users,
 } from 'lucide-react'
 import {
+  SHOW_SLACK,
   SLACK_INVITE_URL,
   MEMBERSHIP_URL,
   CONTACT_EMAIL,
@@ -36,9 +37,8 @@ export interface ColorScheme {
   border: string
 }
 
-export const getInvolvedWays: InvolveWay[] = [
+const ways: Omit<InvolveWay, 'number'>[] = [
   {
-    number: '01',
     title: 'Become a Member',
     description:
       'Slow Food membership connects you to a global network of people who care about the future of food. As a member, you support our work and gain access to events, resources, and a community of like-minded eaters.',
@@ -46,17 +46,19 @@ export const getInvolvedWays: InvolveWay[] = [
     color: 'red',
     cta: { label: 'Join Slow Food', href: MEMBERSHIP_URL },
   },
+  ...(SHOW_SLACK
+    ? [
+        {
+          title: 'Join our Slack',
+          description:
+            "Connect directly with Chicago's food community. Swap recipes, discuss local food policy, coordinate garden days, and chat with fellow members and volunteers in real time.",
+          icon: MessageSquare,
+          color: 'forest' as const,
+          cta: { label: 'Join us on Slack', href: SLACK_INVITE_URL },
+        },
+      ]
+    : []),
   {
-    number: '02',
-    title: 'Join our Slack',
-    description:
-      "Connect directly with Chicago's food community. Swap recipes, discuss local food policy, coordinate garden days, and chat with fellow members and volunteers in real time.",
-    icon: MessageSquare,
-    color: 'forest',
-    cta: { label: 'Join us on Slack', href: SLACK_INVITE_URL },
-  },
-  {
-    number: '03',
     title: 'Come to an Event',
     description:
       "From dinners and tastings to farm visits and panel discussions—our events are where the real conversations happen. Check our calendar for what's coming up and pull up a chair.",
@@ -65,7 +67,6 @@ export const getInvolvedWays: InvolveWay[] = [
     cta: { label: 'See upcoming events', href: '/events' },
   },
   {
-    number: '04',
     title: 'Volunteer',
     description:
       'Our programs run on the energy and skills of volunteers. Help at the preSERVE garden, assist with outreach, or lend your expertise to a project. Every hour matters and every hand helps.',
@@ -74,7 +75,6 @@ export const getInvolvedWays: InvolveWay[] = [
     cta: { label: 'Volunteer with us', href: `mailto:${CONTACT_EMAIL}` },
   },
   {
-    number: '05',
     title: 'Spread the Word',
     description:
       'Talk about good food with your neighbors, share our events, and introduce someone new to the Slow Food movement. The most powerful thing you can do is bring more people to the table.',
@@ -83,7 +83,6 @@ export const getInvolvedWays: InvolveWay[] = [
     cta: null,
   },
   {
-    number: '06',
     title: 'Support Our Work',
     description:
       'Donations and sponsorships help us run programs, host events, and stay rooted in Chicago communities. Every contribution goes directly toward building a better food future for our city.',
@@ -92,6 +91,11 @@ export const getInvolvedWays: InvolveWay[] = [
     cta: { label: 'Make a donation', href: `https://www.zeffy.com/en-US/donation-form/donate-to-slow-food-chicago` },
   },
 ]
+
+export const getInvolvedWays: InvolveWay[] = ways.map((way, idx) => ({
+  ...way,
+  number: String(idx + 1).padStart(2, '0'),
+}))
 
 export const getInvolvedColorMap: Record<InvolveColor, ColorScheme> = {
   red: {

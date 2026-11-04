@@ -2,6 +2,16 @@
  * Shared site constants, external links, and contact information.
  */
 
+/**
+ * Feature flag to control visibility of Slack mentions and links across the site.
+ * Defaults to false (hidden). Enable via VITE_SHOW_SLACK=true or VITE_ENABLE_SLACK=true.
+ */
+export const SHOW_SLACK: boolean =
+  import.meta.env.VITE_SHOW_SLACK === 'true' ||
+  import.meta.env.VITE_ENABLE_SLACK === 'true'
+
+export const ENABLE_SLACK = SHOW_SLACK
+
 export const SLACK_INVITE_URL =
   'https://join.slack.com/t/slow-food-chicago/shared_invite/zt-4d91f5vic-d2GFPgGyzGAclfLP8bLRww' as const
 

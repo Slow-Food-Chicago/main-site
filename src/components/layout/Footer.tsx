@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Heart, CheckCircle2, Mail, MessageSquare } from 'lucide-react'
 import ChicagoStar from '../ui/ChicagoStar'
 import horizontalLogo from '../../assets/colored-horizontal-logo.png'
-import { SLACK_INVITE_URL } from '../../data/constants'
+import { SHOW_SLACK, SLACK_INVITE_URL } from '../../data/constants'
 import {
   footerCommunityLinks,
   footerProjectLinks,
@@ -321,38 +321,40 @@ export default function Footer() {
                 )}
               </form>
             )}
-            <div style={{ paddingTop: 6 }}>
-              <a
-                href={SLACK_INVITE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: 'var(--snail-charcoal)',
-                  background: 'white',
-                  border: '1px solid var(--snail-sand)',
-                  padding: '7px 12px',
-                  borderRadius: 3,
-                  textDecoration: 'none',
-                  transition: 'all 160ms ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--snail-red)'
-                  e.currentTarget.style.color = 'var(--snail-red)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--snail-sand)'
-                  e.currentTarget.style.color = 'var(--snail-charcoal)'
-                }}
-              >
-                <MessageSquare style={{ width: 14, height: 14, color: 'var(--snail-red)' }} />
-                <span>Join our Slack ↗</span>
-              </a>
-            </div>
+            {SHOW_SLACK && (
+              <div style={{ paddingTop: 6 }}>
+                <a
+                  href={SLACK_INVITE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    fontSize: 12,
+                    fontWeight: 600,
+                    color: 'var(--snail-charcoal)',
+                    background: 'white',
+                    border: '1px solid var(--snail-sand)',
+                    padding: '7px 12px',
+                    borderRadius: 3,
+                    textDecoration: 'none',
+                    transition: 'all 160ms ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--snail-red)'
+                    e.currentTarget.style.color = 'var(--snail-red)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--snail-sand)'
+                    e.currentTarget.style.color = 'var(--snail-charcoal)'
+                  }}
+                >
+                  <MessageSquare style={{ width: 14, height: 14, color: 'var(--snail-red)' }} />
+                  <span>Join our Slack ↗</span>
+                </a>
+              </div>
+            )}
           </div>
         </div>
 

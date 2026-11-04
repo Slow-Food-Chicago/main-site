@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import PageHero from '../components/ui/PageHero'
 import CtaSection from '../components/ui/CtaSection'
 import { initiatives, initiativeColorMap } from '../data/initiatives'
-import { SLACK_INVITE_URL } from '../data/constants'
+import { SHOW_SLACK, SLACK_INVITE_URL } from '../data/constants'
 
 export default function InitiativesPage() {
   return (
@@ -92,14 +92,16 @@ export default function InitiativesPage() {
             <Link className="button button-white" to="/get-involved">
               Get involved <ArrowRight size={16} />
             </Link>
-            <a
-              className="button button-white"
-              href={SLACK_INVITE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Join our Slack <ArrowUpRight size={16} />
-            </a>
+            {SHOW_SLACK && (
+              <a
+                className="button button-white"
+                href={SLACK_INVITE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Join our Slack <ArrowUpRight size={16} />
+              </a>
+            )}
           </>
         }
       />
