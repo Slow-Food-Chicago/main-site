@@ -99,7 +99,6 @@ export default function HomePage() {
             const Icon = principle.icon
             return (
               <article className={`principle-card ${principle.color}`} key={principle.number}>
-                <span className="principle-number">{principle.number}</span>
                 <span className="principle-icon">
                   <Icon size={23} strokeWidth={1.7} />
                 </span>
@@ -108,9 +107,6 @@ export default function HomePage() {
                   <span>.</span>
                 </h3>
                 <p>{principle.description}</p>
-                <span className="card-arrow" aria-hidden="true">
-                  <ArrowUpRight size={18} />
-                </span>
               </article>
             )
           })}
@@ -142,12 +138,12 @@ export default function HomePage() {
                 }
               >
                 <div className="involve-card-top">
-                  <span className="involve-number">{w.number}</span>
+                  <h3 className="involve-card-title">{w.title}</h3>
                   <span className="involve-icon-wrap">
                     <Icon size={21} strokeWidth={1.7} />
                   </span>
                 </div>
-                <h3 className="involve-card-title">{w.title}</h3>
+                
                 <p className="involve-card-desc">{w.description}</p>
                 {w.cta &&
                   (w.cta.href.startsWith('/') ? (

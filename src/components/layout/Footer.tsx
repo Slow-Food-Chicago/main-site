@@ -110,12 +110,13 @@ export default function Footer() {
           <div className="space-y-3">
             <h4
               style={{
-                fontSize: '10px',
+                fontSize: '14px',
                 fontWeight: 700,
                 letterSpacing: '1.5px',
                 textTransform: 'uppercase',
                 color: 'var(--snail-charcoal)',
                 margin: 0,
+                marginBottom: '0.5rem',
               }}
             >
               Community
@@ -165,12 +166,13 @@ export default function Footer() {
           <div className="space-y-3">
             <h4
               style={{
-                fontSize: '10px',
+                fontSize: '14px',
                 fontWeight: 700,
                 letterSpacing: '1.5px',
                 textTransform: 'uppercase',
                 color: 'var(--snail-charcoal)',
                 margin: 0,
+                marginBottom: '0.5rem',
               }}
             >
               Slow Food Projects
@@ -203,12 +205,13 @@ export default function Footer() {
           <div className="space-y-3">
             <h4
               style={{
-                fontSize: '10px',
+                fontSize: '14px',
                 fontWeight: 700,
                 letterSpacing: '1.5px',
                 textTransform: 'uppercase',
                 color: 'var(--snail-charcoal)',
                 margin: 0,
+                marginBottom: '0.5rem',
               }}
             >
               Stay Connected
@@ -219,6 +222,7 @@ export default function Footer() {
                 color: 'var(--snail-warm-gray)',
                 margin: 0,
                 lineHeight: 1.7,
+                marginBottom: '0.5rem',
               }}
             >
               Sign up for our newsletter to hear about things going on with the Slow Food Chicago
