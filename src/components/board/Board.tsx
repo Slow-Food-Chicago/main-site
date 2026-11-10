@@ -198,26 +198,38 @@ export default function Board() {
               </div>
             ))}
             {/* Committee chairs in council */}
-            {committees.map((c) => (
-              <div
-                className="council-card council-card--chair"
-                key={`council-${c.key}`}
-                style={
-                  {
-                    '--chair-accent': c.accent,
-                    '--chair-tint': c.tint,
-                  } as React.CSSProperties
-                }
-              >
-                <span className="council-badge council-badge--committee">Committee Chair</span>
-                <span className="council-role">{c.name}</span>
-                <span className="council-name">
-                  {committeeMembers[c.key]?.find((m) => m.role === 'Chair')?.name || (
-                    <span className="board-vacant">Vacant</span>
-                  )}
-                </span>
-              </div>
-            ))}
+            {committees.map((c) => {
+              const chairs = committeeMembers[c.key]?.filter((m) => m.role === 'Chair') || []
+              return (
+                <div
+                  className="council-card council-card--chair"
+                  key={`council-${c.key}`}
+                  style={
+                    {
+                      '--chair-accent': c.accent,
+                      '--chair-tint': c.tint,
+                    } as React.CSSProperties
+                  }
+                >
+                  <span className="council-badge council-badge--committee">
+                    {chairs.length > 1 ? 'Committee Co-Chairs' : 'Committee Chair'}
+                  </span>
+                  <span className="council-role">{c.name}</span>
+                  <span className="council-name">
+                    {chairs.length > 0 ? (
+                      chairs.map((m, i) => (
+                        <span key={m.name}>
+                          <span style={{ whiteSpace: 'nowrap' }}>{m.name}</span>
+                          {i < chairs.length - 1 ? ', ' : ''}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="board-vacant">Vacant</span>
+                    )}
+                  </span>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
