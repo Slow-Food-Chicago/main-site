@@ -31,6 +31,8 @@ export const SNAIL_OF_APPROVAL_URL = 'https://snails.slowfoodchicago.org' as con
 
 export const ARK_OF_TASTE_URL = 'https://ark.slowfoodchicago.org' as const
 
+export const INSTAGRAM_URL = 'https://www.instagram.com/slowfoodchicago/' as const
+
 export const DEFAULT_GOOGLE_CALENDAR_ID = 'dd47612359dbde8faffd0ec0abb04d1a2bf2cb7266266d1df04cb27ac4dbf0b4@group.calendar.google.com'
 
 export const GOOGLE_CALENDAR_API_KEY =

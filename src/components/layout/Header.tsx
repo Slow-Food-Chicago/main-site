@@ -3,6 +3,8 @@ import { ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import horizontalLogo from '../../assets/colored-horizontal-logo.png'
 import { initiatives } from '../../data/initiatives'
+import { INSTAGRAM_URL } from '../../data/constants'
+import { InstagramIcon } from '../board/SocialLink'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -149,10 +151,20 @@ export default function Header() {
         <Link to="/board">Our Leadership</Link>
       </nav>
 
-      {/* Desktop CTA */}
+      {/* Desktop CTA & Social */}
       <Link className="header-cta" to="/events">
         Events <ArrowUpRight size={16} />
       </Link>
+      <a
+        href={INSTAGRAM_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="header-social"
+        aria-label="Slow Food Chicago on Instagram"
+        title="Slow Food Chicago on Instagram"
+      >
+        <InstagramIcon size={18} />
+      </a>
 
       {/* Mobile hamburger button */}
       <button
@@ -251,6 +263,19 @@ export default function Header() {
           <Link to="/board" className="mobile-nav-link" onClick={() => setIsOpen(false)}>
             Our Leadership
           </Link>
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mobile-nav-link"
+            onClick={() => setIsOpen(false)}
+          >
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              <InstagramIcon size={18} />
+              Instagram
+            </span>
+            <ArrowUpRight size={16} className="mobile-nav-ext-icon" />
+          </a>
         </nav>
       </div>
     </header>

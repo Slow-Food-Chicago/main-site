@@ -3,7 +3,13 @@ import { Link } from 'react-router-dom'
 import { Users } from 'lucide-react'
 import ChicagoStar from '../ui/ChicagoStar'
 import MemberModal, { type ModalMember } from './MemberModal'
-import { executiveBoard, committeeMembers, committees } from '../../data/board'
+import {
+  executiveBoard,
+  committeeMembers,
+  committees,
+  workingGroups,
+  type Committee,
+} from '../../data/board'
 import { SHOW_SLACK, SLACK_INVITE_URL, CONTACT_EMAIL } from '../../data/constants'
 
 const getBioPreview = (bio?: string) => {
@@ -20,6 +26,125 @@ export default function Board() {
   }, [])
 
   const closeModal = useCallback(() => setActiveModal(null), [])
+
+  const renderGroupCard = (c: Committee) => {
+    const Icon = c.icon
+    const chairs = committeeMembers[c.key]?.filter((m) => m.role === 'Chair') || []
+    const members = committeeMembers[c.key]?.filter((m) => m.role === 'member') || []
+    return (
+      <article
+        className="committee-card"
+        key={c.key}
+        style={
+          {
+            '--card-accent': c.accent,
+            '--card-tint': c.tint,
+          } as React.CSSProperties
+        }
+      >
+        <div className="committee-card-header">
+          <div className="committee-card-icon">
+            <Icon size={22} strokeWidth={1.6} />
+          </div>
+          {c.url &&
+            (c.url.startsWith('/') ? (
+              <Link to={c.url} className="committee-card-link">
+                {c.url === '/events' ? 'View events →' : 'Visit project →'}
+              </Link>
+            ) : (
+              <a
+                href={c.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="committee-card-link"
+              >
+                Visit project ↗
+              </a>
+            ))}
+        </div>
+        <h4 className="committee-card-name">{c.name}</h4>
+        <p className="committee-card-desc">{c.description}</p>
+        <div className="committee-card-leader">
+          <span className="committee-leader-label">
+            {chairs.length > 1 ? 'Co-Chairs' : 'Chair'}
+          </span>
+          {chairs.length > 0 ? (
+            chairs.map((m) => (
+              <span className="committee-leader-name" key={m.name}>
+                <div className="headshot-wrap" onClick={() => openModal(m)}>
+                  <img
+                    className="committee-headshot"
+                    src={
+                      m.headshot ||
+                      'https://via.placeholder.com/avatar.png?size=100&shape=round'
+                    }
+                    width={100}
+                    height={100}
+                    alt={`Headshot of ${m.name || 'Vacant'}`}
+                  />
+                  {(m.bio || m.headshot) && (
+                    <span className="headshot-hover-hint">View bio</span>
+                  )}
+                </div>
+                {m.name}
+              </span>
+            ))
+          ) : (
+            <span className="committee-leader-name">
+              <div className="headshot-wrap">
+                <img
+                  className="committee-headshot"
+                  src="https://via.placeholder.com/avatar.png?size=100&shape=round"
+                  width={100}
+                  height={100}
+                  alt="Headshot of Vacant"
+                />
+              </div>
+              <span className="board-vacant">Vacant</span>
+            </span>
+          )}
+        </div>
+        <div className="committee-card-leader">
+          <span className="committee-member-label">Members</span>
+          {members.length > 0 ? (
+            members.map((m) => (
+              <span className="committee-member-name" key={m.name}>
+                <div className="headshot-wrap" onClick={() => openModal(m)}>
+                  <img
+                    className="committee-headshot"
+                    src={
+                      m.headshot ||
+                      'https://via.placeholder.com/avatar.png?size=100&shape=round'
+                    }
+                    width={100}
+                    height={100}
+                    alt={`Headshot of ${m.name || 'Vacant'}`}
+                  />
+                  {(m.bio || m.headshot) && (
+                    <span className="headshot-hover-hint">View bio</span>
+                  )}
+                </div>
+                {m.name}
+              </span>
+            ))
+          ) : (
+            <span className="committee-member-name">
+              <div className="headshot-wrap">
+                <img
+                  className="committee-headshot"
+                  src="https://via.placeholder.com/avatar.png?size=100&shape=round"
+                  width={100}
+                  height={100}
+                  alt="Headshot of Awaiting Members"
+                />
+              </div>
+              <span className="board-vacant">Awaiting Members</span>
+            </span>
+          )}
+        </div>
+      </article>
+    )
+  }
 
   return (
     <div className="board-page">
@@ -158,124 +283,26 @@ export default function Board() {
             </p>
           </header>
           <div className="committee-grid">
-            {committees.map((c) => {
-              const Icon = c.icon
-              const chairs = committeeMembers[c.key]?.filter((m) => m.role === 'Chair') || []
-              const members = committeeMembers[c.key]?.filter((m) => m.role === 'member') || []
-              return (
-                <article
-                  className="committee-card"
-                  key={c.key}
-                  style={
-                    {
-                      '--card-accent': c.accent,
-                      '--card-tint': c.tint,
-                    } as React.CSSProperties
-                  }
-                >
-                  <div className="committee-card-header">
-                    <div className="committee-card-icon">
-                      <Icon size={22} strokeWidth={1.6} />
-                    </div>
-                    {c.url &&
-                      (c.url.startsWith('/') ? (
-                        <Link to={c.url} className="committee-card-link">
-                          View events →
-                        </Link>
-                      ) : (
-                        <a
-                          href={c.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="committee-card-link"
-                        >
-                          Visit project ↗
-                        </a>
-                      ))}
-                  </div>
-                  <h4 className="committee-card-name">{c.name}</h4>
-                  <p className="committee-card-desc">{c.description}</p>
-                  <div className="committee-card-leader">
-                    <span className="committee-leader-label">
-                      {chairs.length > 1 ? 'Co-Chairs' : 'Chair'}
-                    </span>
-                    {chairs.length > 0 ? (
-                      chairs.map((m) => (
-                        <span className="committee-leader-name" key={m.name}>
-                          <div className="headshot-wrap" onClick={() => openModal(m)}>
-                            <img
-                              className="committee-headshot"
-                              src={
-                                m.headshot ||
-                                'https://via.placeholder.com/avatar.png?size=100&shape=round'
-                              }
-                              width={100}
-                              height={100}
-                              alt={`Headshot of ${m.name || 'Vacant'}`}
-                            />
-                            {(m.bio || m.headshot) && (
-                              <span className="headshot-hover-hint">View bio</span>
-                            )}
-                          </div>
-                          {m.name}
-                        </span>
-                      ))
-                    ) : (
-                      <span className="committee-leader-name">
-                        <div className="headshot-wrap">
-                          <img
-                            className="committee-headshot"
-                            src="https://via.placeholder.com/avatar.png?size=100&shape=round"
-                            width={100}
-                            height={100}
-                            alt="Headshot of Vacant"
-                          />
-                        </div>
-                        <span className="board-vacant">Vacant</span>
-                      </span>
-                    )}
-                  </div>
-                  <div className="committee-card-leader">
-                    <span className="committee-member-label">Members</span>
-                    {members.length > 0 ? (
-                      members.map((m) => (
-                        <span className="committee-member-name" key={m.name}>
-                          <div className="headshot-wrap" onClick={() => openModal(m)}>
-                            <img
-                              className="committee-headshot"
-                              src={
-                                m.headshot ||
-                                'https://via.placeholder.com/avatar.png?size=100&shape=round'
-                              }
-                              width={100}
-                              height={100}
-                              alt={`Headshot of ${m.name || 'Vacant'}`}
-                            />
-                            {(m.bio || m.headshot) && (
-                              <span className="headshot-hover-hint">View bio</span>
-                            )}
-                          </div>
-                          {m.name}
-                        </span>
-                      ))
-                    ) : (
-                      <span className="committee-member-name">
-                        <div className="headshot-wrap">
-                          <img
-                            className="committee-headshot"
-                            src="https://via.placeholder.com/avatar.png?size=100&shape=round"
-                            width={100}
-                            height={100}
-                            alt="Headshot of Awaiting Members"
-                          />
-                        </div>
-                        <span className="board-vacant">Awaiting Members</span>
-                      </span>
-                    )}
-                  </div>
-                </article>
-              )
-            })}
+            {committees.map((c) => renderGroupCard(c))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Working Groups ──────────────────────────────────────────────── */}
+      <section className="board-section board-section--cream" id="working-groups">
+        <div className="board-section-inner">
+          <header className="board-section-header">
+            <div className="section-kicker">
+              <span>04</span> Initiatives
+            </div>
+            <h3>Our Working Groups</h3>
+            <p>
+              Working groups focus on hands-on projects and specialized initiatives that preserve
+              local foodways and cultivate community across the region.
+            </p>
+          </header>
+          <div className="committee-grid">
+            {workingGroups.map((wg) => renderGroupCard(wg))}
           </div>
         </div>
       </section>
@@ -287,7 +314,8 @@ export default function Board() {
           <h3>Want to get involved?</h3>
           <p>
             Slow Food Chicago runs entirely on volunteer energy. Whether you want to join a
-            committee, attend events, or just lend a hand, there is a place for you here.
+            committee or working group, attend events, or just lend a hand, there is a place for
+            you here.
           </p>
           <div
             style={{

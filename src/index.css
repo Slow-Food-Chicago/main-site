@@ -406,6 +406,20 @@ img {
   transform: translateY(-2px);
 }
 
+.header-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2rem;
+  color: #514c45;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.header-social:hover {
+  color: var(--snail-red);
+  transform: translateY(-1px);
+}
+
 /* ─── Mobile Navigation / Hamburger ─── */
 
 .hamburger-btn {
@@ -2470,7 +2484,8 @@ a.initiative-card:hover .initiative-title {
     display: none;
   }
 
-  .header-cta {
+  .header-cta,
+  .header-social {
     display: none;
   }
 
@@ -2517,7 +2532,8 @@ a.initiative-card:hover .initiative-title {
     display: none;
   }
 
-  .header-cta {
+  .header-cta,
+  .header-social {
     display: none;
   }
 

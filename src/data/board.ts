@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
-import { Snail, Handshake, Megaphone, Wheat, CalendarDays } from 'lucide-react'
+import { Snail, Handshake, Megaphone, Wheat, CalendarDays, Sprout } from 'lucide-react'
 import dom from '../assets/dom.jpeg'
 import jody from '../assets/jody.jpeg'
 import diane from '../assets/diane.jpeg'
@@ -121,6 +121,7 @@ Outside of work, you can find me behind a camera, tending to my backyard garden,
     { role: 'member', name: 'Gregory Hall', headshot: null, bio: '', social: null },
     { role: 'member', name: 'Sarah Batka', headshot: null, bio: '', social: null}
   ],
+  preserve: [],
   events: [
     { role: 'Chair', name: 'Gregory Hall', headshot: null, bio: '', social: null },
   ]
@@ -158,6 +159,19 @@ export const committees: Committee[] = [
     url: null,
   },
   {
+    key: 'events',
+    name: 'Events',
+    description:
+      'Organizes gatherings, tastings, workshops, and farm visits that connect Chicagoans with good, clean, and fair food and each other.',
+    icon: CalendarDays,
+    accent: 'var(--snail-orange)',
+    tint: 'var(--snail-orange-light)',
+    url: '/events',
+  },
+]
+
+export const workingGroups: Committee[] = [
+  {
     key: 'ark',
     name: 'Midwest Ark of Taste',
     description:
@@ -168,13 +182,13 @@ export const committees: Committee[] = [
     url: ARK_OF_TASTE_URL,
   },
   {
-    key: 'events',
-    name: 'Events',
+    key: 'preserve',
+    name: 'preSERVE Garden',
     description:
-      'Organizes gatherings, tastings, workshops, and farm visits that connect Chicagoans with good, clean, and fair food and each other.',
-    icon: CalendarDays,
-    accent: 'var(--snail-orange)',
-    tint: 'var(--snail-orange-light)',
-    url: '/events',
+      'Cultivates heirloom vegetables, heritage fruits, and community roots in North Lawndale through a collaborative neighborhood garden.',
+    icon: Sprout,
+    accent: 'var(--snail-lime)',
+    tint: 'var(--snail-lime-light)',
+    url: '/initiatives/preserve-garden',
   },
 ]
