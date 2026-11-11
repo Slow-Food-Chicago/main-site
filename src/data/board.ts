@@ -6,6 +6,7 @@ import diane from '../assets/diane.jpeg'
 import gabi from '../assets/gabi.JPG'
 import christian from '../assets/christian.jpeg'
 import benji from '../assets/benji.jpeg'
+import dfrantz from '../assets/dfrantz.jpg'
 import { SNAIL_OF_APPROVAL_URL, ARK_OF_TASTE_URL } from './constants'
 
 export interface BoardMember {
@@ -94,7 +95,19 @@ My culinary journey began in Lexington, Kentucky, where I was immersed in a fami
 Subsequently, my exposure to Lexington's diverse culinary scene broadened my horizons, shaping my innovative approach.`,
       social: null,
     },
-    { role: 'member', name: 'Dfrantz Smart', headshot: null, bio: '', social: null },
+    { role: 'member', name: 'Dfrantz Smart', headshot: dfrantz, bio: `D’Frantz Smart is an independent curator, event producer, community organizer, connector, food justice advocate, and data scientist.
+      
+She is the founder of Rooted Reads, an organization connecting and building community through a radical analysis of food and global food systems, and the founder of Hold The Lane, a collective of urban cyclists cultivating environments that nurture physical, emotional, and mental health through community rides and events for Black, Brown and Queer cyclists. 
+
+Her work has involved connecting, supporting, and educating community members through food, film, sports, and tech.
+
+D’Frantz’s projects and events have been featured on/with The Chicago Tribune, SoHo House, The Chicago Reader, and The Chicago Sun-Times. Programmatic partners include Nike, Jordan, Red Bull, Sisters In Cinema, and more.
+
+--
+a lifelong learner. 
+healing and liberating our people through food + films + bikes + sports + love
+Creator of @therootedreadsbookclub  + @theblkbikepanel 
+Organizer @holdthelane`, social: 'https://www.instagram.com/therootedreadsbookclub/' },
     { role: 'Chair', name: 'Benji Corpuz', headshot: benji, bio: `I'm a city planner with the City of Chicago’s Department of Planning and Development, and I believe great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity.
 
 I have a lifelong appreciation for food as a source of family and community, and I'm a fierce advocate for shopping and dining locally. I hope to contribute my passion for strong neighborhoods, local food systems, and fostering connections to the organization.
