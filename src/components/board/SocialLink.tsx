@@ -1,8 +1,9 @@
 import { Globe, ArrowUpRight } from 'lucide-react'
 import {
   detectSocialPlatform,
-  splitSocialUrls,
+  resolveSocialLinks,
   type SocialPlatform,
+  type SocialInput,
 } from './socialUtils'
 
 interface IconProps {
@@ -213,12 +214,19 @@ export function PlatformIcon({
 
 export function SocialLink({
   url,
+  label: customLabel,
+  platform: customPlatform,
   className = 'member-modal-social',
 }: {
   url: string
+  label?: string
+  platform?: SocialPlatform
   className?: string
 }) {
-  const { href, label, platform } = detectSocialPlatform(url)
+  const detected = detectSocialPlatform(url)
+  const platform = customPlatform || detected.platform
+  const label = customLabel?.trim() || detected.label
+  const href = detected.href
 
   return (
     <a
@@ -237,20 +245,28 @@ export function SocialLink({
 
 export function SocialLinks({
   urls,
+  items,
   containerClassName = 'member-modal-social-links',
   linkClassName,
 }: {
-  urls: string
+  urls?: SocialInput
+  items?: SocialInput
   containerClassName?: string
   linkClassName?: string
 }) {
-  const list = splitSocialUrls(urls)
+  const list = resolveSocialLinks(urls ?? items)
   if (list.length === 0) return null
 
   return (
     <div className={containerClassName}>
-      {list.map((url, idx) => (
-        <SocialLink key={idx} url={url} className={linkClassName} />
+      {list.map((item, idx) => (
+        <SocialLink
+          key={`${item.href}-${idx}`}
+          url={item.url}
+          label={item.label}
+          platform={item.platform}
+          className={linkClassName}
+        />
       ))}
     </div>
   )

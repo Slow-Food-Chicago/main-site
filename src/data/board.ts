@@ -9,12 +9,26 @@ import benji from '../assets/benji.jpeg'
 import dfrantz from '../assets/dfrantz.jpg'
 import { SNAIL_OF_APPROVAL_URL, ARK_OF_TASTE_URL } from './constants'
 
+export type SocialLinkItemObject = {
+  url: string
+  label?: string
+}
+
+export type SocialLinkItem = string | SocialLinkItemObject
+
+export type SocialInput =
+  | SocialLinkItem
+  | SocialLinkItem[]
+  | null
+  | undefined
+
 export interface BoardMember {
   role: string
   name?: string
   headshot?: string | null
   bio?: string
-  social?: string | null
+  social?: SocialInput
+  socials?: SocialInput
 }
 
 export interface CommitteeMember {
@@ -22,7 +36,8 @@ export interface CommitteeMember {
   name: string
   headshot?: string | null
   bio?: string
-  social?: string | null
+  social?: SocialInput
+  socials?: SocialInput
 }
 
 export interface Committee {
@@ -107,7 +122,22 @@ D’Frantz’s projects and events have been featured on/with The Chicago Tribun
 a lifelong learner. 
 healing and liberating our people through food + films + bikes + sports + love
 Creator of @therootedreadsbookclub  + @theblkbikepanel 
-Organizer @holdthelane`, social: 'https://www.instagram.com/therootedreadsbookclub/' },
+Organizer @holdthelane`,
+      social: [
+        {
+          label: 'Rooted Reads',
+          url: 'https://www.instagram.com/therootedreadsbookclub/',
+        },
+        {
+          label: 'The BLK Bike Panel',
+          url: 'https://www.instagram.com/theblkbikepanel/',
+        },
+        {
+          label: 'Hold The Lane',
+          url: 'https://www.instagram.com/holdthelane/',
+        },
+      ],
+    },
     { role: 'Chair', name: 'Benji Corpuz', headshot: benji, bio: `I'm a city planner with the City of Chicago’s Department of Planning and Development, and I believe great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity.
 
 I have a lifelong appreciation for food as a source of family and community, and I'm a fierce advocate for shopping and dining locally. I hope to contribute my passion for strong neighborhoods, local food systems, and fostering connections to the organization.

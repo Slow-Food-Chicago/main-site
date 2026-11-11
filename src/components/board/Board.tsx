@@ -18,11 +18,21 @@ const getBioPreview = (bio?: string) => {
   return clean.length > 147 ? `${clean.substring(0, 147)}...` : clean
 }
 
+const hasMemberDetails = (
+  m?: { bio?: unknown; headshot?: unknown; social?: unknown; socials?: unknown } | null
+) => {
+  if (!m) return false
+  if (m.bio || m.headshot) return true
+  const s = m.social ?? m.socials
+  if (Array.isArray(s)) return s.length > 0
+  return Boolean(s)
+}
+
 export default function Board() {
   const [activeModal, setActiveModal] = useState<ModalMember | null>(null)
 
   const openModal = useCallback((member: ModalMember) => {
-    if (member.name && (member.bio || member.headshot)) setActiveModal(member)
+    if (member.name && hasMemberDetails(member)) setActiveModal(member)
   }, [])
 
   const closeModal = useCallback(() => setActiveModal(null), [])
@@ -82,7 +92,7 @@ export default function Board() {
                     height={100}
                     alt={`Headshot of ${m.name || 'Vacant'}`}
                   />
-                  {(m.bio || m.headshot) && (
+                  {hasMemberDetails(m) && (
                     <span className="headshot-hover-hint">View bio</span>
                   )}
                 </div>
@@ -120,7 +130,7 @@ export default function Board() {
                     height={100}
                     alt={`Headshot of ${m.name || 'Vacant'}`}
                   />
-                  {(m.bio || m.headshot) && (
+                  {hasMemberDetails(m) && (
                     <span className="headshot-hover-hint">View bio</span>
                   )}
                 </div>
@@ -264,7 +274,7 @@ export default function Board() {
                     height={250}
                     alt={`Headshot of ${member.name || 'Vacant'}`}
                   />
-                  {(member.bio || member.headshot) && member.name && (
+                  {hasMemberDetails(member) && member.name && (
                     <span className="headshot-hover-hint">View bio</span>
                   )}
                 </div>

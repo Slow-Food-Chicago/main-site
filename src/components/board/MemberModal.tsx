@@ -1,13 +1,15 @@
 import { useEffect } from 'react'
 import { X } from 'lucide-react'
 import { SocialLinks } from './SocialLink'
+import type { SocialInput } from './socialUtils'
 
 export type ModalMember = {
   name: string
   role: string
   headshot?: string | null
   bio?: string | React.ReactNode
-  social?: string | null
+  social?: SocialInput
+  socials?: SocialInput
 }
 
 interface MemberModalProps {
@@ -143,7 +145,7 @@ export default function MemberModal({ member, onClose }: MemberModalProps) {
             <span className="member-modal-role">{member.role}</span>
             <h3 className="member-modal-name">{member.name}</h3>
             {member.bio && <FormattedBio content={member.bio} />}
-            {member.social && <SocialLinks urls={member.social} />}
+            <SocialLinks urls={member.social ?? member.socials} />
           </div>
         </div>
       </div>
