@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main # Triggers the workflow on push to the main branch
+      - dev  # Triggers the workflow on push to the dev branch
 
 jobs:
   build:
@@ -44,7 +45,8 @@ jobs:
           name: production-build-artifacts
           path: dist/ # Downloads the files back into a folder named 'dist'
       
-      - name: Deploy to Server via SFTP
+      - name: Deploy to Main Server via SFTP
+        if: github.ref == 'refs/heads/main'
         uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:
           username: ${{ secrets.DH_USER }}
@@ -53,4 +55,16 @@ jobs:
           ssh_private_key: ${{ secrets.SSH_KEY }}
           local_path: './dist/*'          # The local source folder contents to upload
           remote_path: ${{ secrets.DH_PATH }}  # The target folder path on your remote server
+          sftpArgs: '-o ConnectTimeout=5'
+
+      - name: Deploy to Dev Server via SFTP
+        if: github.ref == 'refs/heads/dev'
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+        with:
+          username: ${{ secrets.DH_USER }}
+          server: ${{ secrets.DH_HOST }}
+          port: 22
+          ssh_private_key: ${{ secrets.SSH_KEY }}
+          local_path: './dist/*'          # The local source folder contents to upload
+          remote_path: ${{ secrets.DH_DEV_PATH }}  # The target folder path on your remote dev server
           sftpArgs: '-o ConnectTimeout=5'
