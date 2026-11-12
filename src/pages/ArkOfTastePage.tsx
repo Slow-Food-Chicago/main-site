@@ -9,14 +9,12 @@ import {
   ShieldCheck,
   FolderHeart,
   Globe,
-  Leaf,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import BackLink from '../components/ui/BackLink'
 import PageHero from '../components/ui/PageHero'
 import CtaSection from '../components/ui/CtaSection'
 import SectionKicker from '../components/ui/SectionKicker'
-import events5 from '../assets/events/events5.jpg'
 import arkHero from '../assets/ark2.jpg'
 
 const ARK_CRITERIA = [
@@ -43,62 +41,6 @@ const ARK_CRITERIA = [
     title: 'Facing Real Risk of Disappearance',
     desc: 'Threatened by agricultural consolidation, patenting, monoculture, habitat loss, or commercial decline that makes its continued culinary survival precarious without active advocacy.',
     icon: ShieldCheck,
-  },
-]
-
-const UPCOMING_FEATURES = [
-  {
-    title: 'Living Regional Catalog',
-    desc: 'An illustrated digital archive documenting Midwestern heirloom fruits, grains, beans, heritage livestock breeds, and historic food preparations.',
-    icon: BookOpen,
-  },
-  {
-    title: 'Interactive Biodiversity Explorer',
-    desc: 'Filter by Great Lakes bioregions, seasonal availability, culinary profiles, and traditional uses to discover endangered foods near you.',
-    icon: Globe,
-  },
-  {
-    title: 'Community Nomination Portal',
-    desc: 'Submit endangered family heirlooms, community recipes, and regional crops for formal review by the Midwest Ark of Taste committee.',
-    icon: Wheat,
-  },
-  {
-    title: 'Seed Stewards & Grower Index',
-    desc: 'Connect with local seed libraries, heritage nurseries, and regenerative farmers propagating Ark varieties across Illinois and the Midwest.',
-    icon: Leaf,
-  },
-]
-
-const PRESERVE_ARK_CROPS = [
-  {
-    name: 'Sea Island Red Pea',
-    category: 'Field Pea / Legume',
-    desc: "An heirloom celebrated in Gullah Geechee culinary tradition. Drought-hardy and soil-restorative, delivering an earthy, nutty savor.",
-  },
-  {
-    name: 'King of the Early Pole Bean',
-    category: 'Heirloom Bean',
-    desc: 'Grown since the 1840s, prized for striking maroon swirls, a rich chestnut aroma, and a buttery, melting texture.',
-  },
-  {
-    name: 'Inchelium Red Garlic',
-    category: 'Softneck Garlic',
-    desc: 'Discovered on the Colville Indian Reservation, prized for lush, creamy roasted cloves and mild, full-bodied warmth.',
-  },
-  {
-    name: 'Hussli Tomato Pepper',
-    category: 'Sweet & Piquant Pepper',
-    desc: 'Brought to Wisconsin from Hungary in 1912. Thick, crunchy walls with sweet-to-mildly-piquant heat prized for roasting.',
-  },
-  {
-    name: 'Jesuit Pear',
-    category: 'Heritage Fruit Tree',
-    desc: 'Planted in the 1700s across the Great Lakes basin. Centuries-old trees yield aromatic, honey-spiced heritage pears.',
-  },
-  {
-    name: 'Pawpaw & American Persimmon',
-    category: 'Native Tree Fruits',
-    desc: "North America's largest native fruits, boasting tropical butterscotch, custard, and spiced vanilla notes with ancient native roots.",
   },
 ]
 

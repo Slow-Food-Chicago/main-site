@@ -1,7 +1,6 @@
 import {
   Snail,
   MapPin,
-  Award,
   Sparkles,
   ArrowRight,
   ArrowUpRight,
