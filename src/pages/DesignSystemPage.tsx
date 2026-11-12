@@ -1450,13 +1450,14 @@ export default function DesignSystemPage() {
           >
             {/* Principle Card */}
             <article className="principle-card red" style={{ minHeight: 'auto' }}>
-              <span className="principle-number">01</span>
-              <span className="principle-icon">
-                <Sprout size={22} />
-              </span>
-              <h3>
-                Good<span>.</span>
-              </h3>
+              <div className="principle-card-top">
+                <h3>
+                  Good<span>.</span>
+                </h3>
+                <span className="principle-icon">
+                  <Sprout size={22} />
+                </span>
+              </div>
               <p>Delicious and healthy food that connects us to seasonal flavor and local heritage.</p>
             </article>
 

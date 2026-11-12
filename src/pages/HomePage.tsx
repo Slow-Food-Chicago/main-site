@@ -100,13 +100,15 @@ export default function HomePage() {
             const Icon = principle.icon
             return (
               <article className={`principle-card ${principle.color}`} key={principle.number}>
-                <span className="principle-icon">
-                  <Icon size={23} strokeWidth={1.7} />
-                </span>
-                <h3>
-                  {principle.title}
-                  <span>.</span>
-                </h3>
+                <div className="principle-card-top">
+                  <h3>
+                    {principle.title}
+                    <span>.</span>
+                  </h3>
+                  <span className="principle-icon">
+                    <Icon size={23} strokeWidth={1.7} />
+                  </span>
+                </div>
                 <p>{principle.description}</p>
               </article>
             )

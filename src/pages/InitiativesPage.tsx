@@ -5,6 +5,7 @@ import PageHero from '../components/ui/PageHero'
 import CtaSection from '../components/ui/CtaSection'
 import { initiatives, initiativeColorMap } from '../data/initiatives'
 import { SHOW_SLACK, SLACK_INVITE_URL } from '../data/constants'
+import initativeHero from '../assets/events/events5.jpg'
 
 export default function InitiativesPage() {
   return (
@@ -19,8 +20,8 @@ export default function InitiativesPage() {
           </>
         }
         description="We run programs that connect people to better food, locally grown, ethically sourced, and rooted in the traditions that make Chicago's food culture worth celebrating."
-        asideIcon={Sprout}
-        asideColor="var(--snail-forest)"
+        asideImage={initativeHero}
+        asideImageAlt="Michael Thompson speaking at an event"
       />
 
       {/* Initiatives list */}

@@ -1000,7 +1000,7 @@ h6 {
 
 .principle-card {
   position: relative;
-  min-height: 245px;
+  min-height: 200px;
   padding: 24px 25px 28px;
   background: white;
   border: 1px solid rgb(31 29 27 / 5%);
@@ -1029,19 +1029,26 @@ h6 {
   font-style: normal;
 }
 
+.principle-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
 .principle-icon {
   width: 43px;
   height: 43px;
-  margin-top: 24px;
   display: grid;
   place-items: center;
   color: var(--card-accent);
   background: var(--card-tint);
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .principle-card h3 {
-  margin: 15px 0 8px;
+  margin: 0;
   color: var(--snail-charcoal);
   font-family: var(--font-heading);
   font-size: 26px;
@@ -3351,14 +3358,6 @@ a.initiative-card:hover .initiative-title {
   .principle-card {
     min-height: 218px;
     padding: 21px 22px 23px;
-  }
-
-  .principle-icon {
-    margin-top: 16px;
-  }
-
-  .principle-card h3 {
-    margin-top: 11px;
   }
 
 
