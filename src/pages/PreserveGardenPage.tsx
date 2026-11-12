@@ -1,10 +1,26 @@
-import { useState, useRef, useEffect } from 'react'
-import { ArrowUpRight, Sprout, Sun, Leaf, Snowflake, Sparkles } from 'lucide-react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import {
+  ArrowUpRight,
+  Sprout,
+  Sun,
+  Leaf,
+  Snowflake,
+  Sparkles,
+  X,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react'
 import BackLink from '../components/ui/BackLink'
 import PageHero from '../components/ui/PageHero'
 import CtaSection from '../components/ui/CtaSection'
 import SectionKicker from '../components/ui/SectionKicker'
-import { gardenHarvest, gardenPartners, type Crop } from '../data/preserve-garden'
+import {
+  gardenHarvest,
+  gardenPartners,
+  gardenHeroPhoto,
+  gardenPhotos,
+  type Crop,
+} from '../data/preserve-garden'
 import { CONTACT_EMAIL } from '../data/constants'
 import { Link } from 'react-router-dom'
 import CropModal from '../components/garden/CropModal'
@@ -20,7 +36,29 @@ export default function PreserveGardenPage() {
   const [activeCrop, setActiveCrop] = useState<Crop | null>(null)
   const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null)
   const [isPinned, setIsPinned] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const closeTimeoutRef = useRef<number | null>(null)
+
+  const closeLightbox = useCallback(() => setLightboxIndex(null), [])
+  const showPrevPhoto = useCallback(() => {
+    setLightboxIndex((prev) =>
+      prev === null ? null : (prev - 1 + gardenPhotos.length) % gardenPhotos.length
+    )
+  }, [])
+  const showNextPhoto = useCallback(() => {
+    setLightboxIndex((prev) => (prev === null ? null : (prev + 1) % gardenPhotos.length))
+  }, [])
+
+  useEffect(() => {
+    if (lightboxIndex === null) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox()
+      else if (e.key === 'ArrowLeft') showPrevPhoto()
+      else if (e.key === 'ArrowRight') showNextPhoto()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [lightboxIndex, closeLightbox, showPrevPhoto, showNextPhoto])
 
   const clearCloseTimeout = () => {
     if (closeTimeoutRef.current !== null) {
@@ -113,8 +151,8 @@ export default function PreserveGardenPage() {
           </>
         }
         description="Since 2010, the preSERVE Garden has been growing heirloom vegetables, heritage fruits, and deep roots in Chicago's North Lawndale neighborhood — one harvest at a time."
-        asideIcon={Sprout}
-        asideColor="var(--snail-forest)"
+        asideImage={gardenHeroPhoto.src}
+        asideImageAlt={gardenHeroPhoto.alt}
       />
 
       {/* About */}
@@ -152,7 +190,85 @@ export default function PreserveGardenPage() {
             </div>
           </div>
         </div>
+
+        {/* Garden Photo Gallery */}
+        <div className="preserve-gallery" aria-label="preSERVE Garden photo gallery">
+          {gardenPhotos.map((photo, index) => (
+            <button
+              key={photo.src}
+              type="button"
+              className={`preserve-gallery-card preserve-gallery-card--${photo.orientation} preserve-gallery-card--item-${index + 1}`}
+              onClick={() => setLightboxIndex(index)}
+              aria-label={`View photo: ${photo.alt}`}
+            >
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                className="preserve-gallery-img"
+                loading={index < 3 ? 'eager' : 'lazy'}
+              />
+              <span className="preserve-gallery-caption">{photo.caption}</span>
+            </button>
+          ))}
+        </div>
       </section>
+
+      {/* Photo Lightbox Modal */}
+      {lightboxIndex !== null && (
+        <div
+          className="preserve-lightbox-backdrop"
+          onClick={closeLightbox}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Garden photo viewer"
+        >
+          <div
+            className="preserve-lightbox-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="preserve-lightbox-close"
+              onClick={closeLightbox}
+              aria-label="Close photo viewer"
+            >
+              <X size={20} />
+            </button>
+
+            <button
+              type="button"
+              className="preserve-lightbox-nav preserve-lightbox-nav--prev"
+              onClick={showPrevPhoto}
+              aria-label="Previous photo"
+            >
+              <ChevronLeft size={24} />
+            </button>
+
+            <figure className="preserve-lightbox-figure">
+              <img
+                src={gardenPhotos[lightboxIndex].src}
+                alt={gardenPhotos[lightboxIndex].alt}
+                className="preserve-lightbox-img"
+              />
+              <figcaption className="preserve-lightbox-caption">
+                <span>{gardenPhotos[lightboxIndex].caption}</span>
+                <span className="preserve-lightbox-counter">
+                  {lightboxIndex + 1} / {gardenPhotos.length}
+                </span>
+              </figcaption>
+            </figure>
+
+            <button
+              type="button"
+              className="preserve-lightbox-nav preserve-lightbox-nav--next"
+              onClick={showNextPhoto}
+              aria-label="Next photo"
+            >
+              <ChevronRight size={24} />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* What we grow */}
       <section className="preserve-harvest-section">
@@ -246,10 +362,20 @@ export default function PreserveGardenPage() {
           </h2>
           <div className="preserve-partners-list">
             {gardenPartners.map((p) => (
-              <div className="preserve-partner-card" key={p.name}>
-                <h3 className="preserve-partner-name">{p.name}</h3>
+              <a
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="preserve-partner-card"
+                key={p.name}
+                title={`Visit ${p.name}`}
+              >
+                <h3 className="preserve-partner-name">
+                  <span>{p.name}</span>
+                  <ArrowUpRight size={16} className="preserve-partner-arrow" aria-hidden="true" />
+                </h3>
                 <p className="preserve-partner-desc">{p.description}</p>
-              </div>
+              </a>
             ))}
           </div>
         </div>

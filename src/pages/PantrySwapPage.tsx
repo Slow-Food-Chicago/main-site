@@ -5,7 +5,7 @@ import CtaSection from '../components/ui/CtaSection'
 import SectionKicker from '../components/ui/SectionKicker'
 import { swapItems } from '../data/pantry-swap'
 import { SHOW_SLACK, SLACK_INVITE_URL, CONTACT_EMAIL } from '../data/constants'
-
+import pantry2 from '../assets/pantry/pantry2.jpg'
 export default function PantrySwapPage() {
   return (
     <main>
@@ -28,8 +28,8 @@ export default function PantrySwapPage() {
             <em>Provenance Matters!</em>
           </>
         }
-        asideIcon={ShoppingBasket}
-        asideColor="var(--snail-orange)"
+        asideImage={pantry2}
+        asideImageAlt="Pantry swap initiative"
       />
 
       {/* What to swap */}

@@ -117,6 +117,12 @@ export const swapItems: SwapItem[] = [
         why: 'Urban beekeeping operation tending rooftop and garden hives across Chicago neighborhoods to harvest hyper-local, unheated neighborhood raw honeys.',
         url: 'https://www.sweetcombchicago.com',
       },
+      {
+        name: 'The Hive Supply Co. (Chicago, IL)',
+        rating: 'A',
+        why: 'Pilsen-based urban apiary and beekeeping resource harvesting raw local Chicago honey while supporting neighborhood beekeepers through education and hive stewardship.',
+        url: 'https://www.thehivesupply.com',
+      },
     ],
   },
   {
@@ -195,25 +201,6 @@ export const swapItems: SwapItem[] = [
     ],
   },
   {
-    item: 'Vinegars & Acid',
-    blurb:
-      'Live-culture vinegars brewed slowly through natural acetification impart bright depth and gut-healthy probiotics, in contrast to white distilled vinegars made from petroleum-derived industrial acetic acid.',
-    suppliers: [
-      {
-        name: 'Seedling Orchard (South Haven, MI)',
-        rating: 'A',
-        why: 'Small-batch raw apple cider vinegar pressed from hand-harvested heirloom cider apples along the Lake Michigan fruit ridge.',
-        url: 'https://www.instagram.com/seedlingfruit/',
-      },
-      {
-        name: "Bushel & Peck's (Beloit, WI)",
-        rating: 'A',
-        why: "Unfiltered, unpasteurized cider vinegars aged in oak barrels with native 'mother' cultures using whole regional windfall apples.",
-        url: 'https://bushelandpecks.com',
-      },
-    ],
-  },
-  {
     item: 'Culinary Herbs & Dried Spices',
     blurb:
       'Freshly dried regional herbs and direct-relationship single-origin spices retain volatile essential oils and pungent aromas that degrade during the multi-year commodity supply chains common in supermarkets.',
@@ -229,25 +216,6 @@ export const swapItems: SwapItem[] = [
         rating: 'A',
         why: 'Midwest spice institution hand-sourcing small-batch whole spices, freshly grinding seeds and hand-mixing signature herb blends every week.',
         url: 'https://www.thespicehouse.com',
-      },
-    ],
-  },
-  {
-    item: 'Mustards & Savory Condiments',
-    blurb:
-      'Stone-milling whole mustard seeds preserves their natural enzyme activity and fiery pop, turning a simple pantry jar into a showcase of Midwestern brassica cultivation.',
-    suppliers: [
-      {
-        name: 'Co-op Sauce (Chicago, IL)',
-        rating: 'A',
-        why: 'Chicago-made stone-ground mustards and fermented condiments crafted with local craft beer, regional cider vinegar, and Midwest mustard seed.',
-        url: 'https://coopsauce.com',
-      },
-      {
-        name: 'Mustard Girl (Mineral Point, WI)',
-        rating: 'A',
-        why: 'Wisconsin artisan using clean Midwestern ingredients, whole seeds, and apple cider vinegar without added starches or chemical stabilizers.',
-        url: 'https://mustardgirl.com',
       },
     ],
   },
@@ -284,7 +252,7 @@ export const swapItems: SwapItem[] = [
       {
         name: 'Publican Quality Bread (Chicago, IL)',
         rating: 'A',
-        why: 'Snail of Approval bakery championing regional organic stone-milled heirloom grains and long, natural sourdough fermentation for deeply flavorful loaves.',
+        why: 'Bakery championing regional organic stone-milled heirloom grains and long, natural sourdough fermentation for deeply flavorful loaves.',
         url: 'https://www.publicanqualitybread.com',
       },
       {
@@ -317,12 +285,6 @@ export const swapItems: SwapItem[] = [
         rating: 'A',
         why: 'Small-batch, woman-owned pasta maker hand-rolling fresh and slow-dried pantry pastas made with organic semolina and vibrant natural vegetable and herb infusions.',
         url: 'https://www.pastabyval.com',
-      },
-      {
-        name: 'Daisies (Chicago, IL)',
-        rating: 'A',
-        why: 'Snail of Approval Logan Square kitchen and market celebrating Midwest-driven handmade pastas crafted with regional stone-milled grains and seasonal farm produce.',
-        url: 'https://www.daisieschicago.com',
       },
     ],
   },

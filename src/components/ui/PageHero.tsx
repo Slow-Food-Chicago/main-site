@@ -10,6 +10,8 @@ export interface PageHeroProps {
   description?: React.ReactNode
   asideIcon?: LucideIcon
   asideColor?: string
+  asideImage?: string
+  asideImageAlt?: string
   actions?: React.ReactNode
   className?: string
   children?: React.ReactNode
@@ -23,12 +25,18 @@ export default function PageHero({
   description,
   asideIcon: AsideIcon,
   asideColor,
+  asideImage,
+  asideImageAlt = '',
   actions,
   className = '',
   children,
 }: PageHeroProps) {
+  const heroClasses = ['page-hero', asideImage ? 'page-hero--with-image' : '', className]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <section className={`page-hero ${className}`.trim()}>
+    <section className={heroClasses}>
       <div className="page-hero-inner">
         {kicker ? (
           kicker
@@ -49,10 +57,16 @@ export default function PageHero({
         {children}
       </div>
 
-      {AsideIcon && (
-        <div className="page-hero-aside" aria-hidden="true">
-          <AsideIcon size={52} strokeWidth={1.2} style={{ color: asideColor }} />
+      {asideImage ? (
+        <div className="page-hero-media">
+          <img src={asideImage} alt={asideImageAlt} className="page-hero-img" />
         </div>
+      ) : (
+        AsideIcon && (
+          <div className="page-hero-aside" aria-hidden="true">
+            <AsideIcon size={52} strokeWidth={1.2} style={{ color: asideColor }} />
+          </div>
+        )
       )}
     </section>
   )

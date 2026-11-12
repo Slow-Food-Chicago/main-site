@@ -1,9 +1,63 @@
 import type { LucideIcon } from 'lucide-react'
 import { Leaf, Sun, Users } from 'lucide-react'
+import garden1 from '../assets/garden/garden1.jpg'
+import garden2 from '../assets/garden/garden2.jpg'
+import garden3 from '../assets/garden/garden3.jpg'
+import garden4 from '../assets/garden/garden4.jpg'
+import garden5 from '../assets/garden/garden5.jpg'
+import garden6 from '../assets/garden/garden6.jpg'
+
+export interface GardenPhoto {
+  src: string
+  alt: string
+  caption: string
+  orientation: 'landscape' | 'portrait'
+}
+
+export const gardenHeroPhoto: GardenPhoto = {
+  src: garden1,
+  alt: 'Slow Food Grows Here sign on the preSERVE Garden fence with volunteers planting in the background',
+  caption: 'Volunteers planting in the mulched beds behind our Slow Food Grows Here sign.',
+  orientation: 'landscape',
+}
+
+export const gardenPhotos: GardenPhoto[] = [
+  {
+    src: garden4,
+    alt: 'Group of smiling volunteers holding up freshly harvested sweet potatoes, peppers, and garden tools',
+    caption: 'Celebrating a fall harvest of heirloom sweet potatoes and peppers with our garden crew.',
+    orientation: 'landscape',
+  },
+  {
+    src: garden3,
+    alt: 'Volunteers working together in the sunlit garden beds',
+    caption: 'Community workday in full swing — tending beds and sharing knowledge in the sun.',
+    orientation: 'landscape',
+  },
+  {
+    src: garden2,
+    alt: 'Two volunteers tending lush vegetable beds and fruit trees at the preSERVE Garden',
+    caption: 'Tending seasonal vegetable beds beneath the garden’s fruit trees in North Lawndale.',
+    orientation: 'portrait',
+  },
+  {
+    src: garden5,
+    alt: 'Volunteer in gardening gloves harvesting fresh dinosaur kale',
+    caption: 'Harvesting fresh bunches of lacinato kale straight from the bed.',
+    orientation: 'portrait',
+  },
+  {
+    src: garden6,
+    alt: 'Community members examining and tasting fresh harvest in the garden',
+    caption: 'Tasting ripe heritage fruit fresh from the garden during a late-summer workday.',
+    orientation: 'portrait',
+  },
+]
 
 export interface GardenPartner {
   name: string
   description: string
+  url: string
 }
 
 export interface GardenWay {
@@ -283,16 +337,19 @@ export const gardenPartners: GardenPartner[] = [
     name: 'North Lawndale Greening Committee',
     description:
       'A neighborhood-led group working to green and revitalize North Lawndale through community-driven environmental projects.',
+    url: 'https://nlgreeningcommittee.org/',
   },
   {
     name: 'Chicago Honey Co-Op',
     description:
       "A worker-owned beekeeping cooperative rooted in Chicago's South Side, supporting urban pollinator health and local honey production.",
+    url: 'https://www.chicagohoneycoop.com/',
   },
   {
     name: 'NeighborSpace',
     description:
       'A nonprofit land trust that preserves and supports community-managed open spaces across Chicago neighborhoods.',
+    url: 'https://neighbor-space.org/',
   },
 ]
 
