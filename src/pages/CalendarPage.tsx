@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import {
-  CalendarDays,
   Calendar as CalendarIcon,
   ArrowUpRight,
   ExternalLink,
@@ -11,6 +10,7 @@ import CtaSection from '../components/ui/CtaSection'
 import EventCard from '../components/calendar/EventCard'
 import CalendarEmbed from '../components/calendar/CalendarEmbed'
 import CalendarControls from '../components/calendar/CalendarControls'
+import eventHero from '../assets/events/events2.jpg'
 
 import type { CalendarEvent, EventCategory, FeedSyncState } from '../types/calendar'
 import {
@@ -213,8 +213,8 @@ export default function CalendarPage() {
           </>
         }
         description="From garden workdays and farm tours to hands-on fermentation workshops and panel discussions—our events are where real relationships and a better food system are built."
-        asideIcon={CalendarDays}
-        asideColor="var(--snail-red)"
+        asideImage={eventHero}
+        asideImageAlt="Slow Food Chicago events"
         actions={
           <>
             <a
