@@ -7,6 +7,9 @@ import gabi from '../assets/gabi.JPG'
 import christian from '../assets/christian.jpeg'
 import benji from '../assets/benji.jpeg'
 import dfrantz from '../assets/dfrantz.jpg'
+import heidi from '../assets/heidi.jpg'
+import jeanne from '../assets/jeanne.png'
+import michelle from '../assets/michelle.png'
 import { SNAIL_OF_APPROVAL_URL, ARK_OF_TASTE_URL } from './constants'
 
 export type SocialLinkItemObject = {
@@ -86,17 +89,20 @@ For me, seeing the food system from these varied perspectives reinforces my beli
   },
 ]
 
-export const committeeMembers: Record<string, CommitteeMember[]> = {
-  comms: [
-    { role: 'Chair', name: 'Vanshi Jhumkhawala', headshot: null, bio: '', social: null },
-    { role: 'Chair', name: 'Benji Corpuz', headshot: benji, bio: `I'm a city planner with the City of Chicago’s Department of Planning and Development, and I believe great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity.
+const Benji: CommitteeMember = {
+  role: 'Chair', name: 'Benji Corpuz', headshot: benji, bio: `I'm a city planner with the City of Chicago’s Department of Planning and Development, and I believe great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity.
 
 I have a lifelong appreciation for food as a source of family and community, and I'm a fierce advocate for shopping and dining locally. I hope to contribute my passion for strong neighborhoods, local food systems, and fostering connections to the organization.
 
 I'm particularly interested in the intersection of nutrition, public health, and food access, and how individual, collective, and municipal efforts can make nutritious food more accessible to everyone.
 
-Outside of work, you can find me behind a camera, tending to my backyard garden, biking around town, or enjoying a meal with friends and good company.`,
-      social: null },
+Outside of work, you can find me behind a camera, tending to my backyard garden, biking around town, or enjoying a meal with friends and good company.`, social: null
+}
+
+export const committeeMembers: Record<string, CommitteeMember[]> = {
+  comms: [
+    { role: 'Chair', name: 'Vanshi Jhumkhawala', headshot: null, bio: '', social: null },
+    Benji
   ],
   partnerships: [
     {
@@ -110,7 +116,8 @@ My culinary journey began in Lexington, Kentucky, where I was immersed in a fami
 Subsequently, my exposure to Lexington's diverse culinary scene broadened my horizons, shaping my innovative approach.`,
       social: null,
     },
-    { role: 'member', name: 'Dfrantz Smart', headshot: dfrantz, bio: `D’Frantz Smart is an independent curator, event producer, community organizer, connector, food justice advocate, and data scientist.
+    {
+      role: 'member', name: 'Dfrantz Smart', headshot: dfrantz, bio: `D’Frantz Smart is an independent curator, event producer, community organizer, connector, food justice advocate, and data scientist.
       
 She is the founder of Rooted Reads, an organization connecting and building community through a radical analysis of food and global food systems, and the founder of Hold The Lane, a collective of urban cyclists cultivating environments that nurture physical, emotional, and mental health through community rides and events for Black, Brown and Queer cyclists. 
 
@@ -138,13 +145,7 @@ Organizer @holdthelane`,
         },
       ],
     },
-    { role: 'Chair', name: 'Benji Corpuz', headshot: benji, bio: `I'm a city planner with the City of Chicago’s Department of Planning and Development, and I believe great neighborhoods are shaped by human connection, welcoming public spaces, and cultural identity.
-
-I have a lifelong appreciation for food as a source of family and community, and I'm a fierce advocate for shopping and dining locally. I hope to contribute my passion for strong neighborhoods, local food systems, and fostering connections to the organization.
-
-I'm particularly interested in the intersection of nutrition, public health, and food access, and how individual, collective, and municipal efforts can make nutritious food more accessible to everyone.
-
-Outside of work, you can find me behind a camera, tending to my backyard garden, biking around town, or enjoying a meal with friends and good company.`, social: null },
+    Benji,
     {
       role: 'member',
       name: 'Gabi Medina',
@@ -156,13 +157,38 @@ Outside of work, you can find me behind a camera, tending to my backyard garden,
       
       After more than ten years in the hospitality industry, only recently can I claim to understand what my ancestors already knew: slow food means care and intention, a long-term investment in and for the land and the people. That same structure encourages me to focus on education about who we can thank for what's in our cocktail, with curiosity and respect. ¡Salud!`,
     },
+    {
+      role: 'member',
+      name: 'Michelle DiMuzio',
+      headshot: michelle,
+      bio: `Michelle is passionate about collaborating with others to build sustainable and equitable foodways. 
+      
+      She has spent eight years in the nonprofit and food business sectors and has participated in several fellowship programs including the New Sector Alliance Fellowship Program and the Neighborhood Leadership Program through the Wilder Foundation. 
+      
+      She has been involved in the food and beverage field in many capacities including serving as the communications coordinator for Slow Food USA, consulting for a local fish company to promote the sustainable usage of invasive species, consulting for a brewery to implement sustainable operations, and volunteering at her local community garden.`,
+      social: null,
+    }
   ],
   snail: [],
   ark: [
-    { role: 'Chair', name: 'Jeanne Calabrese', headshot: null, bio: '', social: null },
-    { role: 'member', name: 'Heidi Hedeker', headshot: null, bio: '', social: null },
+    {
+      role: 'Chair', name: 'Jeanne Calabrese', headshot: jeanne, bio: `Jeanne Calabrese is a sustainable agriculture and food justice advocate. 
+      
+      For years she has cultivated her knowledge of local food systems and growing practices in order to gain a better understanding of how to impact positive change within the food system. This has led her to complete the Stateline Farm Beginnings course, a residency program in fermentation, certification as a master food preserver and an apprenticeship on a small apple orchard. She has taken numerous workshops at food and farming conferences throughout the US. 
+      
+      She is co-founder of City Orchards, a 501c3 entity that designs, implements and manages micro orchards on Chicago’s westside. 
+      
+      She has been a member of the Midwest Ark of Taste since its inception and is a former Slow Food Chicago board member.`, social: 'https://www.instagram.com/fedupferments/'
+    },
+    {
+      role: 'member', name: 'Heidi Hedeker', headshot: heidi, bio: `She grew up in the business, working in her family’s bakery on the Northwest side, Gladstone Park Bakery. Hedeker went on to own her own shop in Wicker Park, Alliance Bakery, chosen as Best Retailer of the Year by Culinaria in 2000. 
+
+Heidi is also a food writer who has served as editor for Baking Magazine and holds a Bachelor of the Arts degree in writing. 
+
+She is a certified master baker and is currently at work on a therapeutic baking and pastry program for disadvantaged mothers and daughters called “It Bakes a Village.”`, social: null
+    },
     { role: 'member', name: 'Gregory Hall', headshot: null, bio: '', social: null },
-    { role: 'member', name: 'Sarah Batka', headshot: null, bio: '', social: null}
+    { role: 'member', name: 'Sarah Batka', headshot: null, bio: '', social: null }
   ],
   preserve: [],
   events: [
