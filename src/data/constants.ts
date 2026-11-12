@@ -27,9 +27,15 @@ export const SLOW_FOOD_USA_URL = 'https://slowfoodusa.org' as const
 
 export const PRIVACY_POLICY_URL = 'https://slowfoodusa.org/privacy-policy' as const
 
-export const SNAIL_OF_APPROVAL_URL = 'https://snails.slowfoodchicago.org' as const
+// Parked internal routes while standalone platforms are in active development
+export const SNAIL_OF_APPROVAL_URL = '/initiatives/snail-of-approval' as const
 
-export const ARK_OF_TASTE_URL = 'https://ark.slowfoodchicago.org' as const
+export const ARK_OF_TASTE_URL = '/initiatives/ark-of-taste' as const
+
+// External domains for future launch of standalone platforms
+export const SNAIL_OF_APPROVAL_EXTERNAL_URL = 'https://snails.slowfoodchicago.org' as const
+
+export const ARK_OF_TASTE_EXTERNAL_URL = 'https://ark.slowfoodchicago.org' as const
 
 export const INSTAGRAM_URL = 'https://www.instagram.com/slowfoodchicago/' as const
 

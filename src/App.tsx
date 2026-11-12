@@ -7,6 +7,8 @@ import BoardPage from './pages/BoardPage'
 import InitiativesPage from './pages/InitiativesPage'
 import PantrySwapPage from './pages/PantrySwapPage'
 import PreserveGardenPage from './pages/PreserveGardenPage'
+import ArkOfTastePage from './pages/ArkOfTastePage'
+import SnailOfApprovalPage from './pages/SnailOfApprovalPage'
 import CalendarPage from './pages/CalendarPage'
 import DesignSystemPage from './pages/DesignSystemPage'
 
@@ -22,6 +24,10 @@ export default function App() {
           <Route path="/initiatives" element={<InitiativesPage />} />
           <Route path="/initiatives/pantry-swap" element={<PantrySwapPage />} />
           <Route path="/initiatives/preserve-garden" element={<PreserveGardenPage />} />
+          <Route path="/initiatives/ark-of-taste" element={<ArkOfTastePage />} />
+          <Route path="/ark-of-taste" element={<ArkOfTastePage />} />
+          <Route path="/initiatives/snail-of-approval" element={<SnailOfApprovalPage />} />
+          <Route path="/snail-of-approval" element={<SnailOfApprovalPage />} />
           <Route path="/events" element={<CalendarPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/design-system" element={<DesignSystemPage />} />

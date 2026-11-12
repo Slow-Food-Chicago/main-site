@@ -69,7 +69,11 @@ export default function InitiativesPage() {
                   <p className="initiative-desc">{item.description}</p>
                 </div>
                 <span className="initiative-arrow" aria-hidden="true">
-                  <ArrowUpRight size={18} style={{ color: c.accent }} />
+                  {item.external ? (
+                    <ArrowUpRight size={18} style={{ color: c.accent }} />
+                  ) : (
+                    <ArrowRight size={18} style={{ color: c.accent }} />
+                  )}
                 </span>
               </CardWrapper>
             )

@@ -180,22 +180,39 @@ export default function Footer() {
             <ul className="space-y-2" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               {footerProjectLinks.map((item) => (
                 <li key={item.label}>
-                  <a
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      fontSize: '13px',
-                      color: 'var(--snail-warm-gray)',
-                      transition: 'color 160ms ease',
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--snail-red)')}
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = 'var(--snail-warm-gray)')
-                    }
-                  >
-                    {item.label}
-                  </a>
+                  {item.external ? (
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        fontSize: '13px',
+                        color: 'var(--snail-warm-gray)',
+                        transition: 'color 160ms ease',
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--snail-red)')}
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = 'var(--snail-warm-gray)')
+                      }
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
+                    <Link
+                      to={item.href}
+                      style={{
+                        fontSize: '13px',
+                        color: 'var(--snail-warm-gray)',
+                        transition: 'color 160ms ease',
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--snail-red)')}
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = 'var(--snail-warm-gray)')
+                      }
+                    >
+                      {item.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

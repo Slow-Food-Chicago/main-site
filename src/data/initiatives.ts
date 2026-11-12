@@ -53,9 +53,9 @@ export const initiatives: InitiativeItem[] = [
       "The Snail of Approval is Slow Food's hallmark of quality and integrity. We work with local restaurants, producers, and markets to identify those who source responsibly, treat workers fairly, and cook with honesty. Look for the snail—it means something.",
     color: 'red',
     icon: Snail,
-    status: 'Active',
+    status: 'Coming Soon',
     href: SNAIL_OF_APPROVAL_URL,
-    external: true,
+    external: false,
   },
   {
     number: '03',
@@ -65,9 +65,9 @@ export const initiatives: InitiativeItem[] = [
       'The Ark of Taste is a living catalog of endangered foods—heirloom vegetables, heritage breeds, traditional recipes, and artisan products at risk of being lost. We document and champion Midwestern foods worth saving, from Illinois native varieties to regional foodways.',
     color: 'forest',
     icon: BookOpen,
-    status: 'Active',
+    status: 'Coming Soon',
     href: ARK_OF_TASTE_URL,
-    external: true,
+    external: false,
   },
   {
     number: '04',

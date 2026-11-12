@@ -170,8 +170,14 @@ export default function PreserveGardenPage() {
               composting beds, and an ever-expanding diversity of crops.
             </p>
             <p className="preserve-body-text">
-              Many of the varieties we grow are drawn from Slow Food's Ark of Taste — an
-              international catalog of endangered and rare foods — making the garden not just a
+              Many of the varieties we grow are drawn from{' '}
+              <Link
+                to="/initiatives/ark-of-taste"
+                style={{ color: 'var(--snail-forest-dark)', fontWeight: 600, textDecoration: 'underline' }}
+              >
+                Slow Food's Ark of Taste
+              </Link>{' '}
+              — an international catalog of endangered and rare foods — making the garden not just a
               food source, but a living act of preservation.
             </p>
           </div>
