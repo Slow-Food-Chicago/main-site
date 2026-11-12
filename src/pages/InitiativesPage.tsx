@@ -18,7 +18,7 @@ export default function InitiativesPage() {
             Good food takes <em>real effort.</em>
           </>
         }
-        description="We run programs that connect people to better food—locally grown, ethically sourced, and rooted in the traditions that make Chicago's food culture worth celebrating."
+        description="We run programs that connect people to better food, locally grown, ethically sourced, and rooted in the traditions that make Chicago's food culture worth celebrating."
         asideIcon={Sprout}
         asideColor="var(--snail-forest)"
       />
@@ -90,7 +90,7 @@ export default function InitiativesPage() {
             Want to help <em>with the work?</em>
           </>
         }
-        description="Our initiatives run because of people who show up. Whether you want to volunteer, partner with us, or just learn more—reach out and let's talk."
+        description="Our initiatives run because of people who show up. Whether you want to volunteer, partner with us, or just learn more, reach out and let's talk."
         actions={
           <>
             <Link className="button button-white" to="/get-involved">

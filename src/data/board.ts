@@ -221,7 +221,7 @@ export const committees: Committee[] = [
     key: 'comms',
     name: 'Communications',
     description:
-      'Tells the Slow Food Chicago story — managing our newsletter, social media, website, and community outreach.',
+      'Tells the Slow Food Chicago story, managing our newsletter, social media, website, and community outreach.',
     icon: Megaphone,
     accent: 'var(--snail-forest)',
     tint: 'var(--snail-forest-light)',
@@ -244,7 +244,7 @@ export const workingGroups: Committee[] = [
     key: 'ark',
     name: 'Midwest Ark of Taste',
     description:
-      'Catalogs and champions endangered Midwestern food biodiversity — from heirloom seeds to heritage breeds — as part of the global Slow Food Ark of Taste.',
+      'Catalogs and champions endangered Midwestern food biodiversity, from heirloom seeds to heritage breeds, as part of the global Slow Food Ark of Taste.',
     icon: Wheat,
     accent: 'var(--snail-yellow)',
     tint: 'var(--snail-yellow-light)',

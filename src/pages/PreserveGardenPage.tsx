@@ -150,7 +150,7 @@ export default function PreserveGardenPage() {
             A garden that <em>grows community.</em>
           </>
         }
-        description="Since 2010, the preSERVE Garden has been growing heirloom vegetables, heritage fruits, and deep roots in Chicago's North Lawndale neighborhood — one harvest at a time."
+        description="Since 2010, the preSERVE Garden has been growing heirloom vegetables, heritage fruits, and deep roots in Chicago's North Lawndale neighborhood one harvest at a time."
         asideImage={gardenHeroPhoto.src}
         asideImageAlt={gardenHeroPhoto.alt}
       />
@@ -166,7 +166,7 @@ export default function PreserveGardenPage() {
             <p className="preserve-body-text">
               The preSERVE Garden was born out of a desire to get more deeply involved in community
               gardening at a neighborhood level. What started as a small plot has grown into a
-              thriving, multi-partner space — home to fruit trees and berry bushes, active
+              thriving, multi-partner space, home to fruit trees and berry bushes, active
               composting beds, and an ever-expanding diversity of crops.
             </p>
             <p className="preserve-body-text">
@@ -176,8 +176,8 @@ export default function PreserveGardenPage() {
                 style={{ color: 'var(--snail-forest-dark)', fontWeight: 600, textDecoration: 'underline' }}
               >
                 Slow Food's Ark of Taste
-              </Link>{' '}
-              — an international catalog of endangered and rare foods — making the garden not just a
+              </Link>
+              , an international catalog of endangered and rare foods, making the garden not just a
               food source, but a living act of preservation.
             </p>
           </div>
@@ -284,7 +284,7 @@ export default function PreserveGardenPage() {
             A full season's <em>worth of flavor.</em>
           </h2>
           <p className="preserve-harvest-desc">
-            Each growing season the garden yields a diverse mix of vegetables, fruits, and herbs —
+            Each growing season the garden yields a diverse mix of vegetables, fruits, and herbs,
             many of them heirloom or heritage varieties. Hover over any crop below to view the
             varieties planted and their stories.
           </p>

@@ -3050,6 +3050,8 @@ a.initiative-card:hover .initiative-title {
 
 .involve-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
   padding: 26px 26px 30px;
   background: white;
   border: 1px solid rgb(31 29 27 / 6%);
@@ -3105,6 +3107,8 @@ a.initiative-card:hover .initiative-title {
 .involve-card-link {
   display: inline-flex;
   align-items: center;
+  align-self: flex-start;
+  margin-top: auto;
   gap: 7px;
   color: var(--involve-accent);
   font-size: 14px;
@@ -4130,7 +4134,7 @@ a.initiative-card:hover .initiative-title {
 }
 
 /* ==========================================================================
-   Slow Food Chicago — Calendar & Events Styles
+   Slow Food Chicago - Calendar & Events Styles
    ========================================================================== */
 
 .calendar-page {

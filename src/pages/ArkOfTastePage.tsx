@@ -62,7 +62,7 @@ export default function ArkOfTastePage() {
         description={
           <>
             The <strong>Ark of Taste</strong> is an international living catalog of delicious and endangered
-            foods—heirloom vegetables, heritage livestock breeds, traditional recipes, and artisan products at risk of
+            foods, heirloom vegetables, heritage livestock breeds, traditional recipes, and artisan products at risk of
             being lost. Here in the Midwest, we catalog, cultivate, and champion regional food biodiversity worth saving.
           </>
         }

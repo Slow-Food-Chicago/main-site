@@ -30,7 +30,7 @@ export const principles: Principle[] = [
     number: '03',
     title: 'Fair',
     description:
-      'Food systems that value everyone at the table—from farmers and cooks to our neighbors.',
+      'Food systems that value everyone at the table, from farmers and cooks to our neighbors.',
     color: 'green',
     icon: HeartHandshake,
   },

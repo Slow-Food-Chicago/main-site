@@ -31,7 +31,7 @@ export const gardenPhotos: GardenPhoto[] = [
   {
     src: garden3,
     alt: 'Volunteers working together in the sunlit garden beds',
-    caption: 'Community workday in full swing — tending beds and sharing knowledge in the sun.',
+    caption: 'Community workday in full swing. Tending beds and sharing knowledge in the sun.',
     orientation: 'landscape',
   },
   {
@@ -358,7 +358,7 @@ export const gardenWays: GardenWay[] = [
     icon: Sun,
     title: 'Volunteer Days',
     description:
-      'Join us for seasonal work days — planting, weeding, watering, composting, and harvesting. No experience needed, just a willingness to get your hands dirty.',
+      'Join us for seasonal work days. Planting, weeding, watering, composting, and harvesting. No experience needed, just a willingness to get your hands dirty.',
   },
   {
     icon: Leaf,

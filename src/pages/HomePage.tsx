@@ -27,11 +27,13 @@ export default function HomePage() {
           <div className="home-about-copy">
             <p>
               Slow Food Chicago is part of a global, grassroots movement imagining a better way to
-              eat—and making it happen, right here in our neighborhoods.
+              eat and making it happen, right here in our neighborhoods.
             </p>
             <p>
               We are a member-supported chapter run by an all-volunteer <Link to='/board' style={{color: "var(--snail-red)"}}>Executive Council</Link>. 
-              We also rely on a network of volunteers who help with operations and events. 
+              We rely on a network of volunteers who help with operations and events. 
+            </p>
+            <p>
               With more than 500 members and 5,000 supporters, Slow Food Chicago is one of 
               the largest chapters in the US.
             </p>

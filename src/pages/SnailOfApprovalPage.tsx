@@ -16,7 +16,7 @@ import events4 from '../assets/events/events4.jpg'
 const UPCOMING_DIRECTORY_FEATURES = [
   {
     title: 'Interactive Chicago Neighborhood Map',
-    desc: 'Filter ethical dining spots across all 77 Chicago community areas—from Logan Square and Pilsen to Lincoln Square and South Shore.',
+    desc: 'Filter ethical dining spots across all 77 Chicago community areas, from Logan Square and Pilsen to Lincoln Square and South Shore.',
     icon: MapPin,
   },
   {
@@ -50,7 +50,7 @@ export default function SnailOfApprovalPage() {
           <>
             The <strong>Snail of Approval</strong> is Slow Food&apos;s hallmark of quality and integrity. We recognize
             local restaurants, bakeries, cafes, beverage makers, and urban farms that source responsibly, treat workers
-            with dignity, and cook with honesty. Look for the snail—it means something.
+            with dignity, and cook with honesty. Look for the snail! It means something.
           </>
         }
         asideImage={events4}
@@ -108,7 +108,7 @@ export default function SnailOfApprovalPage() {
               </h2>
               <p className="parked-block-subtitle">
                 In an era of confusing labels and greenwashing, the Snail of Approval represents an independent,
-                community-vetted benchmark. It honors businesses that put values above shortcuts—proving that exceptional
+                community-vetted benchmark. It honors businesses that put values above shortcuts, proving that exceptional
                 food and ethical operations can thrive together in Chicago.
               </p>
             </div>

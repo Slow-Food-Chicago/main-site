@@ -169,7 +169,7 @@ export default function Board() {
             <em>Slow Food Chicago.</em>
           </h2>
           <p className="board-hero-lead">
-            Our chapter is run entirely by volunteers — passionate food lovers who give their time
+            Our chapter is run entirely by volunteers, passionate food lovers who give their time
             to build a better food community in Chicago and beyond.
           </p>
           <div className="board-hero-rule">

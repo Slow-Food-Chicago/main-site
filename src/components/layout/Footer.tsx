@@ -70,7 +70,7 @@ export default function Footer() {
               <span style={{ color: 'var(--snail-red)', fontWeight: 500 }}>
                 Good, Clean, and Fair
               </span>{' '}
-              for everyone. We connect eaters, growers, and makers across our city — rooted in
+              for everyone. We connect eaters, growers, and makers across our city, rooted in
               Chicago's neighborhoods and part of a global Slow Food movement.
             </p>
             <div

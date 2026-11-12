@@ -632,7 +632,7 @@ export default function DesignSystemPage() {
                   lineHeight: 1.6,
                 }}
               >
-                <div>We bring people together around good food—and work toward a food system that is good for people.</div>
+                <div>We bring people together around good food and work toward a food system that is good for people.</div>
               </div>
               <div style={{ fontSize: '11px', color: 'var(--snail-warm-gray)', marginTop: 'auto' }}>
                 <code>var(--font-body)</code>
