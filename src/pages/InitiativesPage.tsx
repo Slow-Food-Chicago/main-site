@@ -1,5 +1,5 @@
 import type React from 'react'
-import { ArrowUpRight, ArrowRight, Sprout } from 'lucide-react'
+import { ArrowUpRight, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import PageHero from '../components/ui/PageHero'
 import CtaSection from '../components/ui/CtaSection'
