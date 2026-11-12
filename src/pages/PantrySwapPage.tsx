@@ -1,4 +1,4 @@
-import { ArrowUpRight, ShoppingBasket } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import BackLink from '../components/ui/BackLink'
 import PageHero from '../components/ui/PageHero'
 import CtaSection from '../components/ui/CtaSection'
