@@ -11,6 +11,7 @@ import heidi from '../assets/board/heidi.jpg'
 import jeanne from '../assets/board/jeanne.png'
 import michelle from '../assets/board/michelle.jpg'
 import vanshi from '../assets/board/vanshi.jpeg'
+import greg from '../assets/board/greg.jpg'
 import { SNAIL_OF_APPROVAL_URL, ARK_OF_TASTE_URL } from './constants'
 
 export type SocialLinkItemObject = {
@@ -102,6 +103,13 @@ I'm particularly interested in the intersection of nutrition, public health, and
 Outside of work, you can find me behind a camera, tending to my backyard garden, biking around town, or enjoying a meal with friends and good company.`, social: null
 }
 
+const Greg: CommitteeMember = { role: 'member', name: 'Gregory Hall', headshot: greg, bio: `Greg Hall began his brewing career in 1988, the year his father, John Hall, opened the brewery. Greg attended Chicago's brewing school, the Siebel Institute, graduating in 1989. In 1992, Hall become the brewmaster of Goose Island Beer Company and under his direction, the brewery flourished and expanded its draft and bottle beer lines. 
+  
+  Hall stepped down as Brewmaster of Goose Island in May 2011 to pursue cider making, opening up Virtue Cider in 2011. 
+  
+  He is a long-time supporter of the Chicago food community and many local organizations like Chicago’s Green City Market and the Chicago Rarities Orchard Project. He formerly served as a board member of Slow Food Chicago`, social: null }
+
+
 export const committeeMembers: Record<string, CommitteeMember[]> = {
   comms: [
     { role: 'Chair', name: 'Vanshi Jhumkhawala', headshot: vanshi, bio: `As a food lover myself, I strongly believe that food has a unique way of bringing people and communities closer. With a background in graphic and digital design, I love finding creative ways to make information engaging, accessible, and meaningful. I'm excited to use those skills to help share Slow Food's mission and connect more people with the movement.
@@ -192,12 +200,12 @@ Heidi is also a food writer who has served as editor for Baking Magazine and hol
 
 She is a certified master baker and is currently at work on a therapeutic baking and pastry program for disadvantaged mothers and daughters called “It Bakes a Village.”`, social: null
     },
-    { role: 'member', name: 'Gregory Hall', headshot: null, bio: '', social: null },
+    Greg,
     { role: 'member', name: 'Sarah Batka', headshot: null, bio: '', social: null }
   ],
   preserve: [],
   events: [
-    { role: 'Chair', name: 'Gregory Hall', headshot: null, bio: '', social: null },
+    { ...Greg, role: 'Chair' },
   ]
 }
 
