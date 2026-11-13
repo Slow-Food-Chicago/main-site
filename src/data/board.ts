@@ -1,15 +1,15 @@
 import type { LucideIcon } from 'lucide-react'
 import { Snail, Handshake, Megaphone, Wheat, CalendarDays, Sprout } from 'lucide-react'
-import dom from '../assets/dom.jpeg'
-import jody from '../assets/jody.jpeg'
-import diane from '../assets/diane.jpeg'
-import gabi from '../assets/gabi.JPG'
-import christian from '../assets/christian.jpeg'
-import benji from '../assets/benji.jpeg'
-import dfrantz from '../assets/dfrantz.jpg'
-import heidi from '../assets/heidi.jpg'
-import jeanne from '../assets/jeanne.png'
-import michelle from '../assets/michelle.png'
+import dom from '../assets/board/dom.jpeg'
+import jody from '../assets/board/jody.jpeg'
+import diane from '../assets/board/diane.jpeg'
+import gabi from '../assets/board/gabi.JPG'
+import christian from '../assets/board/christian.jpeg'
+import benji from '../assets/board/benji.jpeg'
+import dfrantz from '../assets/board/dfrantz.jpg'
+import heidi from '../assets/board/heidi.jpg'
+import jeanne from '../assets/board/jeanne.png'
+import michelle from '../assets/board/michelle.png'
 import { SNAIL_OF_APPROVAL_URL, ARK_OF_TASTE_URL } from './constants'
 
 export type SocialLinkItemObject = {
@@ -58,7 +58,9 @@ export const executiveBoard: BoardMember[] = [
     role: 'President',
     name: 'Dom Amato',
     headshot: dom,
-    bio: "I'm a big plant nerd who loves food and building communities. Lets create a more resilient future together!",
+    bio: `I'm a big plant nerd who loves food and building community. 
+    
+    Lets create a more resilient future together!`,
     social: null,
   },
   {

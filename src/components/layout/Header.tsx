@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
-import horizontalLogo from '../../assets/colored-horizontal-logo.png'
+import horizontalLogo from '../../assets/logos/colored-horizontal-logo.png'
 import { initiatives } from '../../data/initiatives'
 import { INSTAGRAM_URL } from '../../data/constants'
 import { InstagramIcon } from '../board/SocialLink'

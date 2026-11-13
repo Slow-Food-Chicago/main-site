@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Heart, CheckCircle2, Mail, MessageSquare } from 'lucide-react'
 import ChicagoStar from '../ui/ChicagoStar'
-import horizontalLogo from '../../assets/colored-horizontal-logo.png'
+import horizontalLogo from '../../assets/logos/colored-horizontal-logo.png'
 import { SHOW_SLACK, SLACK_INVITE_URL } from '../../data/constants'
 import {
   footerCommunityLinks,
