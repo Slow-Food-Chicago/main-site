@@ -9,7 +9,8 @@ import benji from '../assets/board/benji.jpeg'
 import dfrantz from '../assets/board/dfrantz.jpg'
 import heidi from '../assets/board/heidi.jpg'
 import jeanne from '../assets/board/jeanne.png'
-import michelle from '../assets/board/michelle.png'
+import michelle from '../assets/board/michelle.jpg'
+import vanshi from '../assets/board/vanshi.jpeg'
 import { SNAIL_OF_APPROVAL_URL, ARK_OF_TASTE_URL } from './constants'
 
 export type SocialLinkItemObject = {
@@ -103,7 +104,9 @@ Outside of work, you can find me behind a camera, tending to my backyard garden,
 
 export const committeeMembers: Record<string, CommitteeMember[]> = {
   comms: [
-    { role: 'Chair', name: 'Vanshi Jhumkhawala', headshot: null, bio: '', social: null },
+    { role: 'Chair', name: 'Vanshi Jhumkhawala', headshot: vanshi, bio: `As a food lover myself, I strongly believe that food has a unique way of bringing people and communities closer. With a background in graphic and digital design, I love finding creative ways to make information engaging, accessible, and meaningful. I'm excited to use those skills to help share Slow Food's mission and connect more people with the movement.
+
+Outside of design, you'll often find me experimenting in the kitchen, trying new recipes, or finding any excuse to bring people together over good food!`, social: null },
     Benji
   ],
   partnerships: [
@@ -163,11 +166,11 @@ Organizer @holdthelane`,
       role: 'member',
       name: 'Michelle DiMuzio',
       headshot: michelle,
-      bio: `Michelle is passionate about collaborating with others to build sustainable and equitable foodways. 
-      
-      She has spent eight years in the nonprofit and food business sectors and has participated in several fellowship programs including the New Sector Alliance Fellowship Program and the Neighborhood Leadership Program through the Wilder Foundation. 
-      
-      She has been involved in the food and beverage field in many capacities including serving as the communications coordinator for Slow Food USA, consulting for a local fish company to promote the sustainable usage of invasive species, consulting for a brewery to implement sustainable operations, and volunteering at her local community garden.`,
+      bio: `Michelle works at the intersection of food, sustainability, and hospitality. With experience across nonprofit organizations, food and beverage businesses, and food systems consulting, she has explored the food world from a variety of angles, from serving as Communications Coordinator for Slow Food USA to consulting with food businesses on sustainability initiatives.
+
+She currently works in food systems consulting and helps bring creative food experiences to life through pop-up supper clubs across Chicago. She's particularly interested in the people, places, and traditions that shape our food culture, and in supporting the independent businesses and local producers that make it special. 
+
+Outside of work, she enjoys cooking, exploring Chicago's food scene, learning more about foraging, and finding new ways to enjoy the outdoors in every season.`,
       social: null,
     }
   ],
