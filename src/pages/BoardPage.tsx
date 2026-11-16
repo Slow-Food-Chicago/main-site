@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Users } from 'lucide-react'
 import ChicagoStar from '../components/ui/ChicagoStar'
 import MemberModal, { type ModalMember } from '../components/board/MemberModal'
+import { addPageAction } from '../telemetry'
 import {
   executiveBoard,
   committeeMembers,
@@ -32,7 +33,16 @@ export default function BoardPage() {
   const [activeModal, setActiveModal] = useState<ModalMember | null>(null)
 
   const openModal = useCallback((member: ModalMember) => {
-    if (member.name && hasMemberDetails(member)) setActiveModal(member)
+    if (member.name && hasMemberDetails(member)) {
+      setActiveModal(member)
+      addPageAction('modal_open', {
+        modal_name: 'MemberModal',
+        modal_type: 'member',
+        member_name: member.name,
+        role: member.role || 'Member',
+        page: '/leadership',
+      })
+    }
   }, [])
 
   const closeModal = useCallback(() => setActiveModal(null), [])

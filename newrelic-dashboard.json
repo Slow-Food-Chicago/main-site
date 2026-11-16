@@ -1,0 +1,273 @@
+{
+  "name": "Slow Food Chicago - Page Views & Modal Interactions",
+  "description": "Observability dashboard tracking page navigation frequency, route views, and modal interactions (Member profiles, Crops, Photo lightbox).",
+  "permissions": "PUBLIC_READ_WRITE",
+  "pages": [
+    {
+      "name": "Page Views & Modal Interactions",
+      "description": "Visualizes user page navigation frequency and modal click events.",
+      "widgets": [
+        {
+          "title": "Total Page Navigations",
+          "layout": {
+            "column": 1,
+            "row": 1,
+            "width": 3,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.billboard"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT count(*) FROM PageAction WHERE actionName = 'route_change' SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Total Modal Clicks",
+          "layout": {
+            "column": 4,
+            "row": 1,
+            "width": 3,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.billboard"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT count(*) FROM PageAction WHERE actionName = 'modal_open' SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Active User Sessions",
+          "layout": {
+            "column": 7,
+            "row": 1,
+            "width": 3,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.billboard"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT uniqueCount(session) FROM PageAction SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Modal Engagement Rate",
+          "layout": {
+            "column": 10,
+            "row": 1,
+            "width": 3,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.billboard"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT percentage(count(*), WHERE actionName = 'modal_open') FROM PageAction WHERE actionName IN ('route_change', 'modal_open') SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Page Views Over Time (How Frequently Users Navigate to Each Page)",
+          "layout": {
+            "column": 1,
+            "row": 4,
+            "width": 8,
+            "height": 4
+          },
+          "visualization": {
+            "id": "viz.line"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT count(*) FROM PageAction WHERE actionName = 'route_change' FACET to TIMESERIES AUTO SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Page Navigation Distribution",
+          "layout": {
+            "column": 9,
+            "row": 4,
+            "width": 4,
+            "height": 4
+          },
+          "visualization": {
+            "id": "viz.pie"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT count(*) FROM PageAction WHERE actionName = 'route_change' FACET to SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Modal Clicks Over Time (Member vs Crop vs Lightbox)",
+          "layout": {
+            "column": 1,
+            "row": 8,
+            "width": 8,
+            "height": 4
+          },
+          "visualization": {
+            "id": "viz.line"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT count(*) FROM PageAction WHERE actionName = 'modal_open' FACET modal_name TIMESERIES AUTO SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Modal Clicks by Type",
+          "layout": {
+            "column": 9,
+            "row": 8,
+            "width": 4,
+            "height": 4
+          },
+          "visualization": {
+            "id": "viz.pie"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT count(*) FROM PageAction WHERE actionName = 'modal_open' FACET modal_name SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Top Clicked Leadership Bios (MemberModal)",
+          "layout": {
+            "column": 1,
+            "row": 12,
+            "width": 6,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT count(*) FROM PageAction WHERE actionName = 'modal_open' AND modal_name = 'MemberModal' FACET member_name SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Top Clicked Garden Crops (CropModal)",
+          "layout": {
+            "column": 7,
+            "row": 12,
+            "width": 6,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT count(*) FROM PageAction WHERE actionName = 'modal_open' AND modal_name = 'CropModal' FACET crop_name SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Page Views vs. Modal Clicks Trend",
+          "layout": {
+            "column": 1,
+            "row": 15,
+            "width": 6,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.area"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT filter(count(*), WHERE actionName = 'route_change') AS 'Page Views', filter(count(*), WHERE actionName = 'modal_open') AS 'Modal Clicks' FROM PageAction TIMESERIES AUTO SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Recent Modal Interaction Stream",
+          "layout": {
+            "column": 7,
+            "row": 15,
+            "width": 6,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.table"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT timestamp, page, modal_name, member_name, crop_name, photo_caption FROM PageAction WHERE actionName = 'modal_open' ORDER BY timestamp DESC LIMIT 50"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Average Route Transition & Load Duration",
+          "layout": {
+            "column": 1,
+            "row": 18,
+            "width": 12,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.line"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT average(duration) FROM BrowserInteraction FACET targetUrl TIMESERIES AUTO SINCE 7 days ago"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

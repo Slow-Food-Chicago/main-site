@@ -24,6 +24,7 @@ import {
 import { CONTACT_EMAIL } from '../data/constants'
 import { Link } from 'react-router-dom'
 import CropModal from '../components/garden/CropModal'
+import { addPageAction } from '../telemetry'
 
 const SEASON_CONFIG = {
   spring: { label: 'Spring', icon: Sprout },
@@ -38,6 +39,17 @@ export default function PreserveGardenPage() {
   const [isPinned, setIsPinned] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const closeTimeoutRef = useRef<number | null>(null)
+
+  const openLightbox = useCallback((index: number) => {
+    setLightboxIndex(index)
+    addPageAction('modal_open', {
+      modal_name: 'PhotoLightbox',
+      modal_type: 'photo_lightbox',
+      photo_index: index,
+      photo_caption: gardenPhotos[index]?.caption || '',
+      page: '/initiatives/preserve-garden',
+    })
+  }, [])
 
   const closeLightbox = useCallback(() => setLightboxIndex(null), [])
   const showPrevPhoto = useCallback(() => {
@@ -109,6 +121,14 @@ export default function PreserveGardenPage() {
       setActiveCrop(crop)
       setTriggerRect(element.getBoundingClientRect())
       setIsPinned(true)
+      addPageAction('modal_open', {
+        modal_name: 'CropModal',
+        modal_type: 'crop',
+        crop_name: crop.category,
+        crop_category: crop.category,
+        season: crop.season,
+        page: '/initiatives/preserve-garden',
+      })
     }
   }
 
@@ -204,7 +224,7 @@ export default function PreserveGardenPage() {
               key={photo.src}
               type="button"
               className={`preserve-gallery-card preserve-gallery-card--${photo.orientation} preserve-gallery-card--item-${index + 1}`}
-              onClick={() => setLightboxIndex(index)}
+              onClick={() => openLightbox(index)}
               aria-label={`View photo: ${photo.alt}`}
             >
               <img
