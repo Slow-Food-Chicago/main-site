@@ -97,7 +97,7 @@ export const swapItems: SwapItem[] = [
   {
     item: 'Raw Honey',
     blurb:
-      "Unheated, chemical-free honey captures the distinct botanical terroir of Chicago's urban flora—from basswood trees to wild prairie asters—while supporting crucial native pollinators.",
+      "Unheated, chemical-free honey captures the distinct botanical terroir of Chicago's urban flora, from basswood trees to wild prairie asters, while supporting crucial native pollinators.",
     suppliers: [
       {
         name: 'Chicago Honey Co-op (Chicago, IL)',

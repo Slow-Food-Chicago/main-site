@@ -1,10 +1,11 @@
 import type React from 'react'
-import { ArrowUpRight, ArrowRight, Sprout } from 'lucide-react'
+import { ArrowUpRight, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import PageHero from '../components/ui/PageHero'
 import CtaSection from '../components/ui/CtaSection'
 import { initiatives, initiativeColorMap } from '../data/initiatives'
 import { SHOW_SLACK, SLACK_INVITE_URL } from '../data/constants'
+import initativeHero from '../assets/events/events5.jpg'
 
 export default function InitiativesPage() {
   return (
@@ -18,9 +19,9 @@ export default function InitiativesPage() {
             Good food takes <em>real effort.</em>
           </>
         }
-        description="We run programs that connect people to better food—locally grown, ethically sourced, and rooted in the traditions that make Chicago's food culture worth celebrating."
-        asideIcon={Sprout}
-        asideColor="var(--snail-forest)"
+        description="We run programs that connect people to better food, locally grown, ethically sourced, and rooted in the traditions that make Chicago's food culture worth celebrating."
+        asideImage={initativeHero}
+        asideImageAlt="Michael Thompson speaking at an event"
       />
 
       {/* Initiatives list */}
@@ -69,7 +70,11 @@ export default function InitiativesPage() {
                   <p className="initiative-desc">{item.description}</p>
                 </div>
                 <span className="initiative-arrow" aria-hidden="true">
-                  <ArrowUpRight size={18} style={{ color: c.accent }} />
+                  {item.external ? (
+                    <ArrowUpRight size={18} style={{ color: c.accent }} />
+                  ) : (
+                    <ArrowRight size={18} style={{ color: c.accent }} />
+                  )}
                 </span>
               </CardWrapper>
             )
@@ -86,7 +91,7 @@ export default function InitiativesPage() {
             Want to help <em>with the work?</em>
           </>
         }
-        description="Our initiatives run because of people who show up. Whether you want to volunteer, partner with us, or just learn more—reach out and let's talk."
+        description="Our initiatives run because of people who show up. Whether you want to volunteer, partner with us, or just learn more, reach out and let's talk."
         actions={
           <>
             <Link className="button button-white" to="/get-involved">

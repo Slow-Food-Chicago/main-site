@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Heart, CheckCircle2, Mail, MessageSquare } from 'lucide-react'
 import ChicagoStar from '../ui/ChicagoStar'
-import horizontalLogo from '../../assets/colored-horizontal-logo.png'
+import horizontalLogo from '../../assets/logos/colored-horizontal-logo.png'
 import { SHOW_SLACK, SLACK_INVITE_URL } from '../../data/constants'
 import {
   footerCommunityLinks,
@@ -70,7 +70,7 @@ export default function Footer() {
               <span style={{ color: 'var(--snail-red)', fontWeight: 500 }}>
                 Good, Clean, and Fair
               </span>{' '}
-              for everyone. We connect eaters, growers, and makers across our city — rooted in
+              for everyone. We connect eaters, growers, and makers across our city, rooted in
               Chicago's neighborhoods and part of a global Slow Food movement.
             </p>
             <div
@@ -180,22 +180,39 @@ export default function Footer() {
             <ul className="space-y-2" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               {footerProjectLinks.map((item) => (
                 <li key={item.label}>
-                  <a
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      fontSize: '13px',
-                      color: 'var(--snail-warm-gray)',
-                      transition: 'color 160ms ease',
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--snail-red)')}
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = 'var(--snail-warm-gray)')
-                    }
-                  >
-                    {item.label}
-                  </a>
+                  {item.external ? (
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        fontSize: '13px',
+                        color: 'var(--snail-warm-gray)',
+                        transition: 'color 160ms ease',
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--snail-red)')}
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = 'var(--snail-warm-gray)')
+                      }
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
+                    <Link
+                      to={item.href}
+                      style={{
+                        fontSize: '13px',
+                        color: 'var(--snail-warm-gray)',
+                        transition: 'color 160ms ease',
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--snail-red)')}
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = 'var(--snail-warm-gray)')
+                      }
+                    >
+                      {item.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

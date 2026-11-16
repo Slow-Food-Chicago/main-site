@@ -1,3 +1,8 @@
+import { initTelemetry } from './telemetry'
+
+// Initialize New Relic Browser Agent at entrypoint before app mounts
+initTelemetry()
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'

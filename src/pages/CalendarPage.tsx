@@ -212,7 +212,7 @@ export default function CalendarPage() {
             Pull up a chair. <em>Come to an event.</em>
           </>
         }
-        description="From garden workdays and farm tours to hands-on fermentation workshops and panel discussions—our events are where real relationships and a better food system are built."
+        description="From garden workdays and farm tours to hands-on fermentation workshops and panel discussions, our events are where real relationships and a better food system are built."
         asideImage={eventHero}
         asideImageAlt="Slow Food Chicago events"
         actions={

@@ -1,4 +1,4 @@
-import logo from "../../assets/white_snail.png";
+import logo from "../../assets/logos/white_snail.png";
 
 interface SnailLogoProps {
   className?: string;

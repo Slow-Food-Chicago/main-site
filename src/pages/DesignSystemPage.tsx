@@ -632,7 +632,7 @@ export default function DesignSystemPage() {
                   lineHeight: 1.6,
                 }}
               >
-                <div>We bring people together around good food—and work toward a food system that is good for people.</div>
+                <div>We bring people together around good food and work toward a food system that is good for people.</div>
               </div>
               <div style={{ fontSize: '11px', color: 'var(--snail-warm-gray)', marginTop: 'auto' }}>
                 <code>var(--font-body)</code>
@@ -1450,13 +1450,14 @@ export default function DesignSystemPage() {
           >
             {/* Principle Card */}
             <article className="principle-card red" style={{ minHeight: 'auto' }}>
-              <span className="principle-number">01</span>
-              <span className="principle-icon">
-                <Sprout size={22} />
-              </span>
-              <h3>
-                Good<span>.</span>
-              </h3>
+              <div className="principle-card-top">
+                <h3>
+                  Good<span>.</span>
+                </h3>
+                <span className="principle-icon">
+                  <Sprout size={22} />
+                </span>
+              </div>
               <p>Delicious and healthy food that connects us to seasonal flavor and local heritage.</p>
             </article>
 

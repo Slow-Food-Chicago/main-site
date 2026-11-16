@@ -1,15 +1,17 @@
 import type { LucideIcon } from 'lucide-react'
 import { Snail, Handshake, Megaphone, Wheat, CalendarDays, Sprout } from 'lucide-react'
-import dom from '../assets/dom.jpeg'
-import jody from '../assets/jody.jpeg'
-import diane from '../assets/diane.jpeg'
-import gabi from '../assets/gabi.JPG'
-import christian from '../assets/christian.jpeg'
-import benji from '../assets/benji.jpeg'
-import dfrantz from '../assets/dfrantz.jpg'
-import heidi from '../assets/heidi.jpg'
-import jeanne from '../assets/jeanne.png'
-import michelle from '../assets/michelle.png'
+import dom from '../assets/board/dom.jpeg'
+import jody from '../assets/board/jody.jpeg'
+import diane from '../assets/board/diane.jpeg'
+import gabi from '../assets/board/gabi.JPG'
+import christian from '../assets/board/christian.jpeg'
+import benji from '../assets/board/benji.jpeg'
+import dfrantz from '../assets/board/dfrantz.jpg'
+import heidi from '../assets/board/heidi.jpg'
+import jeanne from '../assets/board/jeanne.png'
+import michelle from '../assets/board/michelle.jpg'
+import vanshi from '../assets/board/vanshi.jpeg'
+import greg from '../assets/board/greg.jpg'
 import { SNAIL_OF_APPROVAL_URL, ARK_OF_TASTE_URL } from './constants'
 
 export type SocialLinkItemObject = {
@@ -58,7 +60,9 @@ export const executiveBoard: BoardMember[] = [
     role: 'President',
     name: 'Dom Amato',
     headshot: dom,
-    bio: "I'm a big plant nerd who loves food and building communities. Lets create a more resilient future together!",
+    bio: `I'm a big plant nerd who loves food and building community. 
+    
+    Lets create a more resilient future together!`,
     social: null,
   },
   {
@@ -99,9 +103,18 @@ I'm particularly interested in the intersection of nutrition, public health, and
 Outside of work, you can find me behind a camera, tending to my backyard garden, biking around town, or enjoying a meal with friends and good company.`, social: null
 }
 
+const Greg: CommitteeMember = { role: 'member', name: 'Gregory Hall', headshot: greg, bio: `Greg Hall began his brewing career in 1988, the year his father, John Hall, opened the brewery. Greg attended Chicago's brewing school, the Siebel Institute, graduating in 1989. In 1992, Hall become the brewmaster of Goose Island Beer Company and under his direction, the brewery flourished and expanded its draft and bottle beer lines. 
+  
+  Hall stepped down as Brewmaster of Goose Island in May 2011 to pursue cider making, opening up Virtue Cider in 2011. 
+  
+  He is a long-time supporter of the Chicago food community and many local organizations like Chicago’s Green City Market and the Chicago Rarities Orchard Project. He formerly served as a board member of Slow Food Chicago`, social: null }
+
+
 export const committeeMembers: Record<string, CommitteeMember[]> = {
   comms: [
-    { role: 'Chair', name: 'Vanshi Jhumkhawala', headshot: null, bio: '', social: null },
+    { role: 'Chair', name: 'Vanshi Jhumkhawala', headshot: vanshi, bio: `As a food lover myself, I strongly believe that food has a unique way of bringing people and communities closer. With a background in graphic and digital design, I love finding creative ways to make information engaging, accessible, and meaningful. I'm excited to use those skills to help share Slow Food's mission and connect more people with the movement.
+
+Outside of design, you'll often find me experimenting in the kitchen, trying new recipes, or finding any excuse to bring people together over good food!`, social: null },
     Benji
   ],
   partnerships: [
@@ -161,11 +174,11 @@ Organizer @holdthelane`,
       role: 'member',
       name: 'Michelle DiMuzio',
       headshot: michelle,
-      bio: `Michelle is passionate about collaborating with others to build sustainable and equitable foodways. 
-      
-      She has spent eight years in the nonprofit and food business sectors and has participated in several fellowship programs including the New Sector Alliance Fellowship Program and the Neighborhood Leadership Program through the Wilder Foundation. 
-      
-      She has been involved in the food and beverage field in many capacities including serving as the communications coordinator for Slow Food USA, consulting for a local fish company to promote the sustainable usage of invasive species, consulting for a brewery to implement sustainable operations, and volunteering at her local community garden.`,
+      bio: `Michelle works at the intersection of food, sustainability, and hospitality. With experience across nonprofit organizations, food and beverage businesses, and food systems consulting, she has explored the food world from a variety of angles, from serving as Communications Coordinator for Slow Food USA to consulting with food businesses on sustainability initiatives.
+
+She currently works in food systems consulting and helps bring creative food experiences to life through pop-up supper clubs across Chicago. She's particularly interested in the people, places, and traditions that shape our food culture, and in supporting the independent businesses and local producers that make it special. 
+
+Outside of work, she enjoys cooking, exploring Chicago's food scene, learning more about foraging, and finding new ways to enjoy the outdoors in every season.`,
       social: null,
     }
   ],
@@ -187,12 +200,12 @@ Heidi is also a food writer who has served as editor for Baking Magazine and hol
 
 She is a certified master baker and is currently at work on a therapeutic baking and pastry program for disadvantaged mothers and daughters called “It Bakes a Village.”`, social: null
     },
-    { role: 'member', name: 'Gregory Hall', headshot: null, bio: '', social: null },
+    Greg,
     { role: 'member', name: 'Sarah Batka', headshot: null, bio: '', social: null }
   ],
   preserve: [],
   events: [
-    { role: 'Chair', name: 'Gregory Hall', headshot: null, bio: '', social: null },
+    { ...Greg, role: 'Chair' },
   ]
 }
 
@@ -221,7 +234,7 @@ export const committees: Committee[] = [
     key: 'comms',
     name: 'Communications',
     description:
-      'Tells the Slow Food Chicago story — managing our newsletter, social media, website, and community outreach.',
+      'Tells the Slow Food Chicago story, managing our newsletter, social media, website, and community outreach.',
     icon: Megaphone,
     accent: 'var(--snail-forest)',
     tint: 'var(--snail-forest-light)',
@@ -244,7 +257,7 @@ export const workingGroups: Committee[] = [
     key: 'ark',
     name: 'Midwest Ark of Taste',
     description:
-      'Catalogs and champions endangered Midwestern food biodiversity — from heirloom seeds to heritage breeds — as part of the global Slow Food Ark of Taste.',
+      'Catalogs and champions endangered Midwestern food biodiversity, from heirloom seeds to heritage breeds, as part of the global Slow Food Ark of Taste.',
     icon: Wheat,
     accent: 'var(--snail-yellow)',
     tint: 'var(--snail-yellow-light)',

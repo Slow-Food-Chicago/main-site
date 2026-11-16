@@ -61,7 +61,7 @@ const ways: Omit<InvolveWay, 'number'>[] = [
   {
     title: 'Come to an Event',
     description:
-      "From dinners and tastings to farm visits and panel discussions—our events are where the real conversations happen. Check our calendar for what's coming up and pull up a chair.",
+      "From dinners and tastings to farm visits and panel discussions, our events are where the real conversations happen. Check our calendar for what's coming up and pull up a chair.",
     icon: CalendarDays,
     color: 'orange',
     cta: { label: 'See upcoming events', href: '/events' },
