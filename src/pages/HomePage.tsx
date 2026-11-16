@@ -26,11 +26,13 @@ export default function HomePage() {
           </div>
           <div className="home-about-copy">
             <p>
-              Slow Food Chicago is part of a global, grassroots movement imagining a better way to
-              eat and making it happen, right here in our neighborhoods.
+              Slow Food Chicago is part of Slow Food, a global, grassroots organization, founded in 1989 to prevent the disappearance of local food cultures and traditions, counteract the rise of fast life, and combat people’s dwindling interest in the food they eat, where it comes from and how our food choices affect the world around us. 
             </p>
             <p>
-              We are a member-supported chapter run by an all-volunteer <Link to='/board' style={{color: "var(--snail-red)"}}>Executive Council</Link>. 
+            Our organization is dedicated to the development of an equitable, just, and healthy local food system that truly works for all. We believe food is tied to many other aspects of life including culture, politics, agriculture, justice, health, and the environment. Through our food choices we can change the world by influencing how food is cultivated, produced, and distributed.
+            </p>
+            <p>
+              We are a member-supported chapter run by an all-volunteer <Link to='/leadership' style={{color: "var(--snail-red)"}}>Executive Council</Link>. 
               We rely on a network of volunteers who help with operations and events. 
             </p>
             <p>

@@ -148,7 +148,7 @@ export default function Header() {
             </div>
           )}
         </div>
-        <Link to="/board">Our Leadership</Link>
+        <Link to="/leadership">Our Leadership</Link>
       </nav>
 
       {/* Desktop CTA & Social */}
@@ -260,7 +260,7 @@ export default function Header() {
           <Link to="/events" className="mobile-nav-link" onClick={() => setIsOpen(false)}>
             Events
           </Link>
-          <Link to="/board" className="mobile-nav-link" onClick={() => setIsOpen(false)}>
+          <Link to="/leadership" className="mobile-nav-link" onClick={() => setIsOpen(false)}>
             Our Leadership
           </Link>
           <a

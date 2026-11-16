@@ -20,7 +20,7 @@ export default function App() {
         <Header />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/board" element={<BoardPage />} />
+          <Route path="/leadership" element={<BoardPage />} />
           <Route path="/initiatives" element={<InitiativesPage />} />
           <Route path="/initiatives/pantry-swap" element={<PantrySwapPage />} />
           <Route path="/initiatives/preserve-garden" element={<PreserveGardenPage />} />

@@ -18,7 +18,7 @@ export interface NavLink {
 export const headerNavLinks: NavLink[] = [
   { label: 'Our Initiatives', href: '/initiatives', external: false },
   { label: 'Events', href: '/events', external: false },
-  { label: 'Our Leadership', href: '/board', external: false },
+  { label: 'Our Leadership', href: '/leadership', external: false },
   ...(SHOW_SLACK
     ? [{ label: 'Join Slack', href: SLACK_INVITE_URL, external: true }]
     : []),
