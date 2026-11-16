@@ -88,6 +88,12 @@ export function initTelemetry(): BrowserAgent | null {
   try {
     const options = {
       init: {
+        ajax: {
+          deny_list: ['bam.nr-data.net', 'bam.eu01.nr-data.net'],
+        },
+        browser_consent_mode: {
+          enabled: false
+        },
         distributed_tracing: {
           enabled: import.meta.env.VITE_NEW_RELIC_DISTRIBUTED_TRACING !== 'false',
           cors_use_newrelic_header: true,
@@ -101,8 +107,10 @@ export function initTelemetry(): BrowserAgent | null {
         privacy: {
           cookies_enabled: import.meta.env.VITE_NEW_RELIC_COOKIES_ENABLED !== 'false',
         },
-        ajax: {
-          deny_list: ['bam.nr-data.net', 'bam.eu01.nr-data.net'],
+        performance: {
+          capture_detail: false,
+          capture_marks: false,
+          capture_measures: true
         },
         soft_navigations: {
           enabled: true,
