@@ -12,12 +12,13 @@ import CalendarEmbed from '../components/calendar/CalendarEmbed'
 import CalendarControls from '../components/calendar/CalendarControls'
 import eventHero from '../assets/events/events2.jpg'
 
-import type { CalendarEvent, EventCategory, FeedSyncState } from '../types/calendar'
+import type { CalendarEvent, EventCategory, FeedSyncState, TimeFilter } from '../types/calendar'
 import {
   fetchGoogleCalendarApi,
   fetchIcsFeed,
   fetchEventbriteEvents,
   getGoogleCalendarSubscribeUrl,
+  getTwoMonthWindow,
   stripHtml,
 } from '../services/calendar'
 import {
@@ -44,7 +45,7 @@ export default function CalendarPage() {
   // UI state
   const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list')
   const [selectedCategory, setSelectedCategory] = useState<'all' | EventCategory>('all')
-  const [timeFilter, setTimeFilter] = useState<'upcoming' | 'all' | 'past'>('upcoming')
+  const [timeFilter, setTimeFilter] = useState<TimeFilter>('two-months')
   const [searchQuery, setSearchQuery] = useState('')
 
   // Primary feed synchronization routine
@@ -160,7 +161,7 @@ export default function CalendarPage() {
 
   // Filter and sort events
   const filteredEvents = useMemo(() => {
-    const now = new Date()
+    const { start: now, end: twoMonthsOut } = getTwoMonthWindow()
 
     return events
       .filter((ev) => {
@@ -170,6 +171,9 @@ export default function CalendarPage() {
         }
 
         // Time filter
+        if (timeFilter === 'two-months' && (ev.endDate < now || ev.startDate > twoMonthsOut)) {
+          return false
+        }
         if (timeFilter === 'upcoming' && ev.endDate < now) {
           return false
         }
