@@ -1,6 +1,7 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import ScrollToTop from './components/ui/ScrollToTop'
 import TelemetryRouteTracker from './telemetry/TelemetryRouteTracker'
+import WildcardRedirect from './telemetry/WildcardRedirect'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import HomePage from './pages/HomePage'
@@ -23,6 +24,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/leadership" element={<BoardPage />} />
+          <Route path="/board" element={<Navigate to="/leadership" replace />} />
           <Route path="/initiatives" element={<InitiativesPage />} />
           <Route path="/initiatives/pantry-swap" element={<PantrySwapPage />} />
           <Route path="/initiatives/preserve-garden" element={<PreserveGardenPage />} />
@@ -33,7 +35,7 @@ export default function App() {
           <Route path="/events" element={<CalendarPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/design-system" element={<DesignSystemPage />} />
-          <Route path="*" element={<HomePage />} />
+          <Route path="*" element={<WildcardRedirect to="/" />} />
         </Routes>
         <Footer />
       </div>

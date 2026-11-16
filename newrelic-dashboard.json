@@ -1,11 +1,11 @@
 {
   "name": "Slow Food Chicago - Page Views & Modal Interactions",
-  "description": "Observability dashboard tracking page navigation frequency, route views, and modal interactions (Member profiles, Crops, Photo lightbox).",
+  "description": "Observability dashboard tracking page navigation frequency, route views, modal interactions (Member profiles, Crops, Photo lightbox), and inbound legacy URL / search redirects.",
   "permissions": "PUBLIC_READ_WRITE",
   "pages": [
     {
-      "name": "Page Views & Modal Interactions",
-      "description": "Visualizes user page navigation frequency and modal click events.",
+      "name": "Page Views, Modals & Legacy Redirects",
+      "description": "Visualizes user page navigation frequency, modal clicks, and incoming search traffic to legacy URLs.",
       "widgets": [
         {
           "title": "Total Page Navigations",
@@ -263,6 +263,106 @@
               {
                 "accountId": 0,
                 "query": "SELECT average(duration) FROM BrowserInteraction FACET targetUrl TIMESERIES AUTO SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Total Legacy & Wildcard Redirects",
+          "layout": {
+            "column": 1,
+            "row": 21,
+            "width": 3,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.billboard"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT count(*) FROM PageAction WHERE actionName = 'wildcard_redirect' SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Top Inbound Legacy URLs (Desired Destination)",
+          "layout": {
+            "column": 4,
+            "row": 21,
+            "width": 5,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT count(*) FROM PageAction WHERE actionName = 'wildcard_redirect' FACET desired_destination SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Search Engine vs Direct / External Referrers",
+          "layout": {
+            "column": 9,
+            "row": 21,
+            "width": 4,
+            "height": 3
+          },
+          "visualization": {
+            "id": "viz.pie"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT count(*) FROM PageAction WHERE actionName = 'wildcard_redirect' FACET referrer_host SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Legacy URL Visits Over Time",
+          "layout": {
+            "column": 1,
+            "row": 24,
+            "width": 6,
+            "height": 4
+          },
+          "visualization": {
+            "id": "viz.line"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT count(*) FROM PageAction WHERE actionName = 'wildcard_redirect' FACET desired_destination TIMESERIES AUTO SINCE 7 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Recent Legacy Redirect Stream (Inbound URLs & Referrers)",
+          "layout": {
+            "column": 7,
+            "row": 24,
+            "width": 6,
+            "height": 4
+          },
+          "visualization": {
+            "id": "viz.table"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT timestamp, desired_destination, referrer_host, referrer, redirect_to FROM PageAction WHERE actionName = 'wildcard_redirect' ORDER BY timestamp DESC LIMIT 50"
               }
             ]
           }
