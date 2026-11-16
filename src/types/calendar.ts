@@ -1,5 +1,7 @@
 export type EventCategory = 'gathering' | 'garden' | 'meeting' | 'workshop' | 'other'
 
+export type TimeFilter = 'two-months' | 'upcoming' | 'past' | 'all'
+
 export interface CalendarEvent {
   id: string
   title: string

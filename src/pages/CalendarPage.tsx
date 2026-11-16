@@ -12,7 +12,7 @@ import CalendarEmbed from '../components/calendar/CalendarEmbed'
 import CalendarControls from '../components/calendar/CalendarControls'
 import eventHero from '../assets/events/events2.jpg'
 
-import type { CalendarEvent, EventCategory, FeedSyncState } from '../types/calendar'
+import type { CalendarEvent, EventCategory, FeedSyncState, TimeFilter } from '../types/calendar'
 import {
   fetchGoogleCalendarApi,
   fetchIcsFeed,
@@ -45,7 +45,7 @@ export default function CalendarPage() {
   // UI state
   const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list')
   const [selectedCategory, setSelectedCategory] = useState<'all' | EventCategory>('all')
-  const [timeFilter, setTimeFilter] = useState<'upcoming' | 'all' | 'past'>('upcoming')
+  const [timeFilter, setTimeFilter] = useState<TimeFilter>('two-months')
   const [searchQuery, setSearchQuery] = useState('')
 
   // Primary feed synchronization routine
@@ -170,8 +170,11 @@ export default function CalendarPage() {
           return false
         }
 
-        // Time filter (upcoming events within the next two months)
-        if (timeFilter === 'upcoming' && (ev.endDate < now || ev.startDate > twoMonthsOut)) {
+        // Time filter
+        if (timeFilter === 'two-months' && (ev.endDate < now || ev.startDate > twoMonthsOut)) {
+          return false
+        }
+        if (timeFilter === 'upcoming' && ev.endDate < now) {
           return false
         }
         if (timeFilter === 'past' && ev.endDate >= now) {

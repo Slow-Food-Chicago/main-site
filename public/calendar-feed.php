@@ -1,11 +1,11 @@
 <?php
 /**
- * Same-origin proxy for the public Google Calendar iCal feed.
+ * Same-origin proxy and parser for public Google Calendar iCal feeds.
  *
  * Google's .ics endpoint does not send CORS headers, so browsers cannot fetch it
  * directly. The site requests this script instead (same origin), and it fetches
- * the feed server-side, expands recurring events (RRULE), and filters to all
- * events occurring within the next two months.
+ * the feed server-side, expands recurring events (RRULE), and returns the complete
+ * list of events as JSON (or raw .ics if requested via format=ics).
  *
  * Only https://calendar.google.com/calendar/ical/*.ics URLs are allowed, so this
  * cannot be abused as an open proxy.
@@ -39,7 +39,8 @@ if (function_exists('curl_init')) {
         CURLOPT_MAXREDIRS => 3,
         CURLOPT_PROTOCOLS => CURLPROTO_HTTPS,
         CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTPS,
-        CURLOPT_TIMEOUT => 10,
+        CURLOPT_TIMEOUT => 15,
+        CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; SlowFoodChicagoSite/1.0)',
         CURLOPT_HTTPHEADER => ['Accept: text/calendar, text/plain, */*'],
     ]);
     $body = curl_exec($ch);
@@ -47,7 +48,13 @@ if (function_exists('curl_init')) {
     curl_close($ch);
 } else {
     $context = stream_context_create([
-        'http' => ['timeout' => 10, 'follow_location' => 1, 'max_redirects' => 3, 'ignore_errors' => true],
+        'http' => [
+            'timeout' => 15,
+            'follow_location' => 1,
+            'max_redirects' => 3,
+            'ignore_errors' => true,
+            'header' => "User-Agent: Mozilla/5.0 (compatible; SlowFoodChicagoSite/1.0)\r\nAccept: text/calendar, text/plain, */*\r\n",
+        ],
     ]);
     $body = @file_get_contents($url, false, $context);
     if (isset($http_response_header[0]) && preg_match('/\s(\d{3})\s/', $http_response_header[0], $m)) {
@@ -60,6 +67,68 @@ if ($body === false || $status !== 200 || strpos($body, 'BEGIN:VCALENDAR') === f
     header('Content-Type: text/plain; charset=utf-8');
     echo 'Could not fetch calendar feed';
     exit;
+}
+
+// If caller explicitly requested raw ICS, return it directly
+if (isset($_GET['format']) && $_GET['format'] === 'ics') {
+    header('Content-Type: text/calendar; charset=utf-8');
+    header('Cache-Control: public, max-age=300');
+    echo $body;
+    exit;
+}
+
+/**
+ * Unescape special characters in ICS strings.
+ */
+function sfc_unescape_ics_text(string $text): string
+{
+    $text = str_replace(['\\n', '\\N'], "\n", $text);
+    $text = str_replace('\\,', ',', $text);
+    $text = str_replace('\\;', ';', $text);
+    $text = str_replace('\\\\', '\\', $text);
+    return $text;
+}
+
+/**
+ * Determine category from event title and description.
+ */
+function sfc_infer_category(string $title, string $desc): string
+{
+    $combined = strtolower($title . ' ' . strip_tags($desc));
+    if (
+        strpos($combined, 'garden') !== false ||
+        strpos($combined, 'preserve') !== false ||
+        strpos($combined, 'harvest') !== false ||
+        strpos($combined, 'compost') !== false
+    ) {
+        return 'garden';
+    }
+    if (
+        strpos($combined, 'meeting') !== false ||
+        strpos($combined, 'committee') !== false ||
+        strpos($combined, 'council') !== false ||
+        strpos($combined, 'board') !== false
+    ) {
+        return 'meeting';
+    }
+    if (
+        strpos($combined, 'workshop') !== false ||
+        strpos($combined, 'class') !== false ||
+        strpos($combined, 'seed saving') !== false ||
+        strpos($combined, 'bake') !== false
+    ) {
+        return 'workshop';
+    }
+    if (
+        strpos($combined, 'swap') !== false ||
+        strpos($combined, 'potluck') !== false ||
+        strpos($combined, 'tasting') !== false ||
+        strpos($combined, 'dinner') !== false ||
+        strpos($combined, 'celebration') !== false
+    ) {
+        return 'gathering';
+    }
+    return 'other';
 }
 
 /**
@@ -111,24 +180,12 @@ function sfc_parse_ics_date_prop(string $line, DateTimeZone $defaultTz): ?array
 }
 
 /**
- * Format a DateTimeImmutable back into an ICS property line.
+ * Parse all events from VCALENDAR data, expanding RRULE recurring events across
+ * a generous multi-year window and returning all events (past, current, future).
+ *
+ * @return array<int, array{id: string, title: string, description: ?string, location: ?string, startDate: string, endDate: string, isAllDay: bool, category: string, url: ?string}>
  */
-function sfc_format_ics_date_prop(string $propName, DateTimeImmutable $dt, bool $isAllDay, bool $isUtc, DateTimeZone $tz): string
-{
-    if ($isAllDay) {
-        return $propName . ';VALUE=DATE:' . $dt->setTimezone($tz)->format('Ymd');
-    }
-    if ($isUtc) {
-        return $propName . ':' . $dt->setTimezone(new DateTimeZone('UTC'))->format('Ymd\THis\Z');
-    }
-    return $propName . ';TZID=' . $tz->getName() . ':' . $dt->setTimezone($tz)->format('Ymd\THis');
-}
-
-/**
- * Filter VCALENDAR data to events occurring within the next two months,
- * expanding RRULE recurring events into individual VEVENT occurrences.
- */
-function sfc_filter_ics_two_months(string $ics): string
+function sfc_parse_all_events(string $ics): array
 {
     $unfolded = preg_replace("/\r\n[ \t]|\r[ \t]|\n[ \t]/", '', $ics);
     $lines = preg_split("/\r\n|\r|\n/", (string) $unfolded);
@@ -150,9 +207,10 @@ function sfc_filter_ics_two_months(string $ics): string
     }
 
     $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
-    $windowEnd = $now->modify('+2 months');
+    // Expand recurring events across a generous multi-year window
+    $recurrencePastLimit = $now->modify('-1 year');
+    $recurrenceFutureLimit = $now->modify('+2 years');
 
-    $headerLines = [];
     $rawEvents = [];
     $inEvent = false;
     $currentLines = [];
@@ -175,8 +233,6 @@ function sfc_filter_ics_two_months(string $ics): string
         }
         if ($inEvent) {
             $currentLines[] = $line;
-        } elseif ($trimmed !== 'END:VCALENDAR') {
-            $headerLines[] = $line;
         }
     }
 
@@ -188,7 +244,7 @@ function sfc_filter_ics_two_months(string $ics): string
         foreach ($evLines as $l) {
             if (stripos($l, 'UID:') === 0) {
                 $uid = trim(substr($l, 4));
-            } elseif ( preg_match('/^RECURRENCE-ID(?:;[^:]*)?:/i', $l)) {
+            } elseif (preg_match('/^RECURRENCE-ID(?:;[^:]*)?:/i', $l)) {
                 $parsed = sfc_parse_ics_date_prop($l, $calTz);
                 if ($parsed) {
                     $recIdTs = $parsed['dt']->getTimestamp();
@@ -200,42 +256,65 @@ function sfc_filter_ics_two_months(string $ics): string
         }
     }
 
-    $outputEvents = [];
     $dayMap = ['SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6];
+    $events = [];
 
-    foreach ($rawEvents as $evLines) {
+    // Helper to format DateTimeImmutable as ISO string
+    $formatDateIso = function (DateTimeImmutable $dt, bool $allDay, DateTimeZone $tz): string {
+        if ($allDay) {
+            return $dt->setTimezone($tz)->format('Y-m-d');
+        }
+        return $dt->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z');
+    };
+
+    foreach ($rawEvents as $idx => $evLines) {
         $dtStartInfo = null;
         $dtEndInfo = null;
         $rruleStr = null;
         $uid = '';
+        $summary = '';
+        $description = '';
+        $location = '';
+        $urlProp = '';
         $status = '';
         $exdates = [];
-        $otherLines = [];
 
         foreach ($evLines as $l) {
-            if (preg_match('/^DTSTART(?:;[^:]*)?:/i', $l)) {
+            $colonPos = strpos($l, ':');
+            if ($colonPos === false) {
+                continue;
+            }
+            $fullKey = substr($l, 0, $colonPos);
+            $keyPart = strtoupper(trim(explode(';', $fullKey)[0]));
+            $val = substr($l, $colonPos + 1);
+
+            if ($keyPart === 'DTSTART') {
                 $dtStartInfo = sfc_parse_ics_date_prop($l, $calTz);
-            } elseif (preg_match('/^DTEND(?:;[^:]*)?:/i', $l)) {
+            } elseif ($keyPart === 'DTEND') {
                 $dtEndInfo = sfc_parse_ics_date_prop($l, $calTz);
-            } elseif (stripos($l, 'RRULE:') === 0) {
-                $rruleStr = trim(substr($l, 6));
-            } elseif (preg_match('/^EXDATE(?:;[^:]*)?:/i', $l)) {
-                $colonPos = strpos($l, ':');
-                $meta = substr($l, 0, (int) $colonPos);
-                $vals = explode(',', substr($l, (int) $colonPos + 1));
+            } elseif ($keyPart === 'RRULE') {
+                $rruleStr = trim($val);
+            } elseif ($keyPart === 'EXDATE') {
+                $meta = $fullKey;
+                $vals = explode(',', $val);
                 foreach ($vals as $v) {
                     $parsedEx = sfc_parse_ics_date_prop($meta . ':' . trim($v), $calTz);
                     if ($parsedEx) {
                         $exdates[$parsedEx['dt']->getTimestamp()] = true;
                     }
                 }
-            } else {
-                if (stripos($l, 'UID:') === 0) {
-                    $uid = trim(substr($l, 4));
-                } elseif (stripos($l, 'STATUS:') === 0) {
-                    $status = strtoupper(trim(substr($l, 7)));
-                }
-                $otherLines[] = $l;
+            } elseif ($keyPart === 'UID') {
+                $uid = trim($val);
+            } elseif ($keyPart === 'SUMMARY') {
+                $summary = sfc_unescape_ics_text(trim($val));
+            } elseif ($keyPart === 'DESCRIPTION') {
+                $description = sfc_unescape_ics_text(trim($val));
+            } elseif ($keyPart === 'LOCATION') {
+                $location = sfc_unescape_ics_text(trim($val));
+            } elseif ($keyPart === 'URL') {
+                $urlProp = trim($val);
+            } elseif ($keyPart === 'STATUS') {
+                $status = strtoupper(trim($val));
             }
         }
 
@@ -243,9 +322,15 @@ function sfc_filter_ics_two_months(string $ics): string
             continue;
         }
 
+        if ($uid === '') {
+            $uid = 'event-' . $idx;
+        }
+        if ($summary === '') {
+            $summary = 'Slow Food Chicago Event';
+        }
+
         $startDt = $dtStartInfo['dt'];
         $isAllDay = $dtStartInfo['isAllDay'];
-        $isUtc = $dtStartInfo['isUtc'];
         $evTz = $dtStartInfo['tz'];
 
         if ($dtEndInfo) {
@@ -256,10 +341,19 @@ function sfc_filter_ics_two_months(string $ics): string
 
         $durationSeconds = max(0, $endDt->getTimestamp() - $startDt->getTimestamp());
 
+        // Non-recurring events: Return EVERYTHING (no cutoff!)
         if ($rruleStr === null) {
-            if ($endDt >= $now && $startDt <= $windowEnd) {
-                $outputEvents[] = $evLines;
-            }
+            $events[] = [
+                'id' => $uid . '-' . $startDt->getTimestamp(),
+                'title' => $summary,
+                'description' => $description !== '' ? $description : null,
+                'location' => $location !== '' ? $location : null,
+                'startDate' => $formatDateIso($startDt, $isAllDay, $evTz),
+                'endDate' => $formatDateIso($endDt, $isAllDay, $evTz),
+                'isAllDay' => $isAllDay,
+                'category' => sfc_infer_category($summary, $description),
+                'url' => $urlProp !== '' ? $urlProp : null,
+            ];
             continue;
         }
 
@@ -293,7 +387,7 @@ function sfc_filter_ics_two_months(string $ics): string
                 if ($untilDt && $cursor > $untilDt) {
                     break;
                 }
-                if ($cursor > $windowEnd) {
+                if ($cursor > $recurrenceFutureLimit) {
                     break;
                 }
                 $occurrences[] = $cursor;
@@ -320,7 +414,7 @@ function sfc_filter_ics_two_months(string $ics): string
 
             for ($week = 0; $week < 500 && $count < $maxCount; $week++) {
                 $currentWeekStart = $week === 0 ? $weekBase : $weekBase->modify('+' . ($week * $interval) . ' weeks');
-                if ($currentWeekStart > $windowEnd) {
+                if ($currentWeekStart > $recurrenceFutureLimit) {
                     break;
                 }
                 foreach ($byDays as $dow) {
@@ -335,7 +429,7 @@ function sfc_filter_ics_two_months(string $ics): string
                     if ($count > $maxCount) {
                         break 2;
                     }
-                    if ($candidate > $windowEnd) {
+                    if ($candidate > $recurrenceFutureLimit) {
                         break 2;
                     }
                     $occurrences[] = $candidate;
@@ -347,7 +441,7 @@ function sfc_filter_ics_two_months(string $ics): string
 
             for ($mStep = 0; $mStep < 240 && $count < $maxCount; $mStep++) {
                 $firstOfMonth = $localStart->modify('first day of this month')->modify('+' . ($mStep * $interval) . ' months');
-                if ($firstOfMonth > $windowEnd) {
+                if ($firstOfMonth > $recurrenceFutureLimit) {
                     break;
                 }
                 $year = (int) $firstOfMonth->format('Y');
@@ -391,7 +485,7 @@ function sfc_filter_ics_two_months(string $ics): string
                 if ($count > $maxCount) {
                     break;
                 }
-                if ($candidate > $windowEnd) {
+                if ($candidate > $recurrenceFutureLimit) {
                     break;
                 }
                 $occurrences[] = $candidate;
@@ -402,7 +496,7 @@ function sfc_filter_ics_two_months(string $ics): string
                 if ($untilDt && $cursor > $untilDt) {
                     break;
                 }
-                if ($cursor > $windowEnd) {
+                if ($cursor > $recurrenceFutureLimit) {
                     break;
                 }
                 $occurrences[] = $cursor;
@@ -417,37 +511,31 @@ function sfc_filter_ics_two_months(string $ics): string
                 continue;
             }
             $occEnd = $occStart->modify('+' . $durationSeconds . ' seconds');
-            if ($occEnd < $now || $occStart > $windowEnd) {
+            if ($occEnd < $recurrencePastLimit || $occStart > $recurrenceFutureLimit) {
                 continue;
             }
 
-            $instanceLines = [];
-            foreach ($otherLines as $ol) {
-                if (stripos($ol, 'UID:') === 0 && $uid !== '') {
-                    $instanceLines[] = 'UID:' . $uid . '-' . $occTs;
-                } else {
-                    $instanceLines[] = $ol;
-                }
-            }
-            $instanceLines[] = sfc_format_ics_date_prop('DTSTART', $occStart, $isAllDay, $isUtc, $evTz);
-            $instanceLines[] = sfc_format_ics_date_prop('DTEND', $occEnd, $isAllDay, $isUtc, $evTz);
-            $outputEvents[] = $instanceLines;
+            $events[] = [
+                'id' => $uid . '-' . $occTs,
+                'title' => $summary,
+                'description' => $description !== '' ? $description : null,
+                'location' => $location !== '' ? $location : null,
+                'startDate' => $formatDateIso($occStart, $isAllDay, $evTz),
+                'endDate' => $formatDateIso($occEnd, $isAllDay, $evTz),
+                'isAllDay' => $isAllDay,
+                'category' => sfc_infer_category($summary, $description),
+                'url' => $urlProp !== '' ? $urlProp : null,
+            ];
         }
     }
 
-    $out = $headerLines;
-    foreach ($outputEvents as $evLines) {
-        $out[] = 'BEGIN:VEVENT';
-        foreach ($evLines as $el) {
-            $out[] = $el;
-        }
-        $out[] = 'END:VEVENT';
-    }
-    $out[] = 'END:VCALENDAR';
+    usort($events, function ($a, $b) {
+        return strcmp($a['startDate'], $b['startDate']);
+    });
 
-    return implode("\r\n", $out) . "\r\n";
+    return $events;
 }
 
-header('Content-Type: text/calendar; charset=utf-8');
+header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: public, max-age=300');
-echo sfc_filter_ics_two_months($body);
+echo json_encode(sfc_parse_all_events($body));

@@ -1,13 +1,13 @@
 import { Search, RefreshCw, LayoutList, CalendarDays } from 'lucide-react'
-import type { EventCategory } from '../../types/calendar'
+import type { EventCategory, TimeFilter } from '../../types/calendar'
 
 interface CalendarControlsProps {
   viewMode: 'list' | 'calendar'
   onViewModeChange: (mode: 'list' | 'calendar') => void
   selectedCategory: 'all' | EventCategory
   onCategoryChange: (cat: 'all' | EventCategory) => void
-  timeFilter: 'upcoming' | 'all' | 'past'
-  onTimeFilterChange: (filter: 'upcoming' | 'all' | 'past') => void
+  timeFilter: TimeFilter
+  onTimeFilterChange: (filter: TimeFilter) => void
   searchQuery: string
   onSearchChange: (q: string) => void
   onRefresh: () => void
@@ -115,6 +115,13 @@ export default function CalendarControls({
           <div className="calendar-filter-group">
             <span className="calendar-filter-label">Show:</span>
             <div className="calendar-filter-pills">
+              <button
+                type="button"
+                className={`calendar-pill ${timeFilter === 'two-months' ? 'is-selected' : ''}`}
+                onClick={() => onTimeFilterChange('two-months')}
+              >
+                Next 2 Months
+              </button>
               <button
                 type="button"
                 className={`calendar-pill ${timeFilter === 'upcoming' ? 'is-selected' : ''}`}
