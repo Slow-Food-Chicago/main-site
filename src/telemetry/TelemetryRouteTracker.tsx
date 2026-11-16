@@ -35,6 +35,8 @@ export default function TelemetryRouteTracker() {
     addPageAction('route_change', {
       from: previousRoute,
       to: routeName,
+      page: routeName,
+      path: routeName,
     })
 
     previousPathRef.current = currentPath
