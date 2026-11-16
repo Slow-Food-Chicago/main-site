@@ -30,6 +30,7 @@ This site is instrumented using the **New Relic Browser Agent** via the **Browse
 ### Features:
 * **Single-Page Application (SPA) Monitoring**: Tracks soft navigations and virtual page views via React Router (`TelemetryRouteTracker`).
 * **Modal Click Tracking**: Automatically records custom `modal_open` PageActions for leadership bios (`MemberModal`), garden harvest crops (`CropModal`), and the garden photo gallery lightbox.
+* **Modal Click Tracking**: Automatically records custom `modal_open` PageActions for leadership bios (`MemberModal`), garden harvest crops (`CropModal`), and the garden photo gallery lightbox.
 * **Core Web Vitals**: Measures LCP (Largest Contentful Paint), INP (Interaction to Next Paint), CLS (Cumulative Layout Shift), and page load timing.
 * **Distributed Tracing**: Automatically propagates W3C `traceparent` headers across outgoing AJAX and Fetch requests.
 * **JavaScript Error Tracking**: Captures uncaught frontend exceptions and unhandled promise rejections.
