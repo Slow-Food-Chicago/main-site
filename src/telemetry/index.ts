@@ -218,3 +218,91 @@ export function setUserId(userId: string): void {
     nr.setUserId(userId)
   }
 }
+
+export interface WildcardRedirectOptions {
+  pathname: string
+  search?: string
+  hash?: string
+  redirectTo?: string
+}
+
+/**
+ * Records an inbound legacy or wildcard URL redirection to New Relic before routing.
+ * Captures the user's desired destination, search parameters, referrer, referrer host,
+ * and search engine status so administrators can see what legacy URLs incoming visitors
+ * and search engines are attempting to visit.
+ */
+export function trackWildcardRedirect(options: WildcardRedirectOptions): void {
+  const desiredDestination = `${options.pathname}${options.search || ''}${options.hash || ''}`
+  const redirectTo = options.redirectTo || '/'
+
+  let referrer = '(direct)'
+  let referrerHost = '(direct)'
+  let isSearchEngine = false
+
+  if (typeof document !== 'undefined' && document.referrer) {
+    referrer = document.referrer
+    try {
+      const parsedUrl = new URL(document.referrer)
+      referrerHost = parsedUrl.hostname
+      isSearchEngine = /google|bing|yahoo|duckduckgo|ecosia|baidu|yandex|ask/i.test(parsedUrl.hostname)
+    } catch {
+      referrerHost = document.referrer
+    }
+  }
+
+  const fullUrl = typeof window !== 'undefined' ? window.location.href : desiredDestination
+
+  // Attach custom attributes to session context for subsequent traces & errors
+  setCustomAttribute('legacy.desired_destination', desiredDestination)
+  setCustomAttribute('legacy.requested_path', options.pathname)
+  setCustomAttribute('legacy.referrer', referrer)
+  setCustomAttribute('legacy.referrer_host', referrerHost)
+  setCustomAttribute('legacy.is_search_engine', isSearchEngine)
+  setCustomAttribute('legacy.redirect_to', redirectTo)
+
+  // Record dedicated PageActions for easy querying via NRQL
+  addPageAction('wildcard_redirect', {
+    desired_destination: desiredDestination,
+    requested_path: options.pathname,
+    path: options.pathname,
+    page: options.pathname,
+    search: options.search || '',
+    hash: options.hash || '',
+    full_url: fullUrl,
+    referrer,
+    referrer_host: referrerHost,
+    is_search_engine: isSearchEngine,
+    from: options.pathname,
+    to: redirectTo,
+    redirect_to: redirectTo,
+    source: 'legacy_wildcard',
+  })
+
+  // Duplicate with legacy_redirect alias for convenience in NRQL
+  addPageAction('legacy_redirect', {
+    desired_destination: desiredDestination,
+    requested_path: options.pathname,
+    path: options.pathname,
+    page: options.pathname,
+    search: options.search || '',
+    hash: options.hash || '',
+    full_url: fullUrl,
+    referrer,
+    referrer_host: referrerHost,
+    is_search_engine: isSearchEngine,
+    from: options.pathname,
+    to: redirectTo,
+    redirect_to: redirectTo,
+    source: 'legacy_wildcard',
+  })
+
+  if (import.meta.env.DEV || import.meta.env.VITE_NEW_RELIC_DEBUG === 'true') {
+    console.info(
+      `[New Relic] Tracked legacy wildcard redirect: "${desiredDestination}" -> "${redirectTo}" (Referrer: ${referrer})`
+    )
+  }
+}
+
+export { default as WildcardRedirect } from './WildcardRedirect'
+

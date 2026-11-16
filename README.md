@@ -56,7 +56,7 @@ VITE_NEW_RELIC_DEBUG=true
 
 ---
 
-## New Relic Dashboard (Page Views & Modal Interactions)
+## New Relic Dashboard (Page Views, Modals & Legacy Redirects)
 
 A ready-to-import dashboard definition is provided in [newrelic-dashboard.json](file:///Users/slowfood/Documents/GitHub/main-site/newrelic-dashboard.json).
 
@@ -69,6 +69,36 @@ A ready-to-import dashboard definition is provided in [newrelic-dashboard.json](
 6. **Page Views vs. Modal Clicks Trend (Area Chart)**: Correlated volume of general page browsing vs. deeper modal engagement.
 7. **Recent Modal Interaction Stream (Table)**: Real-time event log of recent modal clicks, items inspected, and parent pages.
 8. **Average Route Duration (Line Chart)**: Performance and rendering latency across routes.
+9. **Legacy & Wildcard Redirect Tracking**:
+   * Total legacy redirect volume billboard.
+   * Top inbound legacy URLs (`desired_destination`).
+   * Search engine breakdown vs direct/external referrers (`referrer_host`).
+   * Legacy traffic over time.
+   * Real-time stream of incoming URLs, referrers, and destination redirects.
+
+---
+
+## Legacy URL & Wildcard Search Tracking
+
+When users follow outdated links from search engines (Google, Bing, etc.) or external backlinks to legacy URLs that no longer exist, the application automatically:
+1. Intercepts the request via `<WildcardRedirect to="/" />` before redirecting.
+2. Extracts the user's **desired destination** (path, search query parameters, hash), full URL, and referrer source.
+3. Sets session-level custom attributes (`legacy.desired_destination`, `legacy.requested_path`, `legacy.referrer`, etc.).
+4. Dispatches a `wildcard_redirect` PageAction to New Relic with full metadata.
+5. Replaces the browser URL with `/` and displays the homepage.
+
+### Querying Legacy Inbound URLs in New Relic (NRQL):
+
+```sql
+-- See which legacy URLs are being followed most frequently:
+SELECT count(*) FROM PageAction WHERE actionName = 'wildcard_redirect' FACET desired_destination SINCE 7 days ago
+
+-- See the search engines or referring sites driving legacy traffic:
+SELECT count(*) FROM PageAction WHERE actionName = 'wildcard_redirect' FACET referrer_host SINCE 7 days ago
+
+-- Real-time stream of incoming legacy URLs and referrers:
+SELECT timestamp, desired_destination, referrer_host, referrer, redirect_to FROM PageAction WHERE actionName = 'wildcard_redirect' ORDER BY timestamp DESC LIMIT 50
+```
 
 ### How to Import the Dashboard into New Relic:
 

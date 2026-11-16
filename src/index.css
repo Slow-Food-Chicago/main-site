@@ -3035,7 +3035,18 @@ a.initiative-card:hover .initiative-title {
 }
 
 .involve-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 25px;
   margin-bottom: 38px;
+}
+
+.involve-heading > p {
+  margin: 0 0 8px;
+  color: #746e65;
+  font-size: 14px;
+  max-width: 480px;
 }
 
 .involve-title {
@@ -3344,12 +3355,14 @@ a.initiative-card:hover .initiative-title {
     padding: 67px 24px 70px;
   }
 
-  .principles-heading {
+  .principles-heading,
+  .involve-heading {
     display: block;
     margin-bottom: 27px;
   }
 
-  .principles-heading > p {
+  .principles-heading > p,
+  .involve-heading > p {
     margin-top: 13px;
   }
 
