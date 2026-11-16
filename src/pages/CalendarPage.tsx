@@ -18,7 +18,6 @@ import {
   fetchIcsFeed,
   fetchEventbriteEvents,
   getGoogleCalendarSubscribeUrl,
-  getTwoMonthWindow,
   stripHtml,
 } from '../services/calendar'
 import {
@@ -161,7 +160,7 @@ export default function CalendarPage() {
 
   // Filter and sort events
   const filteredEvents = useMemo(() => {
-    const { start: now, end: twoMonthsOut } = getTwoMonthWindow()
+    const now = new Date()
 
     return events
       .filter((ev) => {
@@ -170,8 +169,8 @@ export default function CalendarPage() {
           return false
         }
 
-        // Time filter (upcoming events within the next two months)
-        if (timeFilter === 'upcoming' && (ev.endDate < now || ev.startDate > twoMonthsOut)) {
+        // Time filter
+        if (timeFilter === 'upcoming' && ev.endDate < now) {
           return false
         }
         if (timeFilter === 'past' && ev.endDate >= now) {

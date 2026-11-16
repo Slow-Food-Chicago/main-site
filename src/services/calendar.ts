@@ -427,6 +427,127 @@ function expandRruleDates(
 }
 
 /**
+ * Safely parse a date value from various representations (Date, number timestamp,
+ * ISO date-time string, date-only YYYY-MM-DD string).
+ */
+function parseEventDate(val: unknown, isAllDay: boolean): Date {
+  if (!val) return new Date()
+  if (val instanceof Date) return val
+  if (typeof val === 'number') return new Date(val)
+
+  if (typeof val === 'string') {
+    const trimmed = val.trim()
+    const dateOnlyMatch = trimmed.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+    if (dateOnlyMatch || (isAllDay && /^\d{4}-\d{2}-\d{2}/.test(trimmed))) {
+      const match = trimmed.match(/^(\d{4})-(\d{2})-(\d{2})/)
+      if (match) {
+        const [, y, m, d] = match
+        return new Date(parseInt(y, 10), parseInt(m, 10) - 1, parseInt(d, 10))
+      }
+    }
+    const d = new Date(trimmed)
+    if (!isNaN(d.getTime())) return d
+  }
+  return new Date()
+}
+
+/**
+ * Normalizes an array of raw event items (such as the JSON list returned by
+ * `calendar-feed.php` or other feeds) into strongly-typed `CalendarEvent` objects.
+ */
+export function normalizeEventList(rawList: unknown[]): CalendarEvent[] {
+  const events: CalendarEvent[] = []
+
+  for (let i = 0; i < rawList.length; i++) {
+    const raw = rawList[i]
+    if (!raw || typeof raw !== 'object') continue
+
+    const item = raw as Record<string, unknown>
+    const title =
+      typeof item.title === 'string' && item.title.trim()
+        ? item.title.trim()
+        : typeof item.summary === 'string' && item.summary.trim()
+        ? item.summary.trim()
+        : typeof item.name === 'string' && item.name.trim()
+        ? item.name.trim()
+        : 'Slow Food Chicago Event'
+
+    const description =
+      typeof item.description === 'string'
+        ? item.description
+        : typeof item.summary === 'string' && item.title && item.summary !== item.title
+        ? item.summary
+        : undefined
+
+    const location = typeof item.location === 'string' ? item.location : undefined
+    const url =
+      typeof item.url === 'string'
+        ? item.url
+        : typeof item.htmlLink === 'string'
+        ? item.htmlLink
+        : undefined
+
+    const isAllDay = Boolean(
+      item.isAllDay ??
+        item.allDay ??
+        (typeof item.startDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(item.startDate.trim())),
+    )
+
+    const rawStart =
+      item.startDate ??
+      item.start_date ??
+      (typeof item.start === 'object' && item.start !== null
+        ? (item.start as { dateTime?: string; date?: string }).dateTime ||
+          (item.start as { dateTime?: string; date?: string }).date
+        : item.start)
+
+    const rawEnd =
+      item.endDate ??
+      item.end_date ??
+      (typeof item.end === 'object' && item.end !== null
+        ? (item.end as { dateTime?: string; date?: string }).dateTime ||
+          (item.end as { dateTime?: string; date?: string }).date
+        : item.end)
+
+    const startDate = parseEventDate(rawStart, isAllDay)
+    let endDate = rawEnd ? parseEventDate(rawEnd, isAllDay) : undefined
+
+    if (!endDate || isNaN(endDate.getTime())) {
+      endDate = isAllDay
+        ? new Date(startDate.getTime() + 24 * 60 * 60 * 1000)
+        : new Date(startDate.getTime() + 60 * 60 * 1000)
+    }
+
+    const id =
+      typeof item.id === 'string' && item.id
+        ? item.id
+        : typeof item.uid === 'string' && item.uid
+        ? item.uid
+        : `event-${i}-${startDate.getTime()}`
+
+    const validCategories = new Set(['gathering', 'garden', 'meeting', 'workshop', 'other'])
+    const category: EventCategory =
+      typeof item.category === 'string' && validCategories.has(item.category)
+        ? (item.category as EventCategory)
+        : inferCategory(title, description || '')
+
+    events.push({
+      id,
+      title,
+      description,
+      location,
+      startDate,
+      endDate,
+      isAllDay,
+      category,
+      url,
+    })
+  }
+
+  return events.sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
+}
+
+/**
  * Parse an iCalendar (.ics) string into an array of structured CalendarEvent objects
  * within the next two months.
  */
@@ -444,7 +565,11 @@ export function parseIcs(icsData: string): CalendarEvent[] {
     }
   }
 
-  const { start: windowStart, end: windowEnd } = getTwoMonthWindow()
+  const now = new Date()
+  const recurrenceWindowStart = new Date(now)
+  recurrenceWindowStart.setFullYear(recurrenceWindowStart.getFullYear() - 1)
+  const recurrenceWindowEnd = new Date(now)
+  recurrenceWindowEnd.setFullYear(recurrenceWindowEnd.getFullYear() + 2)
 
   const events: CalendarEvent[] = []
   let inEvent = false
@@ -491,11 +616,16 @@ export function parseIcs(icsData: string): CalendarEvent[] {
 
         if (currentEvent['RRULE']) {
           const exSet = new Set(currentExdates)
-          const occStarts = expandRruleDates(startDate, currentEvent['RRULE'], windowEnd, calTz)
+          const occStarts = expandRruleDates(
+            startDate,
+            currentEvent['RRULE'],
+            recurrenceWindowEnd,
+            calTz,
+          )
           for (const occStart of occStarts) {
             if (exSet.has(Math.floor(occStart.getTime() / 1000))) continue
             const occEnd = new Date(occStart.getTime() + durationMs)
-            if (occEnd >= windowStart && occStart <= windowEnd) {
+            if (occEnd >= recurrenceWindowStart && occStart <= recurrenceWindowEnd) {
               events.push({
                 id: `${baseUid}-${occStart.getTime()}`,
                 title,
@@ -509,7 +639,7 @@ export function parseIcs(icsData: string): CalendarEvent[] {
               })
             }
           }
-        } else if (endDate >= windowStart && startDate <= windowEnd) {
+        } else {
           events.push({
             id: `${baseUid}-${startDate.getTime()}`,
             title,
@@ -561,12 +691,15 @@ export async function fetchGoogleCalendarApi(
   apiKey: string,
   calendarId: string,
 ): Promise<CalendarEvent[]> {
-  const { start: windowStart, end: windowEnd } = getTwoMonthWindow()
+  const windowStart = new Date()
+  windowStart.setFullYear(windowStart.getFullYear() - 1)
+  const windowEnd = new Date()
+  windowEnd.setFullYear(windowEnd.getFullYear() + 2)
   const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(
     calendarId,
   )}/events?key=${encodeURIComponent(
     apiKey,
-  )}&timeMin=${windowStart.toISOString()}&timeMax=${windowEnd.toISOString()}&singleEvents=true&orderBy=startTime&maxResults=250`
+  )}&timeMin=${windowStart.toISOString()}&timeMax=${windowEnd.toISOString()}&singleEvents=true&orderBy=startTime&maxResults=2500`
 
   const res = await fetch(url)
   if (!res.ok) {
@@ -625,7 +758,37 @@ export async function fetchIcsFeed(feedUrl: string): Promise<CalendarEvent[]> {
       `${import.meta.env.BASE_URL}calendar-feed.php?url=${encodeURIComponent(feedUrl)}`,
     )
     if (localRes.ok) {
+      const contentType = localRes.headers.get('content-type') || ''
+      if (contentType.includes('application/json')) {
+        const data: unknown = await localRes.json()
+        const list = Array.isArray(data)
+          ? data
+          : data && typeof data === 'object' && Array.isArray((data as { events?: unknown }).events)
+          ? (data as { events: unknown[] }).events
+          : null
+        if (list) {
+          return normalizeEventList(list)
+        }
+      }
+
       const text = await localRes.text()
+      const trimmed = text.trim()
+      if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+        try {
+          const parsed: unknown = JSON.parse(trimmed)
+          const list = Array.isArray(parsed)
+            ? parsed
+            : parsed && typeof parsed === 'object' && Array.isArray((parsed as { events?: unknown }).events)
+            ? (parsed as { events: unknown[] }).events
+            : null
+          if (list) {
+            return normalizeEventList(list)
+          }
+        } catch {
+          // not valid JSON; fall through to ICS check
+        }
+      }
+
       if (text.includes('BEGIN:VCALENDAR')) {
         return parseIcs(text)
       }
@@ -642,6 +805,23 @@ export async function fetchIcsFeed(feedUrl: string): Promise<CalendarEvent[]> {
   }
 
   const icsText = await proxyRes.text()
+  const trimmedProxy = icsText.trim()
+  if (trimmedProxy.startsWith('[') || trimmedProxy.startsWith('{')) {
+    try {
+      const parsed: unknown = JSON.parse(trimmedProxy)
+      const list = Array.isArray(parsed)
+        ? parsed
+        : parsed && typeof parsed === 'object' && Array.isArray((parsed as { events?: unknown }).events)
+        ? (parsed as { events: unknown[] }).events
+        : null
+      if (list) {
+        return normalizeEventList(list)
+      }
+    } catch {
+      // not JSON; continue
+    }
+  }
+
   if (!icsText.includes('BEGIN:VCALENDAR')) {
     throw new Error('Feed response is not a valid iCalendar format')
   }
@@ -682,8 +862,6 @@ export async function fetchEventbriteEvents(organizerId: string): Promise<Calend
   const data: unknown = await res.json()
   if (!Array.isArray(data)) return []
 
-  const { start: windowStart, end: windowEnd } = getTwoMonthWindow()
-
   return (data as EbEvent[])
     .filter((ev) => ev.start_date && !ev.is_cancelled)
     .map((ev) => {
@@ -717,7 +895,6 @@ export async function fetchEventbriteEvents(organizerId: string): Promise<Calend
         url: ev.url,
       }
     })
-    .filter((ev) => ev.endDate >= windowStart && ev.startDate <= windowEnd)
 }
 
 /**
