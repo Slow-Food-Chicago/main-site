@@ -26,6 +26,13 @@ jobs:
 
       - name: Build project
         run: npm run build # Compiles your code into production assets
+        env:
+          VITE_NEW_RELIC_BROWSER_TOKEN: ${{ secrets.VITE_NEW_RELIC_BROWSER_TOKEN }}
+          VITE_NEW_RELIC_APPLICATION_ID: ${{ secrets.VITE_NEW_RELIC_APPLICATION_ID }}
+          VITE_NEW_RELIC_ACCOUNT_ID: ${{ secrets.VITE_NEW_RELIC_ACCOUNT_ID }}
+          VITE_NEW_RELIC_REGION: us
+          VITE_NEW_RELIC_DEBUG: false
+          VITE_NEW_RELIC_ENABLED: true
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
